@@ -1,7 +1,6 @@
-name: PermissionsEx
+name: ${project.name}
 main: ru.tehkode.permissions.bukkit.PermissionsEx
-softdepend: ["NetEvents"]
-version: "${project.version}"
+version: ${project.version}
 authors: [Aeternum, cyberpwn, Rsl1122, t3hk0d3, zml]
 website: http://dev.bukkit.org/server-mods/permissionsex
 description: PermissionsEx - New powerful users and groups permissions management plugin.
