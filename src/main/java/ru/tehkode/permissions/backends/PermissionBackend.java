@@ -1,14 +1,5 @@
 package ru.tehkode.permissions.backends;
 
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.PermissionsGroupData;
-import ru.tehkode.permissions.PermissionsUserData;
-import ru.tehkode.permissions.bukkit.ErrorReport;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-import ru.tehkode.permissions.exceptions.PermissionBackendException;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,12 +12,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
+
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.PermissionsGroupData;
+import ru.tehkode.permissions.PermissionsUserData;
+import ru.tehkode.permissions.bukkit.ErrorReport;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+import ru.tehkode.permissions.exceptions.PermissionBackendException;
 
 /**
  * Backend for permission
@@ -46,7 +46,7 @@ public abstract class PermissionBackend {
 	 * Executor that consistently maintains a reference to the executor actively being used
 	 */
 	private final Executor activeExecutorPtr,
-			onThreadExecutor;
+	onThreadExecutor;
 	private final ExecutorService asyncExecutor;
 	private final List<SchemaUpdate> schemaUpdates = new LinkedList<>();
 
