@@ -9,4 +9,5 @@ package ru.tehkode.permissions.backends.web.pages;
  * @see PageHandler
  */
 public abstract class TreePageHandler {
+    // TODO
 }

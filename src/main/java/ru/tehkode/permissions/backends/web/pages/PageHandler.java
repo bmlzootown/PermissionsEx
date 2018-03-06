@@ -6,4 +6,5 @@ package ru.tehkode.permissions.backends.web.pages;
  * @author Rsl1122
  */
 public abstract class PageHandler {
+    // TODO
 }

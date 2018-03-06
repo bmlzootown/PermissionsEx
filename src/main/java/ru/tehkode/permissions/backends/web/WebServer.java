@@ -12,6 +12,14 @@ public class WebServer {
     private HttpServer server;
 
     public void enable() {
+        server = initServer();
+    }
+
+    private HttpServer initServer() {
+        return null; // TODO
+    }
+
+    public void disable() {
 
     }
 

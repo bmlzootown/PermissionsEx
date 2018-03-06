@@ -6,4 +6,6 @@ package ru.tehkode.permissions.backends.web;
  * @author Rsl1122
  */
 public class ResponseHandler {
+    // TODO
+
 }

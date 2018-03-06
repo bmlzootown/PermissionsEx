@@ -6,4 +6,5 @@ package ru.tehkode.permissions.backends.web.http;
  * @author Rsl1122
  */
 public class Request {
+    // TODO
 }
