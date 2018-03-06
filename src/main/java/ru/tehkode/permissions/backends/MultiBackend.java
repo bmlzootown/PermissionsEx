@@ -1,12 +1,5 @@
 package ru.tehkode.permissions.backends;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.json.simple.JSONObject;
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.PermissionsGroupData;
-import ru.tehkode.permissions.PermissionsUserData;
-import ru.tehkode.permissions.exceptions.PermissionBackendException;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -18,6 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.json.simple.JSONObject;
+
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.PermissionsGroupData;
+import ru.tehkode.permissions.PermissionsUserData;
+import ru.tehkode.permissions.exceptions.PermissionBackendException;
 
 
 /**
@@ -45,7 +46,6 @@ public class MultiBackend extends PermissionBackend {
 		ConfigurationSection fallbackSection = backendConfig.getConfigurationSection("fallback");
 		if (fallbackSection != null) {
 			for (Map.Entry<String, Object> ent : fallbackSection.getValues(false).entrySet()) {
-				@SuppressWarnings("SuspiciousMethodCalls")
 				PermissionBackend backend = backendMap.get(ent.getValue());
 				if (backend == null) {
 					throw new PermissionBackendException("Fallback backend type " + ent.getValue() + " is not listed in the backends section of MultiBackend (and must be for this contraption to work)");
@@ -171,6 +171,7 @@ public class MultiBackend extends PermissionBackend {
 		getFallbackBackend("world").setWorldInheritance(world, inheritance);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void writeContents(Writer writer) throws IOException {
 		JSONObject obj = new JSONObject();
