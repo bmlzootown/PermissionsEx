@@ -24,9 +24,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
+
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionsGroupData;
 import ru.tehkode.permissions.PermissionsUserData;
@@ -40,9 +40,9 @@ import ru.tehkode.permissions.exceptions.PermissionBackendException;
  */
 public class MemoryBackend extends PermissionBackend {
 
-    public MemoryBackend(PermissionManager manager, ConfigurationSection config) throws PermissionBackendException {
-        super(manager, config);
-    }
+	public MemoryBackend(PermissionManager manager, ConfigurationSection config) throws PermissionBackendException {
+		super(manager, config);
+	}
 
 	@Override
 	public int getSchemaVersion() {
