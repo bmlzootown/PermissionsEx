@@ -1,14 +1,14 @@
 package ru.tehkode.permissions;
 
+import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import ru.tehkode.permissions.bukkit.ErrorReport;
 
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+import ru.tehkode.permissions.bukkit.ErrorReport;
 
 public class RegExpMatcher implements PermissionMatcher {
 	public static final String RAW_REGEX_CHAR = "$";
@@ -35,11 +35,11 @@ public class RegExpMatcher implements PermissionMatcher {
 	}
 
 	protected static Pattern createPattern(String expression) {
-        try {
-		    return Pattern.compile(prepareRegexp(expression), Pattern.CASE_INSENSITIVE);
-        } catch (PatternSyntaxException e) {
-            return Pattern.compile(Pattern.quote(expression), Pattern.CASE_INSENSITIVE);
-        }
+		try {
+			return Pattern.compile(prepareRegexp(expression), Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException e) {
+			return Pattern.compile(Pattern.quote(expression), Pattern.CASE_INSENSITIVE);
+		}
 	}
 
 	public static String prepareRegexp(String expression) {
@@ -58,7 +58,7 @@ public class RegExpMatcher implements PermissionMatcher {
 
 		String regexp = rawRegexp ? expression : expression.replace(".", "\\.").replace("*", "(.*)");
 
-	/*	try {
+		/*	try {
 			Matcher rangeMatcher = rangeExpression.matcher(regexp);
 			while (rangeMatcher.find()) {
 				StringBuilder range = new StringBuilder();

@@ -31,6 +31,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import ru.tehkode.permissions.PermissionEntity;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.PermissionUser;
@@ -83,6 +84,8 @@ public abstract class PermissionsCommand implements CommandListener {
 	}
 
 	private String nameToUUID(String name) {
+		// TODO Mojang authlib
+		@SuppressWarnings("deprecation")
 		OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(name);
 		if (player != null) {
 			UUID uid = player.getUniqueId();
@@ -323,7 +326,6 @@ public abstract class PermissionsCommand implements CommandListener {
 			builder.append("\n");
 		}
 
-		List<PermissionGroup> parents = entity.getParents(worldName);
 		level++; // Just increment level once
 		return builder.toString();
 	}

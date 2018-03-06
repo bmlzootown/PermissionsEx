@@ -70,7 +70,6 @@ import ru.tehkode.utils.StringUtils;
  */
 public class PermissionsEx extends JavaPlugin implements NativeInterface
 {
-	private static final int BUKKITDEV_ID = 31279;
 	protected PermissionManager permissionsManager;
 	protected CommandsManager commandsManager;
 	private PermissionsExConfig config;
@@ -363,6 +362,8 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	@Override
 	public UUID nameToUUID(String name)
 	{
+		// TODO Mojang Lib and actually get correct id
+		@SuppressWarnings("deprecation")
 		OfflinePlayer player = getServer().getOfflinePlayer(name);
 		UUID userUUID = null;
 		try

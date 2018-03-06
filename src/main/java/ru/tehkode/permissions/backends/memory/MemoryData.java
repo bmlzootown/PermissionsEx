@@ -1,14 +1,15 @@
 package ru.tehkode.permissions.backends.memory;
 
-import com.google.common.collect.Sets;
-import ru.tehkode.permissions.PermissionsGroupData;
-import ru.tehkode.permissions.PermissionsUserData;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
+
+import ru.tehkode.permissions.PermissionsGroupData;
+import ru.tehkode.permissions.PermissionsUserData;
 
 /**
  * Data for in-memory permissions
@@ -16,11 +17,9 @@ import java.util.Set;
 public class MemoryData implements PermissionsGroupData, PermissionsUserData {
 	private String name;
 	private final HashMap<String, String> worldPrefix = new HashMap<>();
-	private final HashMap<String, String> worldSuffix = new HashMap<>();
 	private final HashMap<String, List<String>> worldsPermissions = new HashMap<>();
 	private final Map<String, Map<String, String>> worldsOptions = new HashMap<>();
 	private final Map<String, List<String>> parents = new HashMap<>();
-	private final Map<String, Boolean> defaultVals = new HashMap<>();
 
 	public MemoryData(String name) {
 		this.name = name;
