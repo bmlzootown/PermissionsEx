@@ -266,6 +266,8 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	{
 		try
 		{
+			tweaks.close();
+
 			if(this.permissionsManager != null)
 			{
 				this.permissionsManager.end();
