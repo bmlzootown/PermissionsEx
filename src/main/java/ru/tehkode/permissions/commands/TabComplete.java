@@ -18,11 +18,10 @@ public class TabComplete implements TabCompleter
 	{
 		final List<String> completions = new ArrayList<String>(Arrays.asList(COMMANDS));
 		// convert to list
-		// org.bukkit.util.StringUtil.copyPartialMatches(args[0], COMMANDS,
-		// completions);
+		//org.bukkit.util.StringUtil.copyPartialMatches(args[0], COMMANDS, completions);
 		// copy matches of first argument from list (if first arg is 'm' will return
 		// just 'minecraft')
-		// Collections.sort(completions);
+		//Collections.sort(completions);
 		// you want to sort no?
 		return completions;
 	}
