@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 
 public class TabComplete implements TabCompleter
 {
-	private static final String[] COMMANDS = {"groups"};
+	private static final String[] COMMANDS = {"groups", "users", "worlds", "reload"};
 	// create a static array of values you want to return
 
 	@Override
