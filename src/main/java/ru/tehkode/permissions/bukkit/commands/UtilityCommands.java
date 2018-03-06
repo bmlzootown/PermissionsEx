@@ -18,24 +18,6 @@
  */
 package ru.tehkode.permissions.bukkit.commands;
 
-import com.google.common.collect.Iterables;
-import com.mojang.api.profiles.HttpProfileRepository;
-import com.mojang.api.profiles.Profile;
-import com.mojang.api.profiles.ProfileRepository;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import ru.tehkode.permissions.PermissionsUserData;
-import ru.tehkode.permissions.backends.PermissionBackend;
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.ErrorReport;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-import ru.tehkode.permissions.commands.Command;
-import ru.tehkode.permissions.commands.CommandsManager.CommandBinding;
-import ru.tehkode.permissions.exceptions.PermissionBackendException;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,6 +28,25 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import com.google.common.collect.Iterables;
+import com.mojang.api.profiles.HttpProfileRepository;
+import com.mojang.api.profiles.Profile;
+import com.mojang.api.profiles.ProfileRepository;
+
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.PermissionsUserData;
+import ru.tehkode.permissions.backends.PermissionBackend;
+import ru.tehkode.permissions.bukkit.ErrorReport;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+import ru.tehkode.permissions.commands.Command;
+import ru.tehkode.permissions.commands.CommandsManager.CommandBinding;
+import ru.tehkode.permissions.exceptions.PermissionBackendException;
 
 public class UtilityCommands extends PermissionsCommand {
 
@@ -59,7 +60,7 @@ public class UtilityCommands extends PermissionsCommand {
 			sender.sendMessage(ChatColor.WHITE + "Permissions reloaded");
 		} catch (PermissionBackendException e) {
 			sender.sendMessage(ChatColor.RED + "Failed to reload permissions! Check configuration!\n" +
-							   ChatColor.RED + "Error (see console for full): " + e.getMessage());
+					ChatColor.RED + "Error (see console for full): " + e.getMessage());
 			plugin.getLogger().log(Level.WARNING, "Failed to reload permissions when " + sender.getName() + " ran `pex reload`", e);
 		}
 	}
@@ -141,7 +142,7 @@ public class UtilityCommands extends PermissionsCommand {
 			}
 		} catch (PermissionBackendException e) {
 			sender.sendMessage(ChatColor.RED + "Backend initialization failed! Fix your configuration!\n" +
-							   ChatColor.RED + "Error (see console for more): " + e.getMessage());
+					ChatColor.RED + "Error (see console for more): " + e.getMessage());
 			plugin.getLogger().log(Level.WARNING, "Backend initialization failed when " + sender.getName() + " was initializing " + args.get("backend"), e);
 		}
 	}
@@ -157,8 +158,8 @@ public class UtilityCommands extends PermissionsCommand {
 
 	@Command(name = "pex",
 			syntax = "convert uuid [force]",
-	        permission = "permissions.convert",
-	        description = "Bulk convert user data to UUID-based storage")
+			permission = "permissions.convert",
+			description = "Bulk convert user data to UUID-based storage")
 	public void convertUUID(final PermissionsEx plugin, final CommandSender sender, Map<String, String> args) {
 		final PermissionBackend backend = plugin.getPermissionsManager().getBackend();
 		if (!plugin.getServer().getOnlineMode() && !"force".equals(args.get("force"))) {
