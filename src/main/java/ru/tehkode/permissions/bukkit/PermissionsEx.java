@@ -59,6 +59,7 @@ import ru.tehkode.permissions.bukkit.commands.UtilityCommands;
 import ru.tehkode.permissions.bukkit.commands.WorldCommands;
 import ru.tehkode.permissions.bukkit.regexperms.RegexPermissions;
 import ru.tehkode.permissions.commands.CommandsManager;
+import ru.tehkode.permissions.commands.TabComplete;
 import ru.tehkode.permissions.events.PermissionEvent;
 import ru.tehkode.permissions.exceptions.PermissionBackendException;
 import ru.tehkode.permissions.exceptions.PermissionsNotAvailable;
@@ -223,6 +224,9 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 			this.commandsManager.register(new PromotionCommands());
 			this.commandsManager.register(new WorldCommands());
 			this.commandsManager.register(new UtilityCommands());
+			// Register Tab complete
+			
+			this.getCommand("pex").setTabCompleter(new TabComplete());
 
 			// Register Player permissions cleaner
 			PlayerEventsListener cleaner = new PlayerEventsListener();
