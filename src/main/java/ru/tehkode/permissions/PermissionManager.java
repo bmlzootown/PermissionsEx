@@ -18,17 +18,17 @@
  */
 package ru.tehkode.permissions;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import ru.tehkode.permissions.backends.PermissionBackend;
-import ru.tehkode.permissions.bukkit.PermissionsExConfig;
-import ru.tehkode.permissions.events.PermissionEvent;
-import ru.tehkode.permissions.events.PermissionSystemEvent;
-import ru.tehkode.permissions.exceptions.PermissionBackendException;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
@@ -37,10 +37,22 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
+import ru.tehkode.permissions.backends.PermissionBackend;
+import ru.tehkode.permissions.bukkit.PermissionsExConfig;
+import ru.tehkode.permissions.events.PermissionEvent;
+import ru.tehkode.permissions.events.PermissionSystemEvent;
+import ru.tehkode.permissions.exceptions.PermissionBackendException;
+
 /**
  * @author t3hk0d3
  */
-public class PermissionManager {
+public class PermissionManager
+{
 
 	public final static int TRANSIENT_PERMISSION = 0;
 	protected ConcurrentMap<String, PermissionUser> users = new ConcurrentHashMap<>();
@@ -57,7 +69,8 @@ public class PermissionManager {
 
 	protected PermissionMatcher matcher = new RegExpMatcher();
 
-	public PermissionManager(PermissionsExConfig config, Logger logger, NativeInterface nativeI) throws PermissionBackendException {
+	public PermissionManager(PermissionsExConfig config, Logger logger, NativeInterface nativeI) throws PermissionBackendException
+	{
 		this.config = config;
 		this.logger = logger;
 		this.nativeI = nativeI;
@@ -67,26 +80,33 @@ public class PermissionManager {
 		this.initBackend();
 	}
 
-	UUID getServerUUID() {
+	UUID getServerUUID()
+	{
 		return nativeI.getServerUUID();
 	}
 
-	public boolean shouldCreateUserRecords() {
+	public boolean shouldCreateUserRecords()
+	{
 		return config.createUserRecords();
 	}
 
-	public PermissionsExConfig getConfiguration() {
+	public PermissionsExConfig getConfiguration()
+	{
 		return config;
 	}
 
-	void scheduleTimedGroupsCheck(long nextExpiration, final String identifier) {
+	void scheduleTimedGroupsCheck(long nextExpiration, final String identifier)
+	{
 		ScheduledFuture<?> future = clearTimedGroupsTasks.get(identifier);
 		long newDelay = (nextExpiration - (System.currentTimeMillis() / 1000));
 
-		if (future == null || future.isDone() || future.getDelay(TimeUnit.SECONDS) > newDelay) {
-			clearTimedGroupsTasks.put(identifier, executor.schedule(new Runnable() {
+		if(future == null || future.isDone() || future.getDelay(TimeUnit.SECONDS) > newDelay)
+		{
+			clearTimedGroupsTasks.put(identifier, executor.schedule(new Runnable()
+			{
 				@Override
-				public void run() {
+				public void run()
+				{
 					getUser(identifier).updateTimedGroups();
 					clearTimedGroupsTasks.remove(identifier);
 				}
@@ -94,42 +114,53 @@ public class PermissionManager {
 		}
 	}
 
-
 	/**
 	 * Check if specified player has specified permission
 	 *
-	 * @param player     player object
-	 * @param permission permission string to check against
+	 * @param player
+	 *            player object
+	 * @param permission
+	 *            permission string to check against
 	 * @return true on success false otherwise
 	 */
-	public boolean has(Player player, String permission) {
+	public boolean has(Player player, String permission)
+	{
 		return this.has(player.getUniqueId(), permission, player.getWorld().getName());
 	}
 
 	/**
 	 * Check if player has specified permission in world
 	 *
-	 * @param player     player object
-	 * @param permission permission as string to check against
-	 * @param world      world's name as string
+	 * @param player
+	 *            player object
+	 * @param permission
+	 *            permission as string to check against
+	 * @param world
+	 *            world's name as string
 	 * @return true on success false otherwise
 	 */
-	public boolean has(Player player, String permission, String world) {
+	public boolean has(Player player, String permission, String world)
+	{
 		return this.has(player.getUniqueId(), permission, world);
 	}
 
 	/**
 	 * Check if player with name has permission in world
 	 *
-	 * @param playerName player name
-	 * @param permission permission as string to check against
-	 * @param world      world's name as string
+	 * @param playerName
+	 *            player name
+	 * @param permission
+	 *            permission as string to check against
+	 * @param world
+	 *            world's name as string
 	 * @return true on success false otherwise
 	 */
-	public boolean has(String playerName, String permission, String world) {
+	public boolean has(String playerName, String permission, String world)
+	{
 		PermissionUser user = this.getUser(playerName);
 
-		if (user == null) {
+		if(user == null)
+		{
 			return false;
 		}
 
@@ -139,12 +170,16 @@ public class PermissionManager {
 	/**
 	 * Check if player with UUID has permission in world
 	 *
-	 * @param playerId player name
-	 * @param permission permission as string to check against
-	 * @param world      world's name as string
+	 * @param playerId
+	 *            player name
+	 * @param permission
+	 *            permission as string to check against
+	 * @param world
+	 *            world's name as string
 	 * @return true on success false otherwise
 	 */
-	public boolean has(UUID playerId, String permission, String world) {
+	public boolean has(UUID playerId, String permission, String world)
+	{
 		PermissionUser user = this.getUser(playerId);
 
 		return user != null && user.has(permission, world);
@@ -154,96 +189,128 @@ public class PermissionManager {
 	/**
 	 * Return user's object
 	 *
-	 * @param username get PermissionUser with given name
+	 * @param username
+	 *            get PermissionUser with given name
 	 * @return PermissionUser instance
 	 */
-	public PermissionUser getUser(String username) {
-		if (username == null || username.isEmpty()) {
+	public PermissionUser getUser(String username)
+	{
+		if(username == null || username.isEmpty())
+		{
 			throw new IllegalArgumentException("Null or empty name passed! Name must not be empty");
 		}
 
-		try {
-			if (username.length() != 36) { // Speedup for things def not uuids
+		try
+		{
+			if(username.length() != 36)
+			{ // Speedup for things def not uuids
 				throw new IllegalArgumentException("not a uuid, try stuff");
 			}
 			return getUser(UUID.fromString(username)); // Username is uuid as string, just use it
-		} catch (IllegalArgumentException ex) {
+		}
+		catch(IllegalArgumentException ex)
+		{
 			UUID userUUID = nativeI.nameToUUID(username);
 			boolean online = userUUID != null && nativeI.isOnline(userUUID);
 
-			if (userUUID != null && (nativeI.isOnline(userUUID) || backend.hasUser(userUUID.toString()))) {
+			if(userUUID != null && (nativeI.isOnline(userUUID) || backend.hasUser(userUUID.toString())))
+			{
 				return getUser(userUUID.toString(), username, online);
-			} else {
-				// The user is offline and unconverted, so we'll just have to return an unconverted user.
+			}
+			else
+			{
+				// The user is offline and unconverted, so we'll just have to return an
+				// unconverted user.
 				return getUser(username, null, false);
 			}
 		}
 	}
 
-
 	/**
-	 * Update a user in cache. This method is thread-safe and should only be called in async phases of login.
+	 * Update a user in cache. This method is thread-safe and should only be called
+	 * in async phases of login.
 	 *
-	 * @param ident The user identifier
-	 * @param fallbackName Fallback name for user
+	 * @param ident
+	 *            The user identifier
+	 * @param fallbackName
+	 *            Fallback name for user
 	 */
-	public void cacheUser(String ident, String fallbackName) {
+	public void cacheUser(String ident, String fallbackName)
+	{
 		getUser(ident, fallbackName, true);
 	}
 
 	/**
 	 * Return object of specified player
 	 *
-	 * @param player player object
+	 * @param player
+	 *            player object
 	 * @return PermissionUser instance
 	 */
-	public PermissionUser getUser(Player player) {
+	public PermissionUser getUser(Player player)
+	{
 		return this.getUser(player.getUniqueId().toString(), player.getName(), true);
 	}
 
-	public PermissionUser getUser(UUID uid) {
+	public PermissionUser getUser(UUID uid)
+	{
 		final String identifier = uid.toString();
-		if (users.containsKey(identifier)) {
+		if(users.containsKey(identifier))
+		{
 			return getUser(identifier, null, false);
 		}
 		String fallbackName = nativeI.UUIDToName(uid);
 		return getUser(identifier, fallbackName, fallbackName != null);
 	}
 
-	private PermissionUser getUser(String identifier, String fallbackName, boolean store) {
+	private PermissionUser getUser(String identifier, String fallbackName, boolean store)
+	{
 		PermissionUser user = users.get(identifier);
 
-		if (user != null) {
+		if(user != null)
+		{
 			return user;
 		}
 
 		PermissionsUserData data = backend.getUserData(identifier);
-		if (data != null) {
-			if (fallbackName != null) {
-				if (data.isVirtual() && backend.hasUser(fallbackName)) {
-					if (isDebug()) {
+		if(data != null)
+		{
+			if(fallbackName != null)
+			{
+				if(data.isVirtual() && backend.hasUser(fallbackName))
+				{
+					if(isDebug())
+					{
 						getLogger().info("Converting user " + fallbackName + " (UUID " + identifier + ") to UUID-based storage");
 					}
 
 					PermissionsUserData oldData = backend.getUserData(fallbackName);
-					if (oldData.setIdentifier(identifier)) {
+					if(oldData.setIdentifier(identifier))
+					{
 						data = oldData;
 						data.setOption("name", fallbackName, null);
-						resetUser(fallbackName); // In case somebody requested the old user but conversion was previously unsuccessful
-					} else {
+						resetUser(fallbackName); // In case somebody requested the old user but conversion was
+						// previously unsuccessful
+					}
+					else
+					{
 						throw new IllegalStateException("User already exists with new id " + identifier + " (converting from " + fallbackName + ")");
 					}
 				}
 			}
 			user = new PermissionUser(identifier, data, this);
 			user.initialize();
-			if (store) {
+			if(store)
+			{
 				PermissionUser newUser = this.users.put(identifier, user);
-				if (newUser != null) {
+				if(newUser != null)
+				{
 					user = newUser;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			throw new IllegalStateException("User " + identifier + " is null");
 		}
 
@@ -255,12 +322,15 @@ public class PermissionManager {
 	 *
 	 * @return unmodifiable list of users
 	 */
-	public Set<PermissionUser> getUsers() {
+	public Set<PermissionUser> getUsers()
+	{
 		Set<PermissionUser> users = new HashSet<>();
-		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+		for(Player p : Bukkit.getServer().getOnlinePlayers())
+		{
 			users.add(getUser(p));
 		}
-		for (String name : backend.getUserIdentifiers()) {
+		for(String name : backend.getUserIdentifiers())
+		{
 			users.add(getUser(name, null, false));
 		}
 		return Collections.unmodifiableSet(users);
@@ -271,23 +341,29 @@ public class PermissionManager {
 	 *
 	 * @return A copy of the list of users cached in memory
 	 */
-	public Set<PermissionUser> getActiveUsers() {
+	public Set<PermissionUser> getActiveUsers()
+	{
 		return new HashSet<>(users.values());
 	}
 
-	public Collection<String> getUserIdentifiers() {
+	public Collection<String> getUserIdentifiers()
+	{
 		return backend.getUserIdentifiers();
 	}
 
-	public Collection<String> getUserNames() {
+	public Collection<String> getUserNames()
+	{
 		return backend.getUserNames();
 	}
 
-	Set<PermissionUser> getActiveUsers(String groupName, boolean inheritance) {
+	Set<PermissionUser> getActiveUsers(String groupName, boolean inheritance)
+	{
 		Set<PermissionUser> users = new HashSet<>();
 
-		for (PermissionUser user : this.getActiveUsers()) {
-			if (user.inGroup(groupName, inheritance)) {
+		for(PermissionUser user : this.getActiveUsers())
+		{
+			if(user.inGroup(groupName, inheritance))
+			{
 				users.add(user);
 			}
 		}
@@ -295,35 +371,45 @@ public class PermissionManager {
 		return Collections.unmodifiableSet(users);
 	}
 
-	Set<PermissionUser> getActiveUsers(String groupName) {
+	Set<PermissionUser> getActiveUsers(String groupName)
+	{
 		return getActiveUsers(groupName, false);
 	}
+
 	/**
 	 * Return all users in group
 	 *
-	 * @param groupName group's name
+	 * @param groupName
+	 *            group's name
 	 * @return PermissionUser array
 	 */
-	public Set<PermissionUser> getUsers(String groupName, String worldName) {
+	public Set<PermissionUser> getUsers(String groupName, String worldName)
+	{
 		return getUsers(groupName, worldName, false);
 	}
 
-	public Set<PermissionUser> getUsers(String groupName) {
+	public Set<PermissionUser> getUsers(String groupName)
+	{
 		return getUsers(groupName, false);
 	}
 
 	/**
 	 * Return all users in group and descendant groups
 	 *
-	 * @param groupName   group's name
-	 * @param inheritance true return members of descendant groups of specified group
+	 * @param groupName
+	 *            group's name
+	 * @param inheritance
+	 *            true return members of descendant groups of specified group
 	 * @return PermissionUser array for groupnName
 	 */
-	public Set<PermissionUser> getUsers(String groupName, String worldName, boolean inheritance) {
+	public Set<PermissionUser> getUsers(String groupName, String worldName, boolean inheritance)
+	{
 		Set<PermissionUser> users = new HashSet<>();
 
-		for (PermissionUser user : this.getUsers()) {
-			if (user.inGroup(groupName, worldName, inheritance)) {
+		for(PermissionUser user : this.getUsers())
+		{
+			if(user.inGroup(groupName, worldName, inheritance))
+			{
 				users.add(user);
 			}
 		}
@@ -331,11 +417,14 @@ public class PermissionManager {
 		return Collections.unmodifiableSet(users);
 	}
 
-	public Set<PermissionUser> getUsers(String groupName, boolean inheritance) {
+	public Set<PermissionUser> getUsers(String groupName, boolean inheritance)
+	{
 		Set<PermissionUser> users = new HashSet<>();
 
-		for (PermissionUser user : this.getUsers()) {
-			if (user.inGroup(groupName, inheritance)) {
+		for(PermissionUser user : this.getUsers())
+		{
+			if(user.inGroup(groupName, inheritance))
+			{
 				users.add(user);
 			}
 		}
@@ -346,13 +435,16 @@ public class PermissionManager {
 	/**
 	 * Reset in-memory object of specified user
 	 *
-	 * @param userName user's name
+	 * @param userName
+	 *            user's name
 	 */
-	public void resetUser(String userName) {
+	public void resetUser(String userName)
+	{
 		this.users.remove(userName.toLowerCase());
 	}
 
-	public void resetUser(Player ply) {
+	public void resetUser(Player ply)
+	{
 		this.users.remove(ply.getUniqueId().toString());
 		resetUser(ply.getName());
 	}
@@ -362,18 +454,22 @@ public class PermissionManager {
 	 *
 	 * @param userName
 	 */
-	public void clearUserCache(String userName) {
+	public void clearUserCache(String userName)
+	{
 		PermissionUser user = this.getUser(userName);
 
-		if (user != null) {
+		if(user != null)
+		{
 			user.clearCache();
 		}
 	}
 
-	public void clearUserCache(UUID uid) {
+	public void clearUserCache(UUID uid)
+	{
 		PermissionUser user = this.getUser(uid);
 
-		if (user != null) {
+		if(user != null)
+		{
 			user.clearCache();
 		}
 	}
@@ -383,38 +479,50 @@ public class PermissionManager {
 	 *
 	 * @param player
 	 */
-	public void clearUserCache(Player player) {
+	public void clearUserCache(Player player)
+	{
 		this.clearUserCache(player.getUniqueId());
 	}
 
 	/**
 	 * Return object for specified group
 	 *
-	 * @param groupname group's name
+	 * @param groupname
+	 *            group's name
 	 * @return PermissionGroup object
 	 */
-	public PermissionGroup getGroup(String groupname) {
-		if (groupname == null || groupname.isEmpty()) {
+	public PermissionGroup getGroup(String groupname)
+	{
+		if(groupname == null || groupname.isEmpty())
+		{
 			return null;
 		}
 
 		PermissionGroup group = groups.get(groupname.toLowerCase());
 
-		if (group == null) {
+		if(group == null)
+		{
 			PermissionsGroupData data = this.backend.getGroupData(groupname);
-			if (data != null) {
+			if(data != null)
+			{
 				group = new PermissionGroup(groupname, data, this);
 				PermissionGroup oldGroup;
-				if ((oldGroup = this.groups.putIfAbsent(groupname.toLowerCase(), group)) != null) {
+				if((oldGroup = this.groups.putIfAbsent(groupname.toLowerCase(), group)) != null)
+				{
 					return oldGroup;
 				}
-				try {
+				try
+				{
 					group.initialize();
-				} catch (Exception e) {
+				}
+				catch(Exception e)
+				{
 					this.groups.remove(groupname.toLowerCase());
 					throw new IllegalStateException("Error initializing group " + groupname, e);
 				}
-			} else {
+			}
+			else
+			{
 				throw new IllegalStateException("Group " + groupname + " is null");
 			}
 		}
@@ -427,45 +535,56 @@ public class PermissionManager {
 	 *
 	 * @return PermissionGroup array
 	 */
-	public List<PermissionGroup> getGroupList() {
+	public List<PermissionGroup> getGroupList()
+	{
 		List<PermissionGroup> ret = new LinkedList<>();
-		for (String name : backend.getGroupNames()) {
+		for(String name : backend.getGroupNames())
+		{
 			ret.add(getGroup(name));
 		}
 		return Collections.unmodifiableList(ret);
 	}
 
 	@Deprecated
-	public PermissionGroup[] getGroups() {
+	public PermissionGroup[] getGroups()
+	{
 		return getGroupList().toArray(new PermissionGroup[0]);
 	}
 
 	/**
 	 * Return all child groups of specified group
 	 *
-	 * @param groupName group's name
+	 * @param groupName
+	 *            group's name
 	 * @return PermissionGroup array
 	 */
-	public List<PermissionGroup> getGroups(String groupName, String worldName) {
+	public List<PermissionGroup> getGroups(String groupName, String worldName)
+	{
 		return getGroups(groupName, worldName, false);
 	}
 
-	public List<PermissionGroup> getGroups(String groupName) {
+	public List<PermissionGroup> getGroups(String groupName)
+	{
 		return getGroups(groupName, null);
 	}
 
 	/**
 	 * Return all descendants or child groups for groupName
 	 *
-	 * @param groupName   group's name
-	 * @param inheritance true: only direct child groups would be returned
+	 * @param groupName
+	 *            group's name
+	 * @param inheritance
+	 *            true: only direct child groups would be returned
 	 * @return unmodifiable PermissionGroup list for specified groupName
 	 */
-	public List<PermissionGroup> getGroups(String groupName, String worldName, boolean inheritance) {
+	public List<PermissionGroup> getGroups(String groupName, String worldName, boolean inheritance)
+	{
 		List<PermissionGroup> groups = new LinkedList<>();
 
-		for (PermissionGroup group : this.getGroupList()) {
-			if (!groups.contains(group) && group.isChildOf(groupName, worldName, inheritance)) {
+		for(PermissionGroup group : this.getGroupList())
+		{
+			if(!groups.contains(group) && group.isChildOf(groupName, worldName, inheritance))
+			{
 				groups.add(group);
 			}
 		}
@@ -473,10 +592,12 @@ public class PermissionManager {
 		return Collections.unmodifiableList(groups);
 	}
 
-	public List<PermissionGroup> getGroups(String groupName, boolean inheritance) {
+	public List<PermissionGroup> getGroups(String groupName, boolean inheritance)
+	{
 		List<PermissionGroup> groups = new ArrayList<>();
 
-		for (World world : Bukkit.getServer().getWorlds()) {
+		for(World world : Bukkit.getServer().getWorlds())
+		{
 			groups.addAll(getGroups(groupName, world.getName(), inheritance));
 		}
 
@@ -491,13 +612,17 @@ public class PermissionManager {
 	/**
 	 * Return all known default groups
 	 *
-	 * @param worldName World to check (will include global scope)
+	 * @param worldName
+	 *            World to check (will include global scope)
 	 * @return All default groups
 	 */
-	public List<PermissionGroup> getDefaultGroups(String worldName) {
+	public List<PermissionGroup> getDefaultGroups(String worldName)
+	{
 		List<PermissionGroup> defaults = new LinkedList<>();
-		for (PermissionGroup grp : getGroupList()) {
-			if (grp.isDefault(worldName) || (worldName != null && grp.isDefault(null))) {
+		for(PermissionGroup grp : getGroupList())
+		{
+			if(grp.isDefault(worldName) || (worldName != null && grp.isDefault(null)))
+			{
 				defaults.add(grp);
 			}
 		}
@@ -508,14 +633,18 @@ public class PermissionManager {
 	/**
 	 * Reset in-memory object for groupName
 	 *
-	 * @param groupName group's name
+	 * @param groupName
+	 *            group's name
 	 */
-	public PermissionGroup resetGroup(String groupName) {
+	public PermissionGroup resetGroup(String groupName)
+	{
 		return this.groups.remove(groupName.toLowerCase());
 	}
 
-	void preloadGroups() {
-		for (PermissionGroup group : getGroupList()) {
+	void preloadGroups()
+	{
+		for(PermissionGroup group : getGroupList())
+		{
 			group.getData().load();
 		}
 	}
@@ -523,9 +652,11 @@ public class PermissionManager {
 	/**
 	 * Set debug mode
 	 *
-	 * @param debug true enables debug mode, false disables
+	 * @param debug
+	 *            true enables debug mode, false disables
 	 */
-	public void setDebug(boolean debug) {
+	public void setDebug(boolean debug)
+	{
 		this.debugMode = debug;
 		this.callEvent(PermissionSystemEvent.Action.DEBUGMODE_TOGGLE);
 	}
@@ -535,7 +666,8 @@ public class PermissionManager {
 	 *
 	 * @return true debug is enabled, false if disabled
 	 */
-	public boolean isDebug() {
+	public boolean isDebug()
+	{
 		return debugMode;
 	}
 
@@ -543,17 +675,22 @@ public class PermissionManager {
 	 * Return groups of specified rank ladder
 	 *
 	 * @param ladderName
-	 * @return Map of ladder, key - rank of group, value - group object. Empty map if ladder does not exist
+	 * @return Map of ladder, key - rank of group, value - group object. Empty map
+	 *         if ladder does not exist
 	 */
-	public Map<Integer, PermissionGroup> getRankLadder(String ladderName) {
+	public Map<Integer, PermissionGroup> getRankLadder(String ladderName)
+	{
 		Map<Integer, PermissionGroup> ladder = new HashMap<>();
 
-		for (PermissionGroup group : this.getGroupList()) {
-			if (!group.isRanked()) {
+		for(PermissionGroup group : this.getGroupList())
+		{
+			if(!group.isRanked())
+			{
 				continue;
 			}
 
-			if (group.getRankLadder().equalsIgnoreCase(ladderName)) {
+			if(group.getRankLadder().equalsIgnoreCase(ladderName))
+			{
 				ladder.put(group.getRank(), group);
 			}
 		}
@@ -564,22 +701,28 @@ public class PermissionManager {
 	/**
 	 * Return array of world names who has world inheritance
 	 *
-	 * @param worldName World name
+	 * @param worldName
+	 *            World name
 	 * @return Array of parent world, if world does not exist return empty array
 	 */
-	public List<String> getWorldInheritance(String worldName) {
+	public List<String> getWorldInheritance(String worldName)
+	{
 		return backend.getWorldInheritance(worldName);
 	}
 
 	/**
 	 * Set world inheritance parents for world
 	 *
-	 * @param world        world name which inheritance should be set
-	 * @param parentWorlds array of parent world names
+	 * @param world
+	 *            world name which inheritance should be set
+	 * @param parentWorlds
+	 *            array of parent world names
 	 */
-	public void setWorldInheritance(String world, List<String> parentWorlds) {
+	public void setWorldInheritance(String world, List<String> parentWorlds)
+	{
 		backend.setWorldInheritance(world, parentWorlds);
-		for (PermissionUser user : getActiveUsers()) { // Clear user cache
+		for(PermissionUser user : getActiveUsers())
+		{ // Clear user cache
 			user.clearCache();
 		}
 		this.callEvent(PermissionSystemEvent.Action.WORLDINHERITANCE_CHANGED);
@@ -590,18 +733,21 @@ public class PermissionManager {
 	 *
 	 * @return current backend object
 	 */
-	public PermissionBackend getBackend() {
+	public PermissionBackend getBackend()
+	{
 		return this.backend;
 	}
 
 	/**
-	 * Set backend to specified backend.
-	 * This would also cause backend resetting.
+	 * Set backend to specified backend. This would also cause backend resetting.
 	 *
-	 * @param backendName name of backend to set to
+	 * @param backendName
+	 *            name of backend to set to
 	 */
-	public void setBackend(String backendName) throws PermissionBackendException {
-		synchronized (this) {
+	public void setBackend(String backendName) throws PermissionBackendException
+	{
+		synchronized(this)
+		{
 			this.clearCache();
 			this.backend = createBackend(backendName);
 			this.preloadGroups();
@@ -611,13 +757,18 @@ public class PermissionManager {
 	}
 
 	/**
-	 * Creates a backend but does not set it as the active backend. Useful for data transfer &amp; such
-	 * @param backendName Name of the configuration section which describes this backend
+	 * Creates a backend but does not set it as the active backend. Useful for data
+	 * transfer &amp; such
+	 *
+	 * @param backendName
+	 *            Name of the configuration section which describes this backend
 	 */
-	public PermissionBackend createBackend(String backendName) throws PermissionBackendException {
+	public PermissionBackend createBackend(String backendName) throws PermissionBackendException
+	{
 		ConfigurationSection config = this.config.getBackendConfig(backendName);
 		String backendType = config.getString("type");
-		if (backendType == null) {
+		if(backendType == null)
+		{
 			config.set("type", backendType = backendName);
 		}
 
@@ -627,11 +778,15 @@ public class PermissionManager {
 	/**
 	 * Register new timer task
 	 *
-	 * @param task  TimerTask object
-	 * @param delay delay in seconds
+	 * @param task
+	 *            TimerTask object
+	 * @param delay
+	 *            delay in seconds
 	 */
-	protected void registerTask(TimerTask task, int delay) {
-		if (executor == null || delay == TRANSIENT_PERMISSION) {
+	protected void registerTask(TimerTask task, int delay)
+	{
+		if(executor == null || delay == TRANSIENT_PERMISSION)
+		{
 			return;
 		}
 
@@ -641,47 +796,60 @@ public class PermissionManager {
 	/**
 	 * Reset all in-memory groups and users, clean up runtime stuff, reloads backend
 	 */
-	public void reset() throws PermissionBackendException {
+	public void reset() throws PermissionBackendException
+	{
 		reset(true);
 	}
 
 	/**
 	 * Reset all in-memory groups and users, clean up runtime stuff, reloads backend
 	 *
-	 * @param callEvent Call the reload event
+	 * @param callEvent
+	 *            Call the reload event
 	 */
-	public void reset(boolean callEvent) throws PermissionBackendException {
+	public void reset(boolean callEvent) throws PermissionBackendException
+	{
 		this.clearCache();
 
-		if (this.backend != null) {
+		if(this.backend != null)
+		{
 			this.backend.reload();
 		}
-		if (callEvent) this.callEvent(PermissionSystemEvent.Action.RELOADED);
+		if(callEvent)
+			this.callEvent(PermissionSystemEvent.Action.RELOADED);
 	}
 
-	public void end() {
-		try {
-			if (this.backend != null) {
+	public void end()
+	{
+		try
+		{
+			if(this.backend != null)
+			{
 				this.backend.close();
 				this.backend = null;
 			}
 			reset();
-		} catch (PermissionBackendException ignore) {
+		}
+		catch(PermissionBackendException ignore)
+		{
 			// Ignore because we're shutting down so who cares
 		}
 		executor.shutdown();
 		executor = null;
 	}
 
-	public void initTimer() {
-		if (executor != null) {
+	public void initTimer()
+	{
+		if(executor != null)
+		{
 			executor.shutdown();
 		}
 
 		executor = Executors.newSingleThreadScheduledExecutor();
 	}
 
-	protected void clearCache() {
+	protected void clearCache()
+	{
 		this.users.clear();
 		this.groups.clear();
 
@@ -689,35 +857,43 @@ public class PermissionManager {
 		this.initTimer();
 	}
 
-	private void initBackend() throws PermissionBackendException {
+	private void initBackend() throws PermissionBackendException
+	{
 		this.setBackend(config.getDefaultBackend());
 	}
 
-	protected void callEvent(PermissionEvent event) {
+	protected void callEvent(PermissionEvent event)
+	{
 		nativeI.callEvent(event);
 	}
 
-	protected void callEvent(PermissionSystemEvent.Action action) {
+	protected void callEvent(PermissionSystemEvent.Action action)
+	{
 		this.callEvent(new PermissionSystemEvent(getServerUUID(), action));
 	}
 
-	public PermissionMatcher getPermissionMatcher() {
+	public PermissionMatcher getPermissionMatcher()
+	{
 		return matcher;
 	}
 
-	public void setPermissionMatcher(PermissionMatcher matcher) {
+	public void setPermissionMatcher(PermissionMatcher matcher)
+	{
 		this.matcher = matcher;
 	}
 
-	public Collection<String> getGroupNames() {
+	public Collection<String> getGroupNames()
+	{
 		return backend.getGroupNames();
 	}
 
-	public Logger getLogger() {
+	public Logger getLogger()
+	{
 		return logger;
 	}
 
-	public ScheduledExecutorService getExecutor() {
+	public ScheduledExecutorService getExecutor()
+	{
 		return executor;
 	}
 }
