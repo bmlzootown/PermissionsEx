@@ -11,6 +11,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<pex.scripts>${project.basedir}/scripts</pex.scripts>
+		<pex.fn>${project.basedir}/target/${project.name}-${project.version}.jar</pex.fn>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
@@ -28,7 +30,6 @@
 		<developerConnection>scm:git:ssh://git@github.com/PEXPlugins/PermissionsEx.git</developerConnection>
 		<url>https://github.com/PEXPlugins/PermissionsEx.git</url>
 	</scm>
-
 	<build>
 		<resources>
 			<resource>
@@ -117,6 +118,34 @@
 		</repository>
 	</repositories>
 	<profiles>
+		<profile>
+			<!-- Im lazy -->
+			<id>cyberpwn</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2</version>
+						<executions>
+							<execution>
+								<id>runbatchfile</id>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<executable>${pex.scripts}/cyberpwn-dev.bat</executable>
+							<arguments>
+								<argument>${pex.fn}</argument>
+							</arguments>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>release</id>
 			<build>
