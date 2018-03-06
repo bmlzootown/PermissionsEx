@@ -1,4 +1,4 @@
-package ru.tehkode.permissions.backends.web.http.auth;
+package com.djrapitops.permissionsex.backends.web.http.auth;
 
 /**
  * Interface for HTTPS authentication methods.

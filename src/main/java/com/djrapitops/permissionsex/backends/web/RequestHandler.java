@@ -1,4 +1,4 @@
-package ru.tehkode.permissions.backends.web;
+package com.djrapitops.permissionsex.backends.web;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

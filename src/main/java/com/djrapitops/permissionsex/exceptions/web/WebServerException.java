@@ -1,10 +1,10 @@
-package ru.tehkode.permissions.exceptions.web;
+package com.djrapitops.permissionsex.exceptions.web;
 
 /**
  * Exceptions thrown by WebServer
  *
  * @author Rsl1122
- * @see ru.tehkode.permissions.backends.web.WebServer
+ * @see com.djrapitops.permissionsex.backends.web.WebServer
  */
 public class WebServerException extends Exception {
 

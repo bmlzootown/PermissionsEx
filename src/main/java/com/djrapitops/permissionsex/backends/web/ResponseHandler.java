@@ -1,4 +1,4 @@
-package ru.tehkode.permissions.backends.web;
+package com.djrapitops.permissionsex.backends.web;
 
 /**
  * Handler in charge of selecting a Response for each Request.

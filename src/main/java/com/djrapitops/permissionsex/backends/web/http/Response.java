@@ -1,4 +1,4 @@
-package ru.tehkode.permissions.backends.web.http;
+package com.djrapitops.permissionsex.backends.web.http;
 
 /**
  * Represents a HTTP Response.

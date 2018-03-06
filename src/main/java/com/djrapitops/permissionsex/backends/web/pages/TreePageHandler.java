@@ -1,4 +1,4 @@
-package ru.tehkode.permissions.backends.web.pages;
+package com.djrapitops.permissionsex.backends.web.pages;
 
 /**
  * Abstract class for easier Response management.

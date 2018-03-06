@@ -1,10 +1,10 @@
-package ru.tehkode.permissions.backends.web;
+package com.djrapitops.permissionsex.backends.web;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
-import ru.tehkode.permissions.exceptions.web.WebServerException;
+import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 
 import javax.net.ssl.*;
 import java.io.File;
