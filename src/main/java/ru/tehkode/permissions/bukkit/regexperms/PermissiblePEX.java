@@ -18,20 +18,6 @@
  */
 package ru.tehkode.permissions.bukkit.regexperms;
 
-import org.apache.commons.lang.Validate;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.PermissibleBase;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import ru.tehkode.permissions.PermissionCheckResult;
-import ru.tehkode.permissions.PermissionMatcher;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.ErrorReport;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-import ru.tehkode.utils.FieldReplacer;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
@@ -43,22 +29,44 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang.Validate;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
+import org.bukkit.permissions.PermissibleBase;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.permissions.PermissionAttachmentInfo;
+
+import ru.tehkode.permissions.PermissionCheckResult;
+import ru.tehkode.permissions.PermissionMatcher;
+import ru.tehkode.permissions.bukkit.ErrorReport;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+import ru.tehkode.utils.FieldReplacer;
+
 /**
- * Implements regex-based permission matching for superperms.
- * If a permission match is found using existing superperms methods, it takes priority.
- * However, if a match is not found we use a {@link PermissionMatcher} set in the plugin object to check for a permissions match, caching values.
+ * Implements regex-based permission matching for superperms. If a permission
+ * match is found using existing superperms methods, it takes priority. However,
+ * if a match is not found we use a {@link PermissionMatcher} set in the plugin
+ * object to check for a permissions match, caching values.
  *
  * Class should be thread-safe
  */
-public class PermissiblePEX extends PermissibleBase {
+public class PermissiblePEX extends PermissibleBase
+{
+	@SuppressWarnings("rawtypes")
 	private static final FieldReplacer<PermissibleBase, Map> PERMISSIONS_FIELD = new FieldReplacer<>(PermissibleBase.class, "permissions", Map.class);
+	@SuppressWarnings("rawtypes")
 	private static final FieldReplacer<PermissibleBase, List> ATTACHMENTS_FIELD = new FieldReplacer<>(PermissibleBase.class, "attachments", List.class);
 	private static final Method CALC_CHILD_PERMS_METH;
 
-	static {
-		try {
+	static
+	{
+		try
+		{
 			CALC_CHILD_PERMS_METH = PermissibleBase.class.getDeclaredMethod("calculateChildPermissions", Map.class, boolean.class, PermissionAttachment.class);
-		} catch (NoSuchMethodException e) {
+		}
+		catch(NoSuchMethodException e)
+		{
 			throw new ExceptionInInitializerError(e);
 		}
 		CALC_CHILD_PERMS_METH.setAccessible(true);
@@ -75,23 +83,35 @@ public class PermissiblePEX extends PermissibleBase {
 	private final Object permissionsLock = new Object();
 
 	@SuppressWarnings("unchecked")
-	public PermissiblePEX(Player player, PermissionsEx plugin) {
+	public PermissiblePEX(Player player, PermissionsEx plugin)
+	{
 		super(player);
 		this.player = player;
 		this.plugin = plugin;
-		permissions = new LinkedHashMap<String, PermissionAttachmentInfo>() {
+		permissions = new LinkedHashMap<String, PermissionAttachmentInfo>()
+		{
 			/**
-			 * Customized put() useable ONLY for this permissible. It's pretty weird otherwise.
-			 * It'd be better as a putIfAbsent, but it needs to be called from the superclass so it's not.
 			 *
-			 * @param k The key
-			 * @param v The value
+			 */
+			private static final long serialVersionUID = 3574145959841509610L;
+
+			/**
+			 * Customized put() useable ONLY for this permissible. It's pretty weird
+			 * otherwise. It'd be better as a putIfAbsent, but it needs to be called from
+			 * the superclass so it's not.
+			 *
+			 * @param k
+			 *            The key
+			 * @param v
+			 *            The value
 			 * @return The previous/existing permission at this location
 			 */
 			@Override
-			public PermissionAttachmentInfo put(String k, PermissionAttachmentInfo v) {
+			public PermissionAttachmentInfo put(String k, PermissionAttachmentInfo v)
+			{
 				PermissionAttachmentInfo existing = this.get(k);
-				if (existing != null) {
+				if(existing != null)
+				{
 					return existing;
 				}
 				return super.put(k, v);
@@ -102,43 +122,50 @@ public class PermissiblePEX extends PermissibleBase {
 		recalculatePermissions();
 	}
 
-	public Permissible getPreviousPermissible() {
+	public Permissible getPreviousPermissible()
+	{
 		return previousPermissible;
 	}
 
-	public void setPreviousPermissible(Permissible previousPermissible) {
+	public void setPreviousPermissible(Permissible previousPermissible)
+	{
 		this.previousPermissible = previousPermissible;
 	}
 
-	public boolean isDebug() {
+	public boolean isDebug()
+	{
 		boolean debug = plugin.isDebug();
-		/*try {
-			PermissionUser user = plugin.getPermissionsManager().getUser(this.player);
-			if (user != null) {
-				debug |= user.isDebug();
-			}
-		} catch (Throwable ignore) {
-		}*/
+		/*
+		 * try { PermissionUser user =
+		 * plugin.getPermissionsManager().getUser(this.player); if (user != null) {
+		 * debug |= user.isDebug(); } } catch (Throwable ignore) { }
+		 */
 		return debug;
 	}
 
 	@Override
-	public boolean hasPermission(String permission) {
+	public boolean hasPermission(String permission)
+	{
 		PermissionCheckResult res = permissionValue(permission);
 
-		switch (res) {
+		switch(res)
+		{
 			case TRUE:
 			case FALSE:
 				return res.toBoolean();
 			case UNDEFINED:
 			default:
-				if (super.isPermissionSet(permission)) {
+				if(super.isPermissionSet(permission))
+				{
 					final boolean ret = super.hasPermission(permission);
-					if (isDebug()) {
+					if(isDebug())
+					{
 						plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission + "', superperms-matched a value of " + ret);
 					}
 					return ret;
-				} else {
+				}
+				else
+				{
 					Permission perm = player.getServer().getPluginManager().getPermission(permission);
 					return perm == null ? Permission.DEFAULT_PERMISSION.getValue(player.isOp()) : perm.getDefault().getValue(player.isOp());
 				}
@@ -146,39 +173,50 @@ public class PermissiblePEX extends PermissibleBase {
 	}
 
 	@Override
-	public boolean hasPermission(Permission permission) {
+	public boolean hasPermission(Permission permission)
+	{
 		PermissionCheckResult res = permissionValue(permission.getName());
 
-		switch (res) {
+		switch(res)
+		{
 			case TRUE:
 			case FALSE:
 				return res.toBoolean();
 			case UNDEFINED:
 			default:
-				if (super.isPermissionSet(permission.getName())) {
+				if(super.isPermissionSet(permission.getName()))
+				{
 					final boolean ret = super.hasPermission(permission);
-					if (isDebug()) {
+					if(isDebug())
+					{
 						plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission.getName() + "', superperms-matched a value of " + ret);
 					}
 					return ret;
-				} else {
+				}
+				else
+				{
 					return permission.getDefault().getValue(player.isOp());
 				}
 		}
 	}
 
 	@Override
-	public void recalculatePermissions() {
-		if (cache != null && permissions != null && attachments != null) {
-			synchronized (permissionsLock) {
+	public void recalculatePermissions()
+	{
+		if(cache != null && permissions != null && attachments != null)
+		{
+			synchronized(permissionsLock)
+			{
 				clearPermissions();
 				cache.clear();
-				for (ListIterator<PermissionAttachment> it = this.attachments.listIterator(this.attachments.size()); it.hasPrevious(); ) {
+				for(ListIterator<PermissionAttachment> it = this.attachments.listIterator(this.attachments.size()); it.hasPrevious();)
+				{
 					PermissionAttachment attach = it.previous();
 					calculateChildPerms(attach.getPermissions(), false, attach);
 				}
 
-				for (Permission p : player.getServer().getPluginManager().getDefaultPermissions(isOp())) {
+				for(Permission p : player.getServer().getPluginManager().getDefaultPermissions(isOp()))
+				{
 					this.permissions.put(p.getName(), new PermissionAttachmentInfo(player, p.getName(), null, true));
 					calculateChildPerms(p.getChildren(), false, null);
 				}
@@ -186,49 +224,62 @@ public class PermissiblePEX extends PermissibleBase {
 		}
 	}
 
-	protected void calculateChildPerms(Map<String, Boolean> children, boolean invert, PermissionAttachment attachment) {
-		try {
+	protected void calculateChildPerms(Map<String, Boolean> children, boolean invert, PermissionAttachment attachment)
+	{
+		try
+		{
 			CALC_CHILD_PERMS_METH.invoke(this, children, invert, attachment);
-		} catch (IllegalAccessException e) {
+		}
+		catch(IllegalAccessException e)
+		{
 			// Shouldn't happen, we setAccessible earlier
-		} catch (InvocationTargetException e) {
+		}
+		catch(InvocationTargetException e)
+		{
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public boolean isPermissionSet(String permission) {
+	public boolean isPermissionSet(String permission)
+	{
 		return super.isPermissionSet(permission) || permissionValue(permission) != PermissionCheckResult.UNDEFINED;
 	}
 
-
 	@Override
-	public Set<PermissionAttachmentInfo> getEffectivePermissions() {
-		synchronized (permissionsLock) {
+	public Set<PermissionAttachmentInfo> getEffectivePermissions()
+	{
+		synchronized(permissionsLock)
+		{
 			return new LinkedHashSet<>(permissions.values());
 		}
 	}
 
-	private PermissionCheckResult checkSingle(String expression, String permission, boolean value) {
-		if (plugin.getPermissionsManager().getPermissionMatcher().isMatches(expression, permission)) {
+	private PermissionCheckResult checkSingle(String expression, String permission, boolean value)
+	{
+		if(plugin.getPermissionsManager().getPermissionMatcher().isMatches(expression, permission))
+		{
 			PermissionCheckResult res = PermissionCheckResult.fromBoolean(value);
-			if (isDebug()) {
-				plugin.getLogger().info("User " + player.getName() +
-						" checked for permission '" + permission + "', regex-matched a value of "
-						+ res + " from " + expression + " (CACHE MISS)");
+			if(isDebug())
+			{
+				plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission + "', regex-matched a value of " + res + " from " + expression + " (CACHE MISS)");
 			}
 			return res;
 		}
 		return PermissionCheckResult.UNDEFINED;
 	}
 
-	protected PermissionCheckResult permissionValue(String permission) {
-		try {
+	protected PermissionCheckResult permissionValue(String permission)
+	{
+		try
+		{
 			Validate.notNull(permission, "Permissions being checked must not be null!");
 			permission = permission.toLowerCase();
 			PermissionCheckResult res = cache.get(permission);
-			if (res != null) {
-				if (isDebug()) {
+			if(res != null)
+			{
+				if(isDebug())
+				{
 					plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission + "', regex-matched a value of " + res + " from cache.");
 				}
 				return res;
@@ -236,18 +287,25 @@ public class PermissiblePEX extends PermissibleBase {
 
 			res = PermissionCheckResult.UNDEFINED;
 
-			synchronized (permissionsLock) {
-				for (PermissionAttachmentInfo pai : permissions.values()) {
-					if ((res = checkSingle(pai.getPermission(), permission, pai.getValue())) != PermissionCheckResult.UNDEFINED) {
+			synchronized(permissionsLock)
+			{
+				for(PermissionAttachmentInfo pai : permissions.values())
+				{
+					if((res = checkSingle(pai.getPermission(), permission, pai.getValue())) != PermissionCheckResult.UNDEFINED)
+					{
 						break;
 					}
 				}
 			}
-			if (res == PermissionCheckResult.UNDEFINED) {
-				for (Map.Entry<String, Boolean> ent : plugin.getRegexPerms().getPermissionList().getParents(permission)) {
-					if ((res = permissionValue(ent.getKey())) != PermissionCheckResult.UNDEFINED) {
+			if(res == PermissionCheckResult.UNDEFINED)
+			{
+				for(Map.Entry<String, Boolean> ent : plugin.getRegexPerms().getPermissionList().getParents(permission))
+				{
+					if((res = permissionValue(ent.getKey())) != PermissionCheckResult.UNDEFINED)
+					{
 						res = PermissionCheckResult.fromBoolean(!(res.toBoolean() ^ ent.getValue()));
-						if (isDebug()) {
+						if(isDebug())
+						{
 							plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission + "', match from parent '" + ent.getKey() + "' (CACHE MISS)");
 						}
 						break;
@@ -255,13 +313,17 @@ public class PermissiblePEX extends PermissibleBase {
 				}
 			}
 			cache.put(permission, res);
-			if (res == PermissionCheckResult.UNDEFINED && isDebug()) {
+			if(res == PermissionCheckResult.UNDEFINED && isDebug())
+			{
 				plugin.getLogger().info("User " + player.getName() + " checked for permission '" + permission + "', no match found (CACHE MISS)");
 			}
 			LAST_CALL_ERRORED.set(false);
 			return res;
-		} catch (Throwable t) {
-			if (LAST_CALL_ERRORED.compareAndSet(false, true)) {
+		}
+		catch(Throwable t)
+		{
+			if(LAST_CALL_ERRORED.compareAndSet(false, true))
+			{
 				ErrorReport.handleError("Permissible permissionValue for " + player.getName(), t);
 			}
 			return PermissionCheckResult.UNDEFINED;

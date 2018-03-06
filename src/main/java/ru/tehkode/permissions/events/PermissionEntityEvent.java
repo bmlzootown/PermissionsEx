@@ -18,17 +18,22 @@
  */
 package ru.tehkode.permissions.events;
 
+import java.util.UUID;
+
 import org.bukkit.event.HandlerList;
+
 import ru.tehkode.permissions.PermissionEntity;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
-
-import java.util.UUID;
 
 /**
  * @author t3hk0d3
  */
 public class PermissionEntityEvent extends PermissionEvent {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1444426522647479626L;
 	private static final HandlerList handlers = new HandlerList();
 	protected transient PermissionEntity entity;
 	protected Action action;
