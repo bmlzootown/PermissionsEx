@@ -43,6 +43,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.cache.CacheBuilder;
+import com.volmit.permissionsex.PEXTweaks;
 
 import ru.tehkode.permissions.NativeInterface;
 import ru.tehkode.permissions.PermissionManager;
@@ -76,6 +77,10 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	protected SuperpermsListener superms;
 	private RegexPermissions regexPerms;
 	private boolean errored = false;
+
+	// Volmit PEXTweaks
+	private PEXTweaks tweaks;
+
 	private static PermissionsEx instance;
 	{
 		instance = this;
@@ -224,7 +229,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 			this.commandsManager.register(new WorldCommands());
 			this.commandsManager.register(new UtilityCommands());
 			// Register Tab complete
-			
+
 			this.getCommand("pex").setTabCompleter(new TabComplete());
 
 			// Register Player permissions cleaner
@@ -240,6 +245,9 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 
 			// Start timed permissions cleaner timer
 			this.permissionsManager.initTimer();
+
+			// Volmit Tweaks
+			tweaks = new PEXTweaks(this);
 		}
 		catch(PermissionBackendException e)
 		{
