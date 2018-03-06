@@ -50,7 +50,6 @@ import ru.tehkode.permissions.exceptions.PermissionBackendException;
 
 public class UtilityCommands extends PermissionsCommand
 {
-
 	@Command(name = "pex", syntax = "reload", permission = "permissions.manage.reload", description = "Reload environment")
 	public void reload(PermissionsEx plugin, CommandSender sender, Map<String, String> args)
 	{
