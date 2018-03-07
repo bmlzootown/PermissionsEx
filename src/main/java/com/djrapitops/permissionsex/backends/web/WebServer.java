@@ -1,10 +1,10 @@
 package com.djrapitops.permissionsex.backends.web;
 
+import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
-import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 
 import javax.net.ssl.*;
 import java.io.File;
@@ -59,7 +59,7 @@ public class WebServer {
         // TODO HTTPS Certificate Config settings
 
         /* Wanted Settings
-        WebServer:
+        Dashboard:
           Enabled: true
           Port: 80
           Security:
@@ -87,7 +87,7 @@ public class WebServer {
         server.start();
 
         enabled = true;
-        logger.log(Level.INFO, "WebServer running on port " + port + " (" + getAccessAddress() + ")");
+        logger.log(Level.INFO, "Dashboard running on port " + port + " (" + getAccessAddress() + ")");
     }
 
     private HttpServer initServer() throws WebServerException {
@@ -170,7 +170,7 @@ public class WebServer {
     public void disable() {
         if (server != null) {
             server.stop(0);
-            logger.log(Level.INFO, "WebServer has been disabled.");
+            logger.log(Level.INFO, "Dashboard server has been disabled.");
         }
         enabled = false;
     }
@@ -181,7 +181,7 @@ public class WebServer {
      * @return Valid address to the server.
      */
     public String getAccessAddress() {
-        int port = usingHTTPS ? (this.port != 443 ? this.port : 443) : (this.port != 80 ? this.port : 80);
+        int port = usingHTTPS ? (this.port) : (this.port);
 
         return (usingHTTPS ? "https" : "http") + "://" + serverAddress + ":" + port;
     }

@@ -21,11 +21,13 @@ public abstract class Response {
     public Response(String type) {
         this.type = type;
 
-        header = getHeader();
+        header = "HTTP/1.1 501 Unimplemented";
         content = getContent();
     }
 
-    protected abstract String getHeader();
+    public void setHeader(String header) {
+        this.header = header;
+    }
 
     protected abstract String getContent();
 
