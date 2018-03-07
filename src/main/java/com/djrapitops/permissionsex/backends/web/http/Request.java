@@ -1,7 +1,6 @@
 package com.djrapitops.permissionsex.backends.web.http;
 
 import com.djrapitops.permissionsex.backends.web.http.auth.Authentication;
-
 import com.sun.net.httpserver.HttpExchange;
 
 /**
@@ -34,5 +33,9 @@ public class Request {
 
     public void setAuth(Authentication auth) {
         this.auth = auth;
+    }
+
+    public boolean hasAuth() {
+        return auth != null;
     }
 }

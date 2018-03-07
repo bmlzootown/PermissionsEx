@@ -7,6 +7,6 @@ package com.djrapitops.permissionsex.backends.web.http.auth;
  */
 public interface Authentication {
 
-    // TODO
+    boolean isValid();
 
 }

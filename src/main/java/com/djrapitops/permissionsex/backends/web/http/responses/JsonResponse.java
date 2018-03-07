@@ -12,10 +12,14 @@ public class JsonResponse extends Response {
 
     private final String content;
 
-    public JsonResponse(JsonElement json, int httpStatusCode) {
+    public JsonResponse(String jsonString, int httpStatusCode) {
         super("application/json");
         super.setHeader("HTTP/1.1 " + httpStatusCode);
-        content = json.toString();
+        content = jsonString;
+    }
+
+    public JsonResponse(JsonElement json, int httpStatusCode) {
+        this(json.toString(), httpStatusCode);
     }
 
     public JsonResponse(JsonElement json) {

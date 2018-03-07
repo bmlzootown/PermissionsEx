@@ -3,7 +3,7 @@ package com.djrapitops.permissionsex.backends.web;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
-import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
+import com.djrapitops.permissionsex.backends.web.pages.RestAPIPageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.TreePageHandler;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ import java.util.List;
  */
 public class ResponseHandler extends TreePageHandler {
 
-    public ResponseHandler() {
+    ResponseHandler() {
         registerPages();
     }
 
     private void registerPages() {
-        registerPage("api", new RestAPIHandler());
+        registerPage("api", new RestAPIPageHandler());
     }
 
     public Response getResponse(Request request) {
