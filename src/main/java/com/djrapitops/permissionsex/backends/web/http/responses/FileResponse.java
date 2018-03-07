@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A Response for any static file that will be inside the jar.
+ * A Response for any static file that is inside the jar.
  *
  * @author Rsl1122
  */
