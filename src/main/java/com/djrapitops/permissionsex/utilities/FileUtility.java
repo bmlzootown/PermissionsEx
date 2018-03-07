@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * //TODO Class Javadoc Comment
+ * Utility for reading resources from the jar.
  *
  * @author Rsl1122
  */
