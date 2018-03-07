@@ -1,7 +1,8 @@
 package com.djrapitops.permissionsex.backends.web.http.responses;
 
 import com.djrapitops.permissionsex.backends.web.http.Response;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * JSON response for different responses to the Frontend.
@@ -18,11 +19,21 @@ public class JsonResponse extends Response {
         content = jsonString;
     }
 
-    public JsonResponse(JsonElement json, int httpStatusCode) {
+    public JsonResponse(JsonArray jsonArray, int httpStatusCode) {
+        super("application/json");
+        super.setHeader("HTTP/1.1 " + httpStatusCode);
+
+        JsonObject json = new JsonObject();
+        json.add("list", jsonArray);
+
+        content = json.toString();
+    }
+
+    public JsonResponse(JsonObject json, int httpStatusCode) {
         this(json.toString(), httpStatusCode);
     }
 
-    public JsonResponse(JsonElement json) {
+    public JsonResponse(JsonObject json) {
         this(json, 200);
     }
 

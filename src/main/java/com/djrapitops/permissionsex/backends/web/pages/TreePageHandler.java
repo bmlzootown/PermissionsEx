@@ -2,6 +2,7 @@ package com.djrapitops.permissionsex.backends.web.pages;
 
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
+import com.djrapitops.permissionsex.utilities.Wrapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +28,15 @@ public abstract class TreePageHandler implements PageHandler {
     }
 
     public void registerPage(String targetPage, final Response response) {
-        pages.put(targetPage, new PageHandler() {
-            @Override
-            public Response getResponse(Request request, List<String> target) {
-                return response;
+        registerPage(targetPage, () -> response);
+    }
+
+    public void registerPage(String targetPage, Wrapper<Response> responseWrapper) {
+        pages.put(targetPage, (request, target) -> {
+            if (request.getRequestMethod().equals("GET")) {
+                return responseWrapper.get();
             }
+            return null;
         });
     }
 

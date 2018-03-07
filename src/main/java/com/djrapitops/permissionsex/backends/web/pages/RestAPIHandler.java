@@ -6,7 +6,9 @@ import com.djrapitops.permissionsex.backends.web.http.auth.Authentication;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 
 /**
- * //TODO Class Javadoc Comment
+ * Abstract TreePageHandler for all RestAPI providers.
+ *
+ * Contains utility methods.
  *
  * @author Rsl1122
  */
