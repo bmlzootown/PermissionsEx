@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 /**
- * Class that facilitates all JSON conversion coming from and going to the Groups RestAPI.
+ * Interface for  JSON conversion coming from and going to the Groups RestAPI.
  *
  * @author Rsl1122
  */

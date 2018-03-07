@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import java.util.UUID;
 
 /**
- * Class that facilitates all JSON conversion coming from and going to the Users RestAPI.
+ * Interface for  JSON conversion coming from and going to the Users RestAPI.
  *
  * @author Rsl1122
  */

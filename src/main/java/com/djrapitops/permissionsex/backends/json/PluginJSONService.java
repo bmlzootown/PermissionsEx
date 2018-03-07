@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 /**
- * Class that facilitates all JSON conversion coming from and going to the Plugin RestAPI.
+ * Interface for all JSON conversion coming from and going to the Plugin RestAPI.
  *
  * @author Rsl1122
  */

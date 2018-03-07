@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 /**
- * Class that facilitates all JSON conversion coming from and going to the Worlds RestAPI.
+ * Interface for JSON conversion coming from and going to the Worlds RestAPI.
  *
  * @author Rsl1122
  */
