@@ -31,19 +31,9 @@ public class UserRestAPI extends RestAPIHandler {
     private void registerAPIEndPoints() {
         registerPage("", (request, target) -> {
             String requestMethod = request.getRequestMethod();
-            if ("GET".equals(requestMethod) && target.isEmpty()) {
+            if ("GET".equals(requestMethod)) {
                 // GET /api/users/ - provides all users as an array
                 return new JsonResponse(userJSONService.getAllUsers(), 200);
-            }
-            if ("GET".equals(requestMethod)) {
-                // GET /api/users/:id - provides a user
-                try {
-                    String id = target.get(0);
-                    UUID uuid = UUID.fromString(id);
-                    return new JsonResponse(userJSONService.getUser(uuid));
-                } catch (IllegalArgumentException e) {
-                    return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
-                }
             }
             if ("PUT".equals(requestMethod)) {
                 // PUT /api/users/ - updates users when "Save Changes" is pressed
@@ -74,6 +64,18 @@ public class UserRestAPI extends RestAPIHandler {
                 return response;
             }
         }
+
+        if ("GET".equals(request.getRequestMethod())) {
+            // GET /api/users/:id - provides a user
+            try {
+                String id = target.get(0);
+                UUID uuid = UUID.fromString(id);
+                return new JsonResponse(userJSONService.getUser(uuid));
+            } catch (IllegalArgumentException e) {
+                return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
+            }
+        }
+
         return new JsonErrorResponse("API endpoint not found", 404);
     }
 }
