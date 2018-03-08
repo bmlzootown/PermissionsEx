@@ -38,7 +38,9 @@ public class UserRestAPI extends RestAPIHandler {
             if ("PUT".equals(requestMethod)) {
                 // PUT /api/users/ - updates users when "Save Changes" is pressed
                 try {
-                    userJSONService.updateUsers((JsonArray) parseJSONFromString(getStringFromRequestBody(request)));
+                    userJSONService.updateUsers((JsonArray) parseJSONFromString(request.getRequestBodyString()));
+                } catch (ClassCastException e) {
+                    return new JsonErrorResponse("Sent JSON was not an Array", 400);
                 } catch (ParseException e) {
                     return e.getCause() == null ?
                             new JsonErrorResponse(e.getMessage(), 500) :

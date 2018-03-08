@@ -37,7 +37,9 @@ public class GroupRestAPI extends RestAPIHandler {
             if ("PUT".equals(requestMethod)) {
                 // PUT /api/groups/ - updates groups when "Save Changes" is pressed
                 try {
-                    groupJSONService.updateGroups((JsonArray) parseJSONFromString(getStringFromRequestBody(request)));
+                    groupJSONService.updateGroups((JsonArray) parseJSONFromString(request.getRequestBodyString()));
+                } catch (ClassCastException e) {
+                    return new JsonErrorResponse("Sent JSON was not an Array", 400);
                 } catch (ParseException e) {
                     return e.getCause() == null ?
                             new JsonErrorResponse(e.getMessage(), 500) :
