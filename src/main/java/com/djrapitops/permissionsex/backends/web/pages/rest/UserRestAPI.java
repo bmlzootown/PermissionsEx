@@ -7,9 +7,11 @@ import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorRespons
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
+import com.djrapitops.permissionsex.exceptions.web.ParseException;
 import com.google.gson.JsonArray;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * RestAPI endpoint for /api/users.
@@ -33,9 +35,25 @@ public class UserRestAPI extends RestAPIHandler {
                 // GET /api/users/ - provides all users as an array
                 return new JsonResponse(userJSONService.getAllUsers(), 200);
             }
+            if ("GET".equals(requestMethod)) {
+                // GET /api/users/:id - provides a user
+                try {
+                    String id = target.get(0);
+                    UUID uuid = UUID.fromString(id);
+                    return new JsonResponse(userJSONService.getUser(uuid));
+                } catch (IllegalArgumentException e) {
+                    return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
+                }
+            }
             if ("PUT".equals(requestMethod)) {
                 // PUT /api/users/ - updates users when "Save Changes" is pressed
-                userJSONService.updateUsers(new JsonArray()); // TODO Convert response body to JSON
+                try {
+                    userJSONService.updateUsers((JsonArray) parseJSONFromString(getStringFromRequestBody(request))); // TODO Convert response body to JSON
+                } catch (ParseException e) {
+                    return e.getCause() == null ?
+                            new JsonErrorResponse(e.getMessage(), 500) :
+                            new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+                }
                 return new JsonResponse("", 200);
             }
             return null;

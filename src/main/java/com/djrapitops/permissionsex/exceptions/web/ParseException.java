@@ -7,14 +7,14 @@ package com.djrapitops.permissionsex.exceptions.web;
  *
  * @author Rsl1122
  */
-public class JSONParseException extends Exception {
+public class ParseException extends Exception {
 
     /**
      * Constructor.
      *
      * @param message Message should contain valid error message to give to the frontend to display.
      */
-    public JSONParseException(String message) {
+    public ParseException(String message) {
         super(message);
     }
 
@@ -24,7 +24,7 @@ public class JSONParseException extends Exception {
      * @param message Message should contain valid error message to give to the frontend to display.
      * @param cause   Throwable that caused this exception.
      */
-    public JSONParseException(String message, Throwable cause) {
+    public ParseException(String message, Throwable cause) {
         super(message, cause);
     }
 }

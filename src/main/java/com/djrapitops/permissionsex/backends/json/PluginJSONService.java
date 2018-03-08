@@ -1,7 +1,7 @@
 package com.djrapitops.permissionsex.backends.json;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * Interface for all JSON conversion coming from and going to the Plugin RestAPI.
@@ -34,7 +34,9 @@ public interface PluginJSONService {
      *
      * @param pluginName Name of the plugin.
      * @return Plugin JSON format
+     * @throws IllegalArgumentException if plugin can not be found with that name.
+     *                                  Error message should be displayable with "Invalid Plugin Name: message"
      */
-    JsonElement getPlugin(String pluginName);
+    JsonObject getPlugin(String pluginName) throws IllegalArgumentException;
 
 }

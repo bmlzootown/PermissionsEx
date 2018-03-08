@@ -4,6 +4,8 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.auth.Authentication;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
+import com.djrapitops.permissionsex.exceptions.web.ParseException;
+import com.djrapitops.permissionsex.utilities.Closer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
@@ -32,12 +34,15 @@ public abstract class RestAPIHandler extends TreePageHandler {
         return null;
     }
 
-    protected String getStringFromRequestBody(Request request) throws IOException {
-        InputStream requestBody = request.getRequestBody();
-        return readInputStream(requestBody);
+    protected String getStringFromRequestBody(Request request) throws ParseException {
+        try {
+            return readInputStream(request.getRequestBody());
+        } catch (IOException e) {
+            throw new ParseException("Failed to get request body.", e);
+        }
     }
 
-    private String readInputStream(InputStream inputStream) throws IOException {
+    private String readInputStream(InputStream inputStream) throws ParseException {
         StringBuilder builder = new StringBuilder();
         BufferedReader bufferedReader = null;
         try {
@@ -51,13 +56,11 @@ public abstract class RestAPIHandler extends TreePageHandler {
             } else {
                 builder.append("");
             }
+        } catch (IOException e) {
+            throw new ParseException("Failed to read request body.", e);
         } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            Closer.ignoreExceptions(bufferedReader);
+            Closer.ignoreExceptions(inputStream);
         }
 
         return builder.toString();
