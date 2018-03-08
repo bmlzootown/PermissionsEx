@@ -12,4 +12,19 @@ public class PexJSONService {
     private WorldJSONService worldJSONService;
     private PluginJSONService pluginJSONService;
 
+    public UserJSONService getUserJSONService() {
+        return userJSONService;
+    }
+
+    public GroupJSONService getGroupJSONService() {
+        return groupJSONService;
+    }
+
+    public WorldJSONService getWorldJSONService() {
+        return worldJSONService;
+    }
+
+    public PluginJSONService getPluginJSONService() {
+        return pluginJSONService;
+    }
 }
