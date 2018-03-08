@@ -34,6 +34,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.volmit.permissionsex.glang.JSONArray;
+import com.volmit.permissionsex.glang.JSONException;
+import com.volmit.permissionsex.glang.JSONObject;
 
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionsGroupData;
@@ -149,6 +156,15 @@ public class FileBackend extends PermissionBackend
 		});
 		reload();
 		performSchemaUpdate();
+		try
+		{
+			System.out.println(toJSON().toString(4));
+		}
+		catch(JSONException | InvalidConfigurationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -478,5 +494,60 @@ public class FileBackend extends PermissionBackend
 		{
 			getManager().getLogger().severe("Error while saving permissions file: " + e.getMessage());
 		}
+	}
+
+	private JSONObject toJSON() throws InvalidConfigurationException
+	{
+		JSONObject object = new JSONObject();
+		FileConfiguration fc = toFileConfiguration(permissions);
+
+		for(String i : fc.getKeys(true))
+		{
+			Object o = fc.get(i);
+
+			if(fc.isList(i))
+			{
+				JSONArray ar = new JSONArray();
+
+				for(Object j : (List<?>) o)
+				{
+					ar.put(j);
+				}
+
+				o = ar;
+			}
+
+			putKeyJSON(object, i, o);
+		}
+
+		return object;
+	}
+
+	private void putKeyJSON(JSONObject container, String key, Object value)
+	{
+		String[] v = key.split("\\.");
+		JSONObject parent = container;
+
+		for(int i = 0; i < v.length - 1; i++)
+		{
+			if(v.length - 2 > i && i > 0)
+			{
+				for(int j = i + 1; j < v.length - 1; j++)
+				{
+					parent = parent.getJSONObject(v[j]);
+				}
+			}
+
+			parent.put(v[i], new JSONObject());
+		}
+
+		parent.put(v[v.length - 1], value);
+	}
+
+	private FileConfiguration toFileConfiguration(FileConfig fc) throws InvalidConfigurationException
+	{
+		FileConfiguration fcx = new YamlConfiguration();
+		fcx.loadFromString(fc.saveToString());
+		return fcx;
 	}
 }
