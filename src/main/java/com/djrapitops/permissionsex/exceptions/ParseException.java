@@ -1,4 +1,4 @@
-package com.djrapitops.permissionsex.exceptions.web;
+package com.djrapitops.permissionsex.exceptions;
 
 /**
  * Exception to be thrown if WebServer related JSON parsing fails in some way.

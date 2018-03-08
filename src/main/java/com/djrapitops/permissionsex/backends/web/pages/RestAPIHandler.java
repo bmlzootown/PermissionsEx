@@ -4,7 +4,7 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.auth.Authentication;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
-import com.djrapitops.permissionsex.exceptions.web.ParseException;
+import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.djrapitops.permissionsex.utilities.Closer;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;

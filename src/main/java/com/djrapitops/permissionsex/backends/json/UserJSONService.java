@@ -1,6 +1,6 @@
 package com.djrapitops.permissionsex.backends.json;
 
-import com.djrapitops.permissionsex.exceptions.web.ParseException;
+import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 

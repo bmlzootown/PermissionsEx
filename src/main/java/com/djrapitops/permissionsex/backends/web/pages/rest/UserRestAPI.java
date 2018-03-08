@@ -7,7 +7,7 @@ import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorRespons
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
-import com.djrapitops.permissionsex.exceptions.web.ParseException;
+import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonArray;
 
 import java.util.List;
