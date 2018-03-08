@@ -1,6 +1,6 @@
 package com.djrapitops.permissionsex.backends.web.pages.rest;
 
-import com.djrapitops.permissionsex.backends.json.GroupJSONService;
+import com.djrapitops.permissionsex.backends.json.WorldJSONService;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
@@ -13,16 +13,16 @@ import com.google.gson.JsonArray;
 import java.util.List;
 
 /**
- * RestAPI endpoint for /api/groups.
+ * RestAPI endpoint for /api/worlds.
  *
  * @author Rsl1122
  */
-public class GroupRestAPI extends RestAPIHandler {
+public class WorldRestAPI extends RestAPIHandler {
 
-    private final GroupJSONService groupJSONService;
+    private final WorldJSONService worldJSONService;
 
-    public GroupRestAPI(GroupJSONService groupJSONService) {
-        this.groupJSONService = groupJSONService;
+    public WorldRestAPI(WorldJSONService worldJSONService) {
+        this.worldJSONService = worldJSONService;
 
         registerAPIEndPoints();
     }
@@ -31,13 +31,13 @@ public class GroupRestAPI extends RestAPIHandler {
         registerPage("", (request, target) -> {
             String requestMethod = request.getRequestMethod();
             if ("GET".equals(requestMethod)) {
-                // GET /api/groups/ - provides all groups as an array
-                return new JsonResponse(groupJSONService.getAllGroups(), 200);
+                // GET /api/worlds/ - provides all worlds as an array
+                return new JsonResponse(worldJSONService.getAllWorlds(), 200);
             }
             if ("PUT".equals(requestMethod)) {
-                // PUT /api/groups/ - updates groups when "Save Changes" is pressed
+                // PUT /api/worlds/ - updates worlds when "Save Changes" is pressed
                 try {
-                    groupJSONService.updateGroups((JsonArray) parseJSONFromString(getStringFromRequestBody(request)));
+                    worldJSONService.updateWorlds((JsonArray) parseJSONFromString(getStringFromRequestBody(request)));
                 } catch (ParseException e) {
                     return e.getCause() == null ?
                             new JsonErrorResponse(e.getMessage(), 500) :
@@ -65,12 +65,12 @@ public class GroupRestAPI extends RestAPIHandler {
         }
 
         if ("GET".equals(request.getRequestMethod())) {
-            // GET /api/groups/:name - provides a group
+            // GET /api/worlds/:name - provides a world
             try {
-                String groupName = target.get(0);
-                return new JsonResponse(groupJSONService.getGroup(groupName));
+                String worldName = target.get(0);
+                return new JsonResponse(worldJSONService.getWorld(worldName));
             } catch (IllegalArgumentException e) {
-                return new JsonResponse("Invalid Group Name: " + e.getMessage(), 400);
+                return new JsonResponse("Invalid World Name: " + e.getMessage(), 400);
             }
         }
 
