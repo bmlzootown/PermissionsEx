@@ -17,7 +17,7 @@ public interface PluginJSONService {
             "name": "PluginName",
             "permissions": [
                 "plugin.example.permission",
-                "plugin.example.permission2"
+                "-plugin.example.negated.permission"
             ]
         }
     */

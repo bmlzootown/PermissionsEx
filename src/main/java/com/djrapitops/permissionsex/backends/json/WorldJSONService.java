@@ -14,7 +14,14 @@ public interface WorldJSONService {
         World JSON format
 
         {
-            TODO Figure out world json format.
+            {
+                "name": "WorldName",
+                "inheritance": "WorldName2", # Not necessary, can be left out if no inheritance
+                "permissions": [
+                    "plugin.example.permission",
+                    "-plugin.example.negated.permission"
+                ],
+            }
         }
     */
 

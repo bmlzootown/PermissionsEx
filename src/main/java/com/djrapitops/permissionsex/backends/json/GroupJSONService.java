@@ -14,7 +14,30 @@ public interface GroupJSONService {
         Group JSON format
 
         {
-            TODO Figure out group json format.
+            "name": "GroupName",
+            "inheritance": [
+                "InheritedGroupName",
+                "SecondInheritedGroupName"
+            ],
+            "permissions": [
+                "plugin.example.permission",
+                "-plugin.example.negated.permission"
+            ],
+            "worlds:": [
+                {
+                    "name": "WorldName",
+                    "permissions": [
+                        "plugin.example.permission",
+                        "-plugin.example.negated.permission"
+                    ],
+                },{
+                    "name": "WorldName2",
+                    "permissions": [
+                        "plugin.example.permission",
+                        "-plugin.example.negated.permission"
+                    ],
+                }
+            ]
         }
     */
 

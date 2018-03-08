@@ -16,7 +16,34 @@ public interface UserJSONService {
         User JSON format
 
         {
-            TODO Figure out user json format.
+            "uuid": "Player UUID",
+            "groups": [
+                {
+                    "name": "GroupName"
+                },{
+                    "name": "GroupName2"
+                }
+            ],
+            "permissions": [
+                "plugin.example.permission",
+                "-plugin.example.negated.permission"
+            ],
+            "worlds:": [
+                {
+                    "name": "WorldName",
+                    "inheritance": "WorldName2",
+                    "permissions": [
+                        "plugin.example.permission",
+                        "-plugin.example.negated.permission"
+                    ],
+                },{
+                    "name": "WorldName2",
+                    "permissions": [
+                        "plugin.example.permission",
+                        "-plugin.example.negated.permission"
+                    ],
+                }
+            ]
         }
     */
 
