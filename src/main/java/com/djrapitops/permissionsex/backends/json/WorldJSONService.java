@@ -16,7 +16,9 @@ public interface WorldJSONService {
 
         {
             "name": "WorldName",
-            "inheritance": "WorldName2", # Not necessary, can be left out if no inheritance
+            "inheritance": [ # Not necessary, can be left out if no inheritance
+                "WorldName2"
+            ],
             "permissions": [
                 "plugin.example.permission",
                 "-plugin.example.negated.permission"
