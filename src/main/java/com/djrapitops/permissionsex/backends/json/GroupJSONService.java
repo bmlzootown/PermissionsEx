@@ -1,5 +1,6 @@
 package com.djrapitops.permissionsex.backends.json;
 
+import com.djrapitops.permissionsex.exceptions.web.JSONParseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
@@ -61,8 +62,7 @@ public interface GroupJSONService {
      *
      * @param groups JsonArray that contains all groups in Group JSON format.
      *               Should be parsed in a way that can replace the old data.
-     *               TODO Figure if only changed groups should be sent.
      */
-    void updateGroups(JsonArray groups);
+    void updateGroups(JsonArray groups) throws JSONParseException;
 
 }

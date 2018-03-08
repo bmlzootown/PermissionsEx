@@ -14,14 +14,12 @@ public interface WorldJSONService {
         World JSON format
 
         {
-            {
-                "name": "WorldName",
-                "inheritance": "WorldName2", # Not necessary, can be left out if no inheritance
-                "permissions": [
-                    "plugin.example.permission",
-                    "-plugin.example.negated.permission"
-                ],
-            }
+            "name": "WorldName",
+            "inheritance": "WorldName2", # Not necessary, can be left out if no inheritance
+            "permissions": [
+                "plugin.example.permission",
+                "-plugin.example.negated.permission"
+            ],
         }
     */
 
@@ -44,7 +42,6 @@ public interface WorldJSONService {
      * Used to get update worlds in the original JsonArray source.
      *
      * @param worlds JsonArray that contains all worlds in World JSON format. Should be parsed in a way that can replace the old data.
-     *               TODO Figure if only changed world should be sent.
      */
     void updateWorlds(JsonArray worlds);
 

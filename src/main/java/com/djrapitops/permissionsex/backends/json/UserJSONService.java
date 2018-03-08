@@ -67,7 +67,6 @@ public interface UserJSONService {
      *
      * @param users JsonArray that contains all users in users in User JSON format.
      *              Should be parsed in a way that can replace the old data.
-     *              TODO Figure if only changed users should be sent.
      */
     void updateUsers(JsonArray users);
 
