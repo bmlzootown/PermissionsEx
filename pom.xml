@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.tehkode</groupId>
 	<artifactId>PermissionsEx</artifactId>
-	<version>1.25</version>
+	<version>1.26</version>
 	<name>PermissionsEx</name>
 	<url>https://github.com/PEXPlugins/PermissionsEx</url>
 	<properties>
@@ -83,6 +83,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<minimizeJar>true</minimizeJar>
+					<relocations>
+						<relocation>
+							<pattern>org.bstats</pattern>
+							<shadedPattern>me.name.util</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -102,8 +124,18 @@
 			<artifactId>AccountsClient</artifactId>
 			<version>unspecified</version>
 		</dependency>
+		<dependency>
+			<groupId>org.bstats</groupId>
+			<artifactId>bstats-bukkit</artifactId>
+			<version>1.2</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
+		<repository>
+			<id>bstats-repo</id>
+			<url>http://repo.bstats.org/content/repositories/releases/</url>
+		</repository>
 		<repository>
 			<id>pex-repo</id>
 			<url>http://pex-repo.aoeu.xyz</url>

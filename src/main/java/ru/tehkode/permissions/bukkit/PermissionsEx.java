@@ -24,6 +24,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -180,6 +181,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	@Override
 	public void onEnable()
 	{
+		Metrics metrics = new Metrics(this);
 		if(errored)
 		{
 			getLogger().severe("==== PermissionsEx could not be enabled due to an earlier error. Look at the previous server log for more info ====");
