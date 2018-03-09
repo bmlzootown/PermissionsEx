@@ -4,12 +4,14 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
+import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -19,7 +21,10 @@ import java.util.List;
  */
 public class LoginRestAPI extends RestAPIHandler {
 
-	public LoginRestAPI() {
+	private final TokenVerifier verifier;
+
+	public LoginRestAPI(TokenVerifier verifier) {
+		this.verifier = verifier;
 		registerAPIEndPoints();
 	}
 
@@ -46,13 +51,11 @@ public class LoginRestAPI extends RestAPIHandler {
 
 						// TODO Use password to check the hash match for correct password
 
-						// TODO Generate token with secret string
-
-						String token = "";
+						String token = verifier.generateToken(username);
 						return new JsonResponse("{token: " + token + "}", 200);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-				} catch (ParseException e) {
+				} catch (ParseException | UnsupportedEncodingException e) {
 					return new JsonErrorResponse(e.getMessage(), 500);
 				}
 			}
