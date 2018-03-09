@@ -98,6 +98,12 @@
 			<artifactId>AccountsClient</artifactId>
 			<version>unspecified</version>
 		</dependency>
+		<!-- JSON WebToken java implementation for Dashboard | https://github.com/auth0/java-jwt | ~50kb -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.3.0</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
