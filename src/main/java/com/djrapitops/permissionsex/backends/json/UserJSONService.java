@@ -48,30 +48,30 @@ public interface UserJSONService {
         }
     */
 
-    /**
-     * Used to get a JSON array that contains all users.
-     *
-     * @return array of users in User JSON format.
-     */
-    JsonArray getAllUsers();
+	/**
+	 * Used to get a JSON array that contains all users.
+	 *
+	 * @return array of users in User JSON format.
+	 */
+	JsonArray getAllUsers();
 
-    /**
-     * Used to get a JSON of a single user.
-     *
-     * @param uuid UUID of the player.
-     * @return user in User JSON format.
-     * @throws IllegalArgumentException if UUID is not a known player to Pex.
-     *                                  Error message should be displayable with "Invalid UUID: message"
-     */
-    JsonObject getUser(UUID uuid) throws IllegalArgumentException;
+	/**
+	 * Used to get a JSON of a single user.
+	 *
+	 * @param uuid UUID of the player.
+	 * @return user in User JSON format.
+	 * @throws IllegalArgumentException if UUID is not a known player to Pex.
+	 *                                  Error message should be displayable with "Invalid UUID: message"
+	 */
+	JsonObject getUser(UUID uuid) throws IllegalArgumentException;
 
-    /**
-     * Used to get update users in the original JsonArray source.
-     *
-     * @param users JsonArray that contains all users in users in User JSON format.
-     *              Should be parsed in a way that can replace the old data.
-     * @throws ParseException if given JsonArray is malformed.
-     */
-    void updateUsers(JsonArray users) throws ParseException;
+	/**
+	 * Used to get update users in the original JsonArray source.
+	 *
+	 * @param users JsonArray that contains all users in users in User JSON format.
+	 *              Should be parsed in a way that can replace the old data.
+	 * @throws ParseException if given JsonArray is malformed.
+	 */
+	void updateUsers(JsonArray users) throws ParseException;
 
 }

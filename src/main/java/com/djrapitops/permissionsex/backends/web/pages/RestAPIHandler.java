@@ -17,32 +17,32 @@ import com.google.gson.JsonElement;
  */
 public abstract class RestAPIHandler extends TreePageHandler {
 
-    protected Response checkAuthValidity(Request request) {
-        if (!request.hasAuth()) {
-            return new JsonErrorResponse("Authorization not provided", 401);
-        }
-        Authentication auth = request.getAuth();
-        if (!auth.isValid()) {
-            return new JsonErrorResponse("Expired user token, please log-in again.", 400);
-        }
-        return null;
-    }
+	protected Response checkAuthValidity(Request request) {
+		if (!request.hasAuth()) {
+			return new JsonErrorResponse("Authorization not provided", 401);
+		}
+		Authentication auth = request.getAuth();
+		if (!auth.isValid()) {
+			return new JsonErrorResponse("Expired user token, please log-in again.", 400);
+		}
+		return null;
+	}
 
-    @Deprecated
-    protected String getStringFromRequestBody(Request request) throws ParseException {
-        return request.getRequestBodyString();
-    }
+	@Deprecated
+	protected String getStringFromRequestBody(Request request) throws ParseException {
+		return request.getRequestBodyString();
+	}
 
-    /**
-     * Parses JSON String into a JsonElement.
-     * <p>
-     * https://stackoverflow.com/a/15116323
-     *
-     * @param json String format of JSON.
-     * @return parsed JsonElement
-     */
-    protected JsonElement parseJSONFromString(String json) {
-        return new GsonBuilder().setPrettyPrinting().create().fromJson(json, JsonElement.class);
-    }
+	/**
+	 * Parses JSON String into a JsonElement.
+	 * <p>
+	 * https://stackoverflow.com/a/15116323
+	 *
+	 * @param json String format of JSON.
+	 * @return parsed JsonElement
+	 */
+	protected JsonElement parseJSONFromString(String json) {
+		return new GsonBuilder().setPrettyPrinting().create().fromJson(json, JsonElement.class);
+	}
 
 }

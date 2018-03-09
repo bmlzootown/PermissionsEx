@@ -17,36 +17,36 @@ import java.util.List;
  */
 public class RequestHandler implements HttpHandler {
 
-    private final ResponseHandler responseHandler;
+	private final ResponseHandler responseHandler;
 
-    RequestHandler(ResponseHandler responseHandler) {
-        this.responseHandler = responseHandler;
-    }
+	RequestHandler(ResponseHandler responseHandler) {
+		this.responseHandler = responseHandler;
+	}
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        Headers requestHeaders = exchange.getRequestHeaders();
-        Headers responseHeaders = exchange.getResponseHeaders();
+	@Override
+	public void handle(HttpExchange exchange) throws IOException {
+		Headers requestHeaders = exchange.getRequestHeaders();
+		Headers responseHeaders = exchange.getResponseHeaders();
 
-        Request request = new Request(exchange);
-        request.setAuth(getAuthorization(requestHeaders));
+		Request request = new Request(exchange);
+		request.setAuth(getAuthorization(requestHeaders));
 
-        try {
-            Response response = responseHandler.getResponse(request);
-            response.send(exchange, responseHeaders);
-        } finally {
-            exchange.close();
-        }
-    }
+		try {
+			Response response = responseHandler.getResponse(request);
+			response.send(exchange, responseHeaders);
+		} finally {
+			exchange.close();
+		}
+	}
 
-    private Authentication getAuthorization(Headers requestHeaders) {
-        List<String> authorization = requestHeaders.get("Authorization");
-        if (authorization == null || authorization.isEmpty()) {
-            return null;
-        }
+	private Authentication getAuthorization(Headers requestHeaders) {
+		List<String> authorization = requestHeaders.get("Authorization");
+		if (authorization == null || authorization.isEmpty()) {
+			return null;
+		}
 
-        String authLine = authorization.get(0);
-        // TODO Authentication method
-        return null;
-    }
+		String authLine = authorization.get(0);
+		// TODO Authentication method
+		return null;
+	}
 }

@@ -42,30 +42,30 @@ public interface GroupJSONService {
         }
     */
 
-    /**
-     * Used to get a JSON array that contains all groups.
-     *
-     * @return Array of groups in Group JSON format
-     */
-    JsonArray getAllGroups();
+	/**
+	 * Used to get a JSON array that contains all groups.
+	 *
+	 * @return Array of groups in Group JSON format
+	 */
+	JsonArray getAllGroups();
 
-    /**
-     * Used to get a JSON of a single group.
-     *
-     * @param groupName Name of the group.
-     * @return group in Group JSON format
-     * @throws IllegalArgumentException if plugin can not be found with that name.
-     *                                  Error message should be displayable with "Invalid Plugin Name: message"
-     */
-    JsonObject getGroup(String groupName) throws IllegalArgumentException;
+	/**
+	 * Used to get a JSON of a single group.
+	 *
+	 * @param groupName Name of the group.
+	 * @return group in Group JSON format
+	 * @throws IllegalArgumentException if plugin can not be found with that name.
+	 *                                  Error message should be displayable with "Invalid Plugin Name: message"
+	 */
+	JsonObject getGroup(String groupName) throws IllegalArgumentException;
 
-    /**
-     * Used to get update groups in the original JsonArray source.
-     *
-     * @param groups JsonArray that contains all groups in Group JSON format.
-     *               Should be parsed in a way that can replace the old data.
-     * @throws ParseException if given JsonArray is malformed.
-     */
-    void updateGroups(JsonArray groups) throws ParseException;
+	/**
+	 * Used to get update groups in the original JsonArray source.
+	 *
+	 * @param groups JsonArray that contains all groups in Group JSON format.
+	 *               Should be parsed in a way that can replace the old data.
+	 * @throws ParseException if given JsonArray is malformed.
+	 */
+	void updateGroups(JsonArray groups) throws ParseException;
 
 }

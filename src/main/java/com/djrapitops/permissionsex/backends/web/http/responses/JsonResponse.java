@@ -11,34 +11,34 @@ import com.google.gson.JsonObject;
  */
 public class JsonResponse extends Response {
 
-    private final String content;
+	private final String content;
 
-    public JsonResponse(String jsonString, int httpStatusCode) {
-        super("application/json");
-        super.setHeader("HTTP/1.1 " + httpStatusCode);
-        content = jsonString;
-    }
+	public JsonResponse(String jsonString, int httpStatusCode) {
+		super("application/json");
+		super.setHeader("HTTP/1.1 " + httpStatusCode);
+		content = jsonString;
+	}
 
-    public JsonResponse(JsonArray jsonArray, int httpStatusCode) {
-        super("application/json");
-        super.setHeader("HTTP/1.1 " + httpStatusCode);
+	public JsonResponse(JsonArray jsonArray, int httpStatusCode) {
+		super("application/json");
+		super.setHeader("HTTP/1.1 " + httpStatusCode);
 
-        JsonObject json = new JsonObject();
-        json.add("list", jsonArray);
+		JsonObject json = new JsonObject();
+		json.add("list", jsonArray);
 
-        content = json.toString();
-    }
+		content = json.toString();
+	}
 
-    public JsonResponse(JsonObject json, int httpStatusCode) {
-        this(json.toString(), httpStatusCode);
-    }
+	public JsonResponse(JsonObject json, int httpStatusCode) {
+		this(json.toString(), httpStatusCode);
+	}
 
-    public JsonResponse(JsonObject json) {
-        this(json, 200);
-    }
+	public JsonResponse(JsonObject json) {
+		this(json, 200);
+	}
 
-    @Override
-    protected String getContent() {
-        return content;
-    }
+	@Override
+	protected String getContent() {
+		return content;
+	}
 }

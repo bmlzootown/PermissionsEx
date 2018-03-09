@@ -19,62 +19,62 @@ import java.util.List;
  */
 public class LoginRestAPI extends RestAPIHandler {
 
-    public LoginRestAPI() {
-        registerAPIEndPoints();
-    }
+	public LoginRestAPI() {
+		registerAPIEndPoints();
+	}
 
-    private void registerAPIEndPoints() {
-        registerPage("", (request, target) -> {
-            String requestMethod = request.getRequestMethod();
-            // POST /api/login/ - used to get a Token from username and password.
-            if ("POST".equals(requestMethod)) {
-                try {
-                    JsonElement json = parseJSONFromString(request.getRequestBodyString());
-                    if (json.isJsonObject()) {
-                        JsonObject loginJSON = json.getAsJsonObject();
-                        JsonElement usernameJSON = loginJSON.get("username");
-                        if (!usernameJSON.isJsonPrimitive()) {
-                            return new JsonErrorResponse("'username' not provided or wrong format.", 400);
-                        }
-                        JsonElement passwordJSON = loginJSON.get("password");
-                        if (!passwordJSON.isJsonPrimitive()) {
-                            return new JsonErrorResponse("'username' not provided or wrong format.", 400);
-                        }
+	private void registerAPIEndPoints() {
+		registerPage("", (request, target) -> {
+			String requestMethod = request.getRequestMethod();
+			// POST /api/login/ - used to get a Token from username and password.
+			if ("POST".equals(requestMethod)) {
+				try {
+					JsonElement json = parseJSONFromString(request.getRequestBodyString());
+					if (json.isJsonObject()) {
+						JsonObject loginJSON = json.getAsJsonObject();
+						JsonElement usernameJSON = loginJSON.get("username");
+						if (!usernameJSON.isJsonPrimitive()) {
+							return new JsonErrorResponse("'username' not provided or wrong format.", 400);
+						}
+						JsonElement passwordJSON = loginJSON.get("password");
+						if (!passwordJSON.isJsonPrimitive()) {
+							return new JsonErrorResponse("'username' not provided or wrong format.", 400);
+						}
 
-                        String username = usernameJSON.getAsString();
-                        String password = passwordJSON.getAsString();
+						String username = usernameJSON.getAsString();
+						String password = passwordJSON.getAsString();
 
-                        // TODO Use password to check the hash match for correct password
+						// TODO Use password to check the hash match for correct password
 
-                        // TODO Generate token with secret string
+						// TODO Generate token with secret string
 
-                        String token = "";
-                        return new JsonResponse("{token: " + token + "}", 200);
-                    }
-                    return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-                } catch (ParseException e) {
-                    return new JsonErrorResponse(e.getMessage(), 500);
-                }
-            }
-            return null;
-        });
-    }
+						String token = "";
+						return new JsonResponse("{token: " + token + "}", 200);
+					}
+					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
+				} catch (ParseException e) {
+					return new JsonErrorResponse(e.getMessage(), 500);
+				}
+			}
+			return null;
+		});
+	}
 
-    @Override
-    public Response getResponse(Request request, List<String> target) {
-        Response errorResponse = checkAuthValidity(request);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
+	@Override
+	public Response getResponse(Request request, List<String> target) {
+		Response errorResponse = checkAuthValidity(request);
+		if (errorResponse != null) {
+			return errorResponse;
+		}
 
-        PageHandler pageHandler = getPageHandler(target);
-        if (pageHandler != null) {
-            Response response = pageHandler.getResponse(request, target);
-            if (response != null) {
-                return response;
-            }
-        }
+		PageHandler pageHandler = getPageHandler(target);
+		if (pageHandler != null) {
+			Response response = pageHandler.getResponse(request, target);
+			if (response != null) {
+				return response;
+			}
+		}
 
-        return new JsonErrorResponse("API endpoint not found", 404);
-    }
+		return new JsonErrorResponse("API endpoint not found", 404);
+	}
 }

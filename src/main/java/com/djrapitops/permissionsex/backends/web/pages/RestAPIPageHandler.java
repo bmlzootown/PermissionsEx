@@ -13,13 +13,13 @@ import com.djrapitops.permissionsex.backends.web.pages.rest.WorldRestAPI;
  */
 public class RestAPIPageHandler extends TreePageHandler {
 
-    public RestAPIPageHandler(PexJSONService pexJSONService) {
+	public RestAPIPageHandler(PexJSONService pexJSONService) {
 
-        registerPage("users", new UserRestAPI(pexJSONService.getUserJSONService()));
-        registerPage("groups", new GroupRestAPI(pexJSONService.getGroupJSONService()));
-        registerPage("worlds", new WorldRestAPI(pexJSONService.getWorldJSONService()));
-        registerPage("plugins", new PluginRestAPI(pexJSONService.getPluginJSONService()));
+		registerPage("users", new UserRestAPI(pexJSONService.getUserJSONService()));
+		registerPage("groups", new GroupRestAPI(pexJSONService.getGroupJSONService()));
+		registerPage("worlds", new WorldRestAPI(pexJSONService.getWorldJSONService()));
+		registerPage("plugins", new PluginRestAPI(pexJSONService.getPluginJSONService()));
 
-        // TODO Register APIs login
-    }
+		// TODO Register APIs login
+	}
 }

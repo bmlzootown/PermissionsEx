@@ -10,14 +10,14 @@ import java.io.IOException;
  */
 public class Closer {
 
-    public static void ignoreExceptions(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                /* Ignore */
-            }
-        }
-    }
+	public static void ignoreExceptions(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (IOException e) {
+				/* Ignore */
+			}
+		}
+	}
 
 }

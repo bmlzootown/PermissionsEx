@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface PageHandler {
 
-    Response getResponse(Request request, List<String> target);
+	Response getResponse(Request request, List<String> target);
 
 }

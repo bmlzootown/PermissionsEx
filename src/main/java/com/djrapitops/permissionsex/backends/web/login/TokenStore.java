@@ -10,21 +10,21 @@ import java.util.Set;
  */
 public class TokenStore {
 
-    private final Set<String> validTokens;
+	private final Set<String> validTokens;
 
-    public TokenStore() {
-        validTokens = new HashSet<>();
-    }
+	public TokenStore() {
+		validTokens = new HashSet<>();
+	}
 
-    public void addToken(String token) {
-        validTokens.add(token);
-    }
+	public void addToken(String token) {
+		validTokens.add(token);
+	}
 
-    public boolean isValid(String token) {
-        return validTokens.contains(token);
-    }
+	public boolean isValid(String token) {
+		return validTokens.contains(token);
+	}
 
-    public void removeToken(String token) {
-        validTokens.remove(token);
-    }
+	public void removeToken(String token) {
+		validTokens.remove(token);
+	}
 }

@@ -14,30 +14,30 @@ import java.util.List;
  */
 public class FileResponse extends Response {
 
-    private final String fileName;
+	private final String fileName;
 
-    public FileResponse(String type, String fileName) {
-        super(type);
-        this.fileName = fileName;
-    }
+	public FileResponse(String type, String fileName) {
+		super(type);
+		this.fileName = fileName;
+	}
 
-    @Override
-    protected String getContent() {
-        try {
-            List<String> lines = FileUtility.lines(PermissionsEx.getPlugin(), fileName);
-            super.setHeader("HTTP/1.1 200 OK");
-            return combine(lines);
-        } catch (IOException e) {
-            super.setHeader("HTTP/1.1 404 Not Found");
-            return fileName + " was not found inside the .jar. This may be caused by jar-file changes without a server restart.";
-        }
-    }
+	@Override
+	protected String getContent() {
+		try {
+			List<String> lines = FileUtility.lines(PermissionsEx.getPlugin(), fileName);
+			super.setHeader("HTTP/1.1 200 OK");
+			return combine(lines);
+		} catch (IOException e) {
+			super.setHeader("HTTP/1.1 404 Not Found");
+			return fileName + " was not found inside the .jar. This may be caused by jar-file changes without a server restart.";
+		}
+	}
 
-    private String combine(List<String> lines) {
-        StringBuilder content = new StringBuilder();
-        for (String line : lines) {
-            content.append(line).append("\r\n");
-        }
-        return content.toString();
-    }
+	private String combine(List<String> lines) {
+		StringBuilder content = new StringBuilder();
+		for (String line : lines) {
+			content.append(line).append("\r\n");
+		}
+		return content.toString();
+	}
 }

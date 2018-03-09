@@ -7,24 +7,24 @@ package com.djrapitops.permissionsex.backends.json;
  */
 public class PexJSONService {
 
-    private UserJSONService userJSONService;
-    private GroupJSONService groupJSONService;
-    private WorldJSONService worldJSONService;
-    private PluginJSONService pluginJSONService;
+	private UserJSONService userJSONService;
+	private GroupJSONService groupJSONService;
+	private WorldJSONService worldJSONService;
+	private PluginJSONService pluginJSONService;
 
-    public UserJSONService getUserJSONService() {
-        return userJSONService;
-    }
+	public UserJSONService getUserJSONService() {
+		return userJSONService;
+	}
 
-    public GroupJSONService getGroupJSONService() {
-        return groupJSONService;
-    }
+	public GroupJSONService getGroupJSONService() {
+		return groupJSONService;
+	}
 
-    public WorldJSONService getWorldJSONService() {
-        return worldJSONService;
-    }
+	public WorldJSONService getWorldJSONService() {
+		return worldJSONService;
+	}
 
-    public PluginJSONService getPluginJSONService() {
-        return pluginJSONService;
-    }
+	public PluginJSONService getPluginJSONService() {
+		return pluginJSONService;
+	}
 }

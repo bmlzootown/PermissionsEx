@@ -22,21 +22,21 @@ public interface PluginJSONService {
         }
     */
 
-    /**
-     * Used to get a JSON array that contains all plugins.
-     *
-     * @return Array of plugins in Plugin JSON format
-     */
-    JsonArray getAllPlugins();
+	/**
+	 * Used to get a JSON array that contains all plugins.
+	 *
+	 * @return Array of plugins in Plugin JSON format
+	 */
+	JsonArray getAllPlugins();
 
-    /**
-     * Used to get a JSON of a single plugin.
-     *
-     * @param pluginName Name of the plugin.
-     * @return Plugin JSON format
-     * @throws IllegalArgumentException if plugin can not be found with that name.
-     *                                  Error message should be displayable with "Invalid Plugin Name: message"
-     */
-    JsonObject getPlugin(String pluginName) throws IllegalArgumentException;
+	/**
+	 * Used to get a JSON of a single plugin.
+	 *
+	 * @param pluginName Name of the plugin.
+	 * @return Plugin JSON format
+	 * @throws IllegalArgumentException if plugin can not be found with that name.
+	 *                                  Error message should be displayable with "Invalid Plugin Name: message"
+	 */
+	JsonObject getPlugin(String pluginName) throws IllegalArgumentException;
 
 }

@@ -20,64 +20,64 @@ import java.util.UUID;
  */
 public class UserRestAPI extends RestAPIHandler {
 
-    private final UserJSONService userJSONService;
+	private final UserJSONService userJSONService;
 
-    public UserRestAPI(UserJSONService userJSONService) {
-        this.userJSONService = userJSONService;
+	public UserRestAPI(UserJSONService userJSONService) {
+		this.userJSONService = userJSONService;
 
-        registerAPIEndPoints();
-    }
+		registerAPIEndPoints();
+	}
 
-    private void registerAPIEndPoints() {
-        registerPage("", (request, target) -> {
-            String requestMethod = request.getRequestMethod();
-            if ("GET".equals(requestMethod)) {
-                // GET /api/users/ - provides all users as an array
-                return new JsonResponse(userJSONService.getAllUsers(), 200);
-            }
-            if ("PUT".equals(requestMethod)) {
-                // PUT /api/users/ - updates users when "Save Changes" is pressed
-                try {
-                    userJSONService.updateUsers((JsonArray) parseJSONFromString(request.getRequestBodyString()));
-                } catch (ClassCastException e) {
-                    return new JsonErrorResponse("Sent JSON was not an Array", 400);
-                } catch (ParseException e) {
-                    return e.getCause() == null ?
-                            new JsonErrorResponse(e.getMessage(), 500) :
-                            new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
-                }
-                return new JsonResponse("", 200);
-            }
-            return null;
-        });
-    }
+	private void registerAPIEndPoints() {
+		registerPage("", (request, target) -> {
+			String requestMethod = request.getRequestMethod();
+			if ("GET".equals(requestMethod)) {
+				// GET /api/users/ - provides all users as an array
+				return new JsonResponse(userJSONService.getAllUsers(), 200);
+			}
+			if ("PUT".equals(requestMethod)) {
+				// PUT /api/users/ - updates users when "Save Changes" is pressed
+				try {
+					userJSONService.updateUsers((JsonArray) parseJSONFromString(request.getRequestBodyString()));
+				} catch (ClassCastException e) {
+					return new JsonErrorResponse("Sent JSON was not an Array", 400);
+				} catch (ParseException e) {
+					return e.getCause() == null ?
+							new JsonErrorResponse(e.getMessage(), 500) :
+							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+				}
+				return new JsonResponse("", 200);
+			}
+			return null;
+		});
+	}
 
-    @Override
-    public Response getResponse(Request request, List<String> target) {
-        Response errorResponse = checkAuthValidity(request);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
+	@Override
+	public Response getResponse(Request request, List<String> target) {
+		Response errorResponse = checkAuthValidity(request);
+		if (errorResponse != null) {
+			return errorResponse;
+		}
 
-        PageHandler pageHandler = getPageHandler(target);
-        if (pageHandler != null) {
-            Response response = pageHandler.getResponse(request, target);
-            if (response != null) {
-                return response;
-            }
-        }
+		PageHandler pageHandler = getPageHandler(target);
+		if (pageHandler != null) {
+			Response response = pageHandler.getResponse(request, target);
+			if (response != null) {
+				return response;
+			}
+		}
 
-        if ("GET".equals(request.getRequestMethod())) {
-            // GET /api/users/:uuid - provides a user
-            try {
-                String id = target.get(0);
-                UUID uuid = UUID.fromString(id);
-                return new JsonResponse(userJSONService.getUser(uuid));
-            } catch (IllegalArgumentException e) {
-                return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
-            }
-        }
+		if ("GET".equals(request.getRequestMethod())) {
+			// GET /api/users/:uuid - provides a user
+			try {
+				String id = target.get(0);
+				UUID uuid = UUID.fromString(id);
+				return new JsonResponse(userJSONService.getUser(uuid));
+			} catch (IllegalArgumentException e) {
+				return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
+			}
+		}
 
-        return new JsonErrorResponse("API endpoint not found", 404);
-    }
+		return new JsonErrorResponse("API endpoint not found", 404);
+	}
 }

@@ -9,22 +9,22 @@ package com.djrapitops.permissionsex.exceptions;
  */
 public class ParseException extends Exception {
 
-    /**
-     * Constructor.
-     *
-     * @param message Message should contain valid error message to give to the frontend to display.
-     */
-    public ParseException(String message) {
-        super(message);
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param message Message should contain valid error message to give to the frontend to display.
+	 */
+	public ParseException(String message) {
+		super(message);
+	}
 
-    /**
-     * Constructor.
-     *
-     * @param message Message should contain valid error message to give to the frontend to display.
-     * @param cause   Throwable that caused this exception.
-     */
-    public ParseException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param message Message should contain valid error message to give to the frontend to display.
+	 * @param cause   Throwable that caused this exception.
+	 */
+	public ParseException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -7,6 +7,6 @@ package com.djrapitops.permissionsex.utilities;
  */
 public interface Wrapper<T> {
 
-    T get();
+	T get();
 
 }

@@ -19,63 +19,63 @@ import java.util.List;
  */
 public class WorldRestAPI extends RestAPIHandler {
 
-    private final WorldJSONService worldJSONService;
+	private final WorldJSONService worldJSONService;
 
-    public WorldRestAPI(WorldJSONService worldJSONService) {
-        this.worldJSONService = worldJSONService;
+	public WorldRestAPI(WorldJSONService worldJSONService) {
+		this.worldJSONService = worldJSONService;
 
-        registerAPIEndPoints();
-    }
+		registerAPIEndPoints();
+	}
 
-    private void registerAPIEndPoints() {
-        registerPage("", (request, target) -> {
-            String requestMethod = request.getRequestMethod();
-            if ("GET".equals(requestMethod)) {
-                // GET /api/worlds/ - provides all worlds as an array
-                return new JsonResponse(worldJSONService.getAllWorlds(), 200);
-            }
-            if ("PUT".equals(requestMethod)) {
-                // PUT /api/worlds/ - updates worlds when "Save Changes" is pressed
-                try {
-                    worldJSONService.updateWorlds((JsonArray) parseJSONFromString(request.getRequestBodyString()));
-                } catch (ClassCastException e) {
-                    return new JsonErrorResponse("Sent JSON was not an Array", 400);
-                } catch (ParseException e) {
-                    return e.getCause() == null ?
-                            new JsonErrorResponse(e.getMessage(), 500) :
-                            new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
-                }
-                return new JsonResponse("", 200);
-            }
-            return null;
-        });
-    }
+	private void registerAPIEndPoints() {
+		registerPage("", (request, target) -> {
+			String requestMethod = request.getRequestMethod();
+			if ("GET".equals(requestMethod)) {
+				// GET /api/worlds/ - provides all worlds as an array
+				return new JsonResponse(worldJSONService.getAllWorlds(), 200);
+			}
+			if ("PUT".equals(requestMethod)) {
+				// PUT /api/worlds/ - updates worlds when "Save Changes" is pressed
+				try {
+					worldJSONService.updateWorlds((JsonArray) parseJSONFromString(request.getRequestBodyString()));
+				} catch (ClassCastException e) {
+					return new JsonErrorResponse("Sent JSON was not an Array", 400);
+				} catch (ParseException e) {
+					return e.getCause() == null ?
+							new JsonErrorResponse(e.getMessage(), 500) :
+							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+				}
+				return new JsonResponse("", 200);
+			}
+			return null;
+		});
+	}
 
-    @Override
-    public Response getResponse(Request request, List<String> target) {
-        Response errorResponse = checkAuthValidity(request);
-        if (errorResponse != null) {
-            return errorResponse;
-        }
+	@Override
+	public Response getResponse(Request request, List<String> target) {
+		Response errorResponse = checkAuthValidity(request);
+		if (errorResponse != null) {
+			return errorResponse;
+		}
 
-        PageHandler pageHandler = getPageHandler(target);
-        if (pageHandler != null) {
-            Response response = pageHandler.getResponse(request, target);
-            if (response != null) {
-                return response;
-            }
-        }
+		PageHandler pageHandler = getPageHandler(target);
+		if (pageHandler != null) {
+			Response response = pageHandler.getResponse(request, target);
+			if (response != null) {
+				return response;
+			}
+		}
 
-        if ("GET".equals(request.getRequestMethod())) {
-            // GET /api/worlds/:name - provides a world
-            try {
-                String worldName = target.get(0);
-                return new JsonResponse(worldJSONService.getWorld(worldName));
-            } catch (IllegalArgumentException e) {
-                return new JsonResponse("Invalid World Name: " + e.getMessage(), 400);
-            }
-        }
+		if ("GET".equals(request.getRequestMethod())) {
+			// GET /api/worlds/:name - provides a world
+			try {
+				String worldName = target.get(0);
+				return new JsonResponse(worldJSONService.getWorld(worldName));
+			} catch (IllegalArgumentException e) {
+				return new JsonResponse("Invalid World Name: " + e.getMessage(), 400);
+			}
+		}
 
-        return new JsonErrorResponse("API endpoint not found", 404);
-    }
+		return new JsonErrorResponse("API endpoint not found", 404);
+	}
 }
