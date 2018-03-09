@@ -28,42 +28,42 @@ public class PermissionsExConfig {
 	private final List<String> serverTags;
 	private final String basedir;
 
-    // Config settings for WebServer
-    private final boolean dashboardEnabled;
-    private final int dashboardPort;
-    private final String dashboardAddress;
-    private final String dashboardCertPath;
-    private final String dashboardCertKeyPass;
-    private final String dashboardCertStorePass;
-    private final String dashboardCertAlias;
-    private final String dashboardInternalIP;
+	// Config settings for WebServer
+	private final boolean dashboardEnabled;
+	private final int dashboardPort;
+	private final String dashboardAddress;
+	private final String dashboardCertPath;
+	private final String dashboardCertKeyPass;
+	private final String dashboardCertStorePass;
+	private final String dashboardCertAlias;
+	private final String dashboardInternalIP;
 
 	public PermissionsExConfig(Configuration config, PermissionsEx plugin) {
 		this.config = config;
 		this.plugin = plugin;
 
-        useNetEvents = getBoolean("multiserver.use-netevents", true);
-        serverTags = getStringList("multiserver.server-tags");
-        debug = getBoolean("permissions.debug", false);
-        allowOps = getBoolean("permissions.allowOps", false);
-        userAddGroupsLast = getBoolean("permissions.user-add-groups-last", false);
-        logPlayers = getBoolean("permissions.log-players", false);
-        createUserRecords = getBoolean("permissions.createUserRecords", false);
-        defaultBackend = getString("permissions.backend", PermissionBackend.DEFAULT_BACKEND);
-        updaterEnabled = getBoolean("updater", true);
-        alwaysUpdate = getBoolean("alwaysUpdate", false);
-        informPlayers = getBoolean("permissions.informplayers.changes", false);
-        basedir = getString("permissions.basedir", "plugins/PermissionsEx");
+		useNetEvents = getBoolean("multiserver.use-netevents", true);
+		serverTags = getStringList("multiserver.server-tags");
+		debug = getBoolean("permissions.debug", false);
+		allowOps = getBoolean("permissions.allowOps", false);
+		userAddGroupsLast = getBoolean("permissions.user-add-groups-last", false);
+		logPlayers = getBoolean("permissions.log-players", false);
+		createUserRecords = getBoolean("permissions.createUserRecords", false);
+		defaultBackend = getString("permissions.backend", PermissionBackend.DEFAULT_BACKEND);
+		updaterEnabled = getBoolean("updater", true);
+		alwaysUpdate = getBoolean("alwaysUpdate", false);
+		informPlayers = getBoolean("permissions.informplayers.changes", false);
+		basedir = getString("permissions.basedir", "plugins/PermissionsEx");
 
-        dashboardEnabled = getBoolean("permissions.dashboard.enabled", false);
-        dashboardPort = getInt("permissions.dashboard.port", 5950);
-        String serverIP = plugin.getServer().getIp();
-        dashboardAddress = getString("permissions.dashboard.serveraddress", serverIP.isEmpty() ? "localhost" : serverIP + ":PORT");
-        dashboardCertPath = getString("permissions.dashboard.certificate.path", "Cert.jks");
-        dashboardCertKeyPass = getString("permissions.dashboard.certificate.keypass", "passwordToKey");
-        dashboardCertStorePass = getString("permissions.dashboard.certificate.storepass", "passwordToStore");
-        dashboardCertAlias = getString("permissions.dashboard.certificate.alias", "storeAlias");
-        dashboardInternalIP = getString("permissions.dashboard.internalip", "0.0.0.0");
+		dashboardEnabled = getBoolean("permissions.dashboard.enabled", false);
+		dashboardPort = getInt("permissions.dashboard.port", 5950);
+		String serverIP = plugin.getServer().getIp();
+		dashboardAddress = getString("permissions.dashboard.serveraddress", serverIP.isEmpty() ? "localhost" : serverIP + ":PORT");
+		dashboardCertPath = getString("permissions.dashboard.certificate.path", "Cert.jks");
+		dashboardCertKeyPass = getString("permissions.dashboard.certificate.keypass", "passwordToKey");
+		dashboardCertStorePass = getString("permissions.dashboard.certificate.storepass", "passwordToStore");
+		dashboardCertAlias = getString("permissions.dashboard.certificate.alias", "storeAlias");
+		dashboardInternalIP = getString("permissions.dashboard.internalip", "0.0.0.0");
 	}
 
 	private boolean getBoolean(String key, boolean def) {
@@ -73,12 +73,12 @@ public class PermissionsExConfig {
 		return config.getBoolean(key, def);
 	}
 
-    private int getInt(String key, int def) {
-        if (!config.isSet(key)) {
-            config.set(key, def);
-        }
-        return config.getInt(key, def);
-    }
+	private int getInt(String key, int def) {
+		if (!config.isSet(key)) {
+			config.set(key, def);
+		}
+		return config.getInt(key, def);
+	}
 
 	private String getString(String key, String def) {
 		String ret = config.getString(key);
@@ -138,37 +138,37 @@ public class PermissionsExConfig {
 		return informPlayers;
 	}
 
-    public boolean isDashboardEnabled() {
-        return dashboardEnabled;
-    }
+	public boolean isDashboardEnabled() {
+		return dashboardEnabled;
+	}
 
-    public int getDashboardPort() {
-        return dashboardPort;
-    }
+	public int getDashboardPort() {
+		return dashboardPort;
+	}
 
-    public String getDashboardCertPath() {
-        return dashboardCertPath;
-    }
+	public String getDashboardCertPath() {
+		return dashboardCertPath;
+	}
 
-    public String getDashboardCertKeyPass() {
-        return dashboardCertKeyPass;
-    }
+	public String getDashboardCertKeyPass() {
+		return dashboardCertKeyPass;
+	}
 
-    public String getDashboardCertStorePass() {
-        return dashboardCertStorePass;
-    }
+	public String getDashboardCertStorePass() {
+		return dashboardCertStorePass;
+	}
 
-    public String getDashboardCertAlias() {
-        return dashboardCertAlias;
-    }
+	public String getDashboardCertAlias() {
+		return dashboardCertAlias;
+	}
 
-    public String getDashboardInternalIP() {
-        return dashboardInternalIP;
-    }
+	public String getDashboardInternalIP() {
+		return dashboardInternalIP;
+	}
 
-    public String getDashboardAddress() {
-        return dashboardAddress;
-    }
+	public String getDashboardAddress() {
+		return dashboardAddress;
+	}
 
 	public List<String> getServerTags() {
 		return serverTags;
