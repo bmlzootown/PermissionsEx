@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import javax.net.ssl.*;
 import java.io.File;
@@ -35,47 +36,40 @@ public class WebServer {
     private final Logger logger;
     private final File dataFolder;
 
-    private final String internalIPAddress;
-    private final String serverAddress;
-    private final int port;
+    private final DashboardSettings settings;
+    private String internalIPAddress;
+    private String serverAddress;
     private boolean enabled = false;
     private boolean usingHTTPS;
 
     private HttpServer server;
+    private int port;
 
     /**
      * Constructor.
      *
-     * @param logger     Logger of PermissionsEx
-     * @param dataFolder PermissionsEx data folder.
+     * @param plugin PermissionsEx instance.
      */
-    public WebServer(Logger logger, File dataFolder) {
-        this.logger = logger;
-        this.dataFolder = dataFolder;
+    public WebServer(PermissionsEx plugin) {
+        this.logger = plugin.getLogger();
+        this.dataFolder = plugin.getDataFolder();
 
-        internalIPAddress = "0.0.0.0"; // TODO Config setting
-        serverAddress = ""; // TODO get Address from server.properties or IP service if empty
-        port = 80; // TODO Config setting
-        // TODO HTTPS Certificate Config settings
+        settings = new DashboardSettings(plugin.getConfiguration());
 
-        /* Wanted Settings
-        Dashboard:
-          Enabled: true
-          Port: 80
-          Security:
-            SSL-Certificate:
-              KeyStorePath: 'Cert.jks'
-              KeyPass: 'default'
-              StorePass: 'default'
-              Alias: 'alias'
-          # InternalIP usually does not need to be changed, only change it if you know what you're doing!
-          # 0.0.0.0 allocates Internal (local) IP automatically for the WebServer.
-          InternalIP: 0.0.0.0
-        */
+        if (!settings.isWebServerEnabled()) {
+            return;
+        }
+
+        internalIPAddress = settings.getInternalIP();
+        port = settings.getPort();
+        serverAddress = settings.getWebserverAddress().replace("PORT", String.valueOf(port));
     }
 
     public void enable() throws WebServerException {
-        // TODO Setting to completely disable WebServer.
+        if (!settings.isWebServerEnabled()) {
+            return;
+        }
+
         server = initServer();
 
         ResponseHandler responseHandler = new ResponseHandler();
@@ -111,17 +105,13 @@ public class WebServer {
      * @throws WebServerException if something goes wrong while enabling the HTTPSServer.
      */
     private HttpServer initHttpsServer() throws WebServerException {
-        if (true) { // TODO Remove temp exception after getting config settings
-            throw new WebServerException("HTTPS not available.");
-        }
-        // TODO Certificate, requires config settings.
-        String keyStorePath = "";
+        String keyStorePath = settings.getCertPath();
         if (!Paths.get(keyStorePath).isAbsolute()) {
             keyStorePath = dataFolder + File.separator + keyStorePath;
         }
-        char[] storePass = "".toCharArray();
-        char[] keyPass = "".toCharArray();
-        String alias = "";
+        char[] storePass = settings.getCertStorePass().toCharArray();
+        char[] keyPass = settings.getCertKeyPass().toCharArray();
+        String alias = settings.getCertAlias();
 
         try (FileInputStream fIn = new FileInputStream(keyStorePath)) {
             KeyStore keystore = KeyStore.getInstance("JKS");
