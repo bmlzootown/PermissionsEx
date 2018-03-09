@@ -1,5 +1,6 @@
 package com.djrapitops.permissionsex.backends.web;
 
+import com.djrapitops.permissionsex.backends.json.DummyJSONService;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
@@ -22,7 +23,7 @@ public class ResponseHandler extends TreePageHandler {
     }
 
     private void registerPages() {
-        registerPage("api", new RestAPIPageHandler());
+	    registerPage("api", new RestAPIPageHandler(new DummyJSONService()));
     }
 
     public Response getResponse(Request request) {
