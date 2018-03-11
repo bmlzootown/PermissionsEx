@@ -17,7 +17,7 @@ public class TokenVerifier {
 	private String secret;
 
 	public TokenVerifier() {
-		this.secret = "dummySecret"; // TODO Generate a secret with SecureRandom and store it somewhere
+		this.secret = new RandomString(100).nextString();
 	}
 
 	public String generateToken(String user) throws UnsupportedEncodingException, JWTCreationException {
