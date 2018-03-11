@@ -5,7 +5,7 @@ import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
 import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
-import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
+import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
@@ -13,21 +13,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 /**
- * RestAPI endpoint for /api/login.
+ * RestAPI endpoint for /api/register.
  *
  * @author Rsl1122
  */
-public class LoginRestAPI extends RestAPIHandler {
+public class RegisterRestAPI extends RestAPIHandler {
 
-	private final TokenVerifier verifier;
+	private final RegisterStore registerStore;
 	private final PassHashStorage passHashStorage;
 
-	public LoginRestAPI(TokenVerifier verifier, PassHashStorage passHashStorage) {
-		this.verifier = verifier;
+	public RegisterRestAPI(RegisterStore registerStore, PassHashStorage passHashStorage) {
+		this.registerStore = registerStore;
 		this.passHashStorage = passHashStorage;
 		registerAPIEndPoints();
 	}
@@ -51,22 +51,23 @@ public class LoginRestAPI extends RestAPIHandler {
 						}
 
 						String username = usernameJSON.getAsString();
+
+						if (passHashStorage.getHash(username) != null) {
+							return new JsonErrorResponse("Username has already exists.", 400);
+						}
+
 						String password = passwordJSON.getAsString();
 
-						String hashedPass = passHashStorage.getHash(username);
-						if (hashedPass == null) {
-							return new JsonErrorResponse("User has not registered.", 401);
-						}
+						String registerCode = Base64.getEncoder().encodeToString(username.getBytes());
 
-						if (!BCrypt.checkpw(password, hashedPass)) {
-							return new JsonErrorResponse("User and Password did not match.", 401);
-						}
+						String saltedPassHash = BCrypt.hashpw(password, BCrypt.gensalt());
+						
+						registerStore.queueForRegistration(registerCode, username, saltedPassHash);
 
-						String token = verifier.generateToken(username);
-						return new JsonResponse("{token: " + token + "}", 200);
+						return new JsonResponse("{registerCode: " + registerCode + "}", 200);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-				} catch (ParseException | UnsupportedEncodingException e) {
+				} catch (ParseException e) {
 					return new JsonErrorResponse(e.getMessage(), 500);
 				}
 			}
