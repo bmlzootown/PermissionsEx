@@ -5,6 +5,7 @@ import com.djrapitops.permissionsex.backends.json.PexJSONService;
 import com.djrapitops.permissionsex.backends.web.WebServer;
 import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
 import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
+import com.djrapitops.permissionsex.backends.web.login.YamlPassHashStorage;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
@@ -19,10 +20,11 @@ public class PexDashboard {
 
 	private final PexJSONService pexJSONService;
 	private final RegisterStore registerStore;
-	private PassHashStorage passHashStorage; // TODO Write implementation
+	private PassHashStorage passHashStorage;
 
 	public PexDashboard(PermissionsEx plugin) {
 		webServer = new WebServer(plugin, this);
+		passHashStorage = new YamlPassHashStorage(plugin.getDataFolder());
 		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
 		registerStore = new RegisterStore(passHashStorage);
 	}

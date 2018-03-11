@@ -2,6 +2,7 @@ package com.djrapitops.permissionsex.backends.web.login;
 
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +34,10 @@ public class RegisterStore {
 	 * @param code   Register code.
 	 * @throws IllegalStateException    If the player has no permission to register
 	 * @throws IllegalArgumentException If a code has not been requested.
+	 * @throws IOException              If saving the password fails.
 	 */
 	public void register(Player player, String code)
-			throws IllegalStateException, IllegalArgumentException {
+			throws IllegalStateException, IllegalArgumentException, IOException {
 		try {
 			// TODO Add registration permission
 			if (!player.hasPermission("pex.dashboard.use")) {
@@ -46,7 +48,7 @@ public class RegisterStore {
 			if (userAndPass == null) {
 				throw new IllegalArgumentException("Code not present");
 			}
-			passHashStorage.storeHash(userAndPass[0], userAndPass[1]);
+			passHashStorage.storeHash(player.getUniqueId(), userAndPass[0], userAndPass[1]);
 		} finally {
 			codeAndUserInfo.remove(code);
 		}
