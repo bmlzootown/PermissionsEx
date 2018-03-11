@@ -1,7 +1,8 @@
 package com.djrapitops.permissionsex.backends.json;
 
-import com.volmit.permissionsex.glang.JSONArray;
-import com.volmit.permissionsex.glang.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public interface BackupJSONService {
 
@@ -19,7 +20,7 @@ public interface BackupJSONService {
 	 *
 	 * @return Array in the proper format.
 	 */
-	JSONArray getBackupInformation();
+	JsonArray getBackupInformation();
 
 	/**
 	 * Create a new backup with the name.
@@ -27,7 +28,7 @@ public interface BackupJSONService {
 	 * @param name Name of the backup to be created.
 	 * @return JSONObject with the name and creation epoch ms in Backup JSON Format.
 	 */
-	JSONObject createBackup(String name);
+	JsonObject createBackup(String name);
 
 	/**
 	 * Deletes a backup.

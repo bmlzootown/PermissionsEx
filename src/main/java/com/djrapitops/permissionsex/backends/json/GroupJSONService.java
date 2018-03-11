@@ -30,13 +30,13 @@ public interface GroupJSONService {
                     "permissions": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
-                    ],
+                    ]
                 },{
                     "name": "WorldName2",
                     "permissions": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
-                    ],
+                    ]
                 }
             ]
         }

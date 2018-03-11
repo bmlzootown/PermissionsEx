@@ -17,7 +17,7 @@ public interface UserJSONService {
         User JSON format
 
         {
-            "uuid": "Player UUID",
+            "name": "Player Name",
             "groups": [
                 {
                     "name": "GroupName"
@@ -36,13 +36,13 @@ public interface UserJSONService {
                     "permissions": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
-                    ],
+                    ]
                 },{
                     "name": "WorldName2",
                     "permissions": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
-                    ],
+                    ]
                 }
             ]
         }

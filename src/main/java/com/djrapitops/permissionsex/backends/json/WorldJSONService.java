@@ -22,7 +22,7 @@ public interface WorldJSONService {
             "permissions": [
                 "plugin.example.permission",
                 "-plugin.example.negated.permission"
-            ],
+            ]
         }
     */
 
