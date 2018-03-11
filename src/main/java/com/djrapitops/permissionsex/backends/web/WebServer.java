@@ -1,5 +1,6 @@
 package com.djrapitops.permissionsex.backends.web;
 
+import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -36,6 +37,8 @@ public class WebServer {
 	private final Logger logger;
 	private final File dataFolder;
 
+	private PexDashboard pexDashboard;
+
 	private final DashboardSettings settings;
 	private String internalIPAddress;
 	private String serverAddress;
@@ -50,7 +53,7 @@ public class WebServer {
 	 *
 	 * @param plugin PermissionsEx instance.
 	 */
-	public WebServer(PermissionsEx plugin) {
+	public WebServer(PermissionsEx plugin, PexDashboard pexDashboard) {
 		this.logger = plugin.getLogger();
 		this.dataFolder = plugin.getDataFolder();
 
@@ -63,6 +66,8 @@ public class WebServer {
 		internalIPAddress = settings.getInternalIP();
 		port = settings.getPort();
 		serverAddress = settings.getWebserverAddress().replace("PORT", String.valueOf(port));
+
+		this.pexDashboard = pexDashboard;
 	}
 
 	public void enable() throws WebServerException {
@@ -72,7 +77,7 @@ public class WebServer {
 
 		server = initServer();
 
-		ResponseHandler responseHandler = new ResponseHandler();
+		ResponseHandler responseHandler = new ResponseHandler(pexDashboard);
 		RequestHandler requestHandler = new RequestHandler(responseHandler);
 
 		server.createContext("/", requestHandler);

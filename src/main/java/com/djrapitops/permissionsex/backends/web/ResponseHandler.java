@@ -1,6 +1,6 @@
 package com.djrapitops.permissionsex.backends.web;
 
-import com.djrapitops.permissionsex.backends.json.DummyJSONService;
+import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
@@ -18,12 +18,12 @@ import java.util.List;
  */
 public class ResponseHandler extends TreePageHandler {
 
-	ResponseHandler() {
-		registerPages();
+	public ResponseHandler(PexDashboard pexDashboard) {
+		registerPages(pexDashboard);
 	}
 
-	private void registerPages() {
-		registerPage("api", new RestAPIPageHandler(new DummyJSONService()));
+	private void registerPages(PexDashboard pexDashboard) {
+		registerPage("api", new RestAPIPageHandler(pexDashboard));
 	}
 
 	public Response getResponse(Request request) {
