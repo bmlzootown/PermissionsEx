@@ -2,7 +2,7 @@ package com.djrapitops.permissionsex.backends.web.pages;
 
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
-import com.djrapitops.permissionsex.utilities.Wrapper;
+import com.volmit.permissionsex.glang.AccessCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +31,7 @@ public abstract class TreePageHandler implements PageHandler {
 		registerPage(targetPage, () -> response);
 	}
 
-	public void registerPage(String targetPage, Wrapper<Response> responseWrapper) {
+	public void registerPage(String targetPage, AccessCallback<Response> responseWrapper) {
 		pages.put(targetPage, (request, target) -> {
 			if (request.getRequestMethod().equals("GET")) {
 				return responseWrapper.get();

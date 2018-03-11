@@ -3,9 +3,9 @@ package com.djrapitops.permissionsex.backends.web.http;
 import com.djrapitops.permissionsex.backends.web.http.auth.Authentication;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.djrapitops.permissionsex.utilities.Closer;
-import com.djrapitops.permissionsex.utilities.Wrapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import com.volmit.permissionsex.glang.AccessCallback;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class Request {
 	private final String target;
 	private Authentication auth;
 
-	private Wrapper<InputStream> requestBodyWrapper;
+	private AccessCallback<InputStream> requestBodyWrapper;
 	private Headers requestHeaders;
 
 	private String requestBody;
