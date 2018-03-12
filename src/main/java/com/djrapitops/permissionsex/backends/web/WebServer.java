@@ -176,9 +176,7 @@ public class WebServer {
 	 * @return Valid address to the server.
 	 */
 	public String getAccessAddress() {
-		int port = usingHTTPS ? (this.port) : (this.port);
-
-		return (usingHTTPS ? "https" : "http") + "://" + serverAddress + ":" + port;
+		return (usingHTTPS ? "https" : "http") + "://" + serverAddress;
 	}
 
 	public boolean isUsingHTTPS() {
