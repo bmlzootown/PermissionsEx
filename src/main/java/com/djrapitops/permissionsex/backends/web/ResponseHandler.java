@@ -34,13 +34,34 @@ public class ResponseHandler extends TreePageHandler {
 
 	@Override
 	public Response getResponse(Request request, List<String> target) {
-		// TODO Handle relative script and style loading
-		// css and js should load always.
-		// manifest.json & favicon ico as well
 		Response response = super.getResponse(request, target);
+
+		if (response == null) {
+			response = attemptToFind(target);
+		}
 
 		// index.html (FrontEnd) handles pages that do not exist.
 		return response != null ? response : new FileResponse("text/html", "web/index.html");
+	}
+
+	private Response attemptToFind(List<String> target) {
+		// Handles relative script and style loading
+
+		String finalTarget = target.get(target.size() - 1);
+		boolean isCss = finalTarget.endsWith(".css");
+		boolean isJs = finalTarget.endsWith(".js");
+		boolean isJson = finalTarget.endsWith(".json");
+
+		if (isCss) {
+			return new FileResponse("text/css", "/web/" + finalTarget);
+		} else if (isJs) {
+			return new FileResponse("text/javascript", "/web/" + finalTarget);
+		} else if (isJson) {
+			return new FileResponse("application/json", "/web/" + finalTarget);
+		}
+
+		// In this case the target is not a relative file that needs to be loaded from a static location.
+		return null;
 	}
 
 	private List<String> getTarget(Request request) {
