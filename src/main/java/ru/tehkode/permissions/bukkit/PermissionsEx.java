@@ -18,12 +18,9 @@
  */
 package ru.tehkode.permissions.bukkit;
 
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-
+import com.djrapitops.permissionsex.backends.PexDashboard;
+import com.google.common.cache.CacheBuilder;
+import com.volmit.permissionsex.PEXTweaks;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -41,10 +38,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.google.common.cache.CacheBuilder;
-import com.volmit.permissionsex.PEXTweaks;
-
 import ru.tehkode.permissions.NativeInterface;
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionUser;
@@ -53,11 +46,7 @@ import ru.tehkode.permissions.backends.PermissionBackend;
 import ru.tehkode.permissions.backends.file.FileBackend;
 import ru.tehkode.permissions.backends.memory.MemoryBackend;
 import ru.tehkode.permissions.backends.sql.SQLBackend;
-import ru.tehkode.permissions.bukkit.commands.GroupCommands;
-import ru.tehkode.permissions.bukkit.commands.PromotionCommands;
-import ru.tehkode.permissions.bukkit.commands.UserCommands;
-import ru.tehkode.permissions.bukkit.commands.UtilityCommands;
-import ru.tehkode.permissions.bukkit.commands.WorldCommands;
+import ru.tehkode.permissions.bukkit.commands.*;
 import ru.tehkode.permissions.bukkit.regexperms.RegexPermissions;
 import ru.tehkode.permissions.commands.CommandsManager;
 import ru.tehkode.permissions.commands.completers.TabComplete;
@@ -65,6 +54,12 @@ import ru.tehkode.permissions.events.PermissionEvent;
 import ru.tehkode.permissions.exceptions.PermissionBackendException;
 import ru.tehkode.permissions.exceptions.PermissionsNotAvailable;
 import ru.tehkode.utils.StringUtils;
+
+import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 /**
  * @author code
@@ -80,6 +75,9 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 
 	// Volmit PEXTweaks
 	private PEXTweaks tweaks;
+
+	// Pex Dashboard by Rsl1122
+	private PexDashboard dashboard;
 
 	private static PermissionsEx instance;
 	{
@@ -248,6 +246,9 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 
 			// Volmit Tweaks
 			tweaks = new PEXTweaks(this);
+
+			dashboard = new PexDashboard(this);
+			dashboard.enable();
 		}
 		catch(PermissionBackendException e)
 		{
@@ -266,6 +267,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	{
 		try
 		{
+			dashboard.disable();
 			tweaks.close();
 
 			if(this.permissionsManager != null)
