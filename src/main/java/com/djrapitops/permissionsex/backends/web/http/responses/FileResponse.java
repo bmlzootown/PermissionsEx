@@ -17,8 +17,9 @@ public class FileResponse extends Response {
 	private final String fileName;
 
 	public FileResponse(String type, String fileName) {
-		super(type);
+		super(type, "");
 		this.fileName = fileName;
+		content = getContent();
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class FileResponse extends Response {
 			return combine(lines);
 		} catch (IOException e) {
 			super.setHeader("HTTP/1.1 404 Not Found");
-			return fileName + " was not found inside the .jar. This may be caused by jar-file changes without a server restart.";
+			return fileName + " was not found inside the jar. This may be caused by jar-file changes without a server restart.";
 		}
 	}
 

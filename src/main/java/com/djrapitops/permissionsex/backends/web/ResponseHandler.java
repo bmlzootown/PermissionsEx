@@ -27,45 +27,46 @@ public class ResponseHandler extends TreePageHandler {
 	}
 
 	public Response getResponse(Request request) {
-		List<String> target = getTarget(request);
+		String targetString = request.getTarget();
+		List<String> target = getTarget(targetString);
 
-		return getResponse(request, target);
+		return getResponse(request, target, targetString);
 	}
 
-	@Override
-	public Response getResponse(Request request, List<String> target) {
+	public Response getResponse(Request request, List<String> target, String targetString) {
 		Response response = super.getResponse(request, target);
 
 		if (response == null) {
-			response = attemptToFind(target);
+			response = attemptToFind(targetString);
 		}
 
 		// index.html (FrontEnd) handles pages that do not exist.
 		return response != null ? response : new FileResponse("text/html", "web/index.html");
 	}
 
-	private Response attemptToFind(List<String> target) {
+	private Response attemptToFind(String targetString) {
+		if (targetString.isEmpty() || "/".equals(targetString)) {
+			return null;
+		}
 		// Handles relative script and style loading
 
-		String finalTarget = target.get(target.size() - 1);
-		boolean isCss = finalTarget.endsWith(".css");
-		boolean isJs = finalTarget.endsWith(".js");
-		boolean isJson = finalTarget.endsWith(".json");
+		boolean isCss = targetString.endsWith(".css");
+		boolean isJs = targetString.endsWith(".js");
+		boolean isJson = targetString.endsWith(".json");
 
 		if (isCss) {
-			return new FileResponse("text/css", "/web/" + finalTarget);
+			return new FileResponse("text/css", "web" + targetString);
 		} else if (isJs) {
-			return new FileResponse("text/javascript", "/web/" + finalTarget);
+			return new FileResponse("text/javascript", "web" + targetString);
 		} else if (isJson) {
-			return new FileResponse("application/json", "/web/" + finalTarget);
+			return new FileResponse("application/json", "web" + targetString);
 		}
 
 		// In this case the target is not a relative file that needs to be loaded from a static location.
 		return null;
 	}
 
-	private List<String> getTarget(Request request) {
-		String targetString = request.getTarget();
+	private List<String> getTarget(String targetString) {
 		List<String> target = new ArrayList<>(Arrays.asList(targetString.split("/")));
 		if (!target.isEmpty()) {
 			target.remove(0);

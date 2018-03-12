@@ -16,13 +16,20 @@ public abstract class Response {
 
 	private final String type;
 	private String header;
-	private String content;
+	protected String content;
 
 	public Response(String type) {
 		this.type = type;
 
 		header = "HTTP/1.1 501 Unimplemented";
 		content = getContent();
+	}
+
+	public Response(String type, String content) {
+		this.type = type;
+
+		header = "HTTP/1.1 501 Unimplemented";
+		this.content = content;
 	}
 
 	public void setHeader(String header) {

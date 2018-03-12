@@ -7,8 +7,9 @@ import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Turns HttpExchange into Request that is passed onwards, and sends the Request it receives.
@@ -26,7 +27,7 @@ public class RequestHandler implements HttpHandler {
 	}
 
 	@Override
-	public void handle(HttpExchange exchange) throws IOException {
+	public void handle(HttpExchange exchange) {
 		Headers responseHeaders = exchange.getResponseHeaders();
 
 		Request request = new Request(exchange);
@@ -35,6 +36,8 @@ public class RequestHandler implements HttpHandler {
 		try {
 			Response response = responseHandler.getResponse(request);
 			response.send(exchange, responseHeaders);
+		} catch (Exception e) {
+			PermissionsEx.getPlugin().getLogger().log(Level.WARNING, "Dashboard error", e);
 		} finally {
 			exchange.close();
 		}
