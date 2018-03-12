@@ -75,6 +75,7 @@ public class WebServer {
 			return;
 		}
 
+		logger.log(Level.INFO, "Enabling Dashboard WebServer..");
 		server = initServer();
 
 		ResponseHandler responseHandler = new ResponseHandler(pexDashboard);
