@@ -46,11 +46,11 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonArray getAllGroups() {
-		return (JsonArray) getFromJSON("{\"name\": \"GroupName\",\"inheritance\": [\"InheritedGroupName\",\"SecondInheritedGroupName\"]," +
+		return (JsonArray) getFromJSON("[{\"name\": \"GroupName\",\"inheritance\": [\"InheritedGroupName\",\"SecondInheritedGroupName\"]," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
 				"\"worlds:\": [{\"name\": \"WorldName\"," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
-				"{\"name\": \"WorldName2\",\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}");
+				"{\"name\": \"WorldName2\",\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}]");
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class DummyJSONService extends PexJSONService
 				"{\"name\": \"GroupName2\"}]," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
 				"\"worlds:\": [{\"name\": \"WorldName\",\"inheritance\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"],}," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
 				"{\"name\": \"WorldName2\"," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}]");
 	}
@@ -90,7 +90,7 @@ public class DummyJSONService extends PexJSONService
 				"{\"name\": \"GroupName2\"}]," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
 				"\"worlds:\": [{\"name\": \"WorldName\",\"inheritance\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"],}," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
 				"{\"name\": \"WorldName2\"," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}");
 	}
@@ -101,8 +101,8 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonArray getAllWorlds() {
-		return (JsonArray) getFromJSON("{\"name\": \"WorldName\",\"inheritance\": [\"WorldName2\"]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}");
+		return (JsonArray) getFromJSON("[{\"name\": \"WorldName\",\"inheritance\": [\"WorldName2\"]," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]");
 	}
 
 	@Override

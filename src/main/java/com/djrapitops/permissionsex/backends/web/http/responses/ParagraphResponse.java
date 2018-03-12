@@ -11,16 +11,13 @@ import com.djrapitops.permissionsex.backends.web.http.Response;
  */
 public class ParagraphResponse extends Response {
 
-	private final String paragraph;
-
 	public ParagraphResponse(String paragraph, int httpStatusCode) {
-		super("text/html");
+		super("text/html", "<p>" + paragraph + "</p>");
 		super.setHeader("HTTP/1.1 " + httpStatusCode);
-		this.paragraph = paragraph;
 	}
 
 	@Override
 	protected String getContent() {
-		return "<p>" + paragraph + "</p>";
+		return "Using wrong content";
 	}
 }

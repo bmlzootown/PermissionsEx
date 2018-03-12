@@ -11,12 +11,9 @@ import com.google.gson.JsonObject;
  */
 public class JsonResponse extends Response {
 
-	private final String content;
-
 	public JsonResponse(String jsonString, int httpStatusCode) {
-		super("application/json");
+		super("application/json", jsonString);
 		super.setHeader("HTTP/1.1 " + httpStatusCode);
-		content = jsonString;
 	}
 
 	public JsonResponse(JsonArray jsonArray, int httpStatusCode) {
@@ -39,6 +36,6 @@ public class JsonResponse extends Response {
 
 	@Override
 	protected String getContent() {
-		return content;
+		return "Using wrong content";
 	}
 }
