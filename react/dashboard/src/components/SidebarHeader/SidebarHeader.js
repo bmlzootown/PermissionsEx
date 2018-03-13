@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class SidebarHeader extends Component {
 
   render() {
-    return null
-    // Uncomment following code lines to add Sidebar Header
-    // return (
-    //   <div className="sidebar-header"></div>
-    // )
+    return (
+      <div className="sidebar-header">
+        <img src="https://minotar.net/avatar/Rsl1122/100"></img>
+      </div>
+    )
   }
 }
 

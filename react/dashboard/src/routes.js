@@ -1,5 +1,9 @@
 const routes = {
   '/': 'Home',
-  '/dashboard': 'Dashboard'
+  '/users': 'Users',
+  '/groups': 'groups',
+  '/worlds': 'Worlds',
+  '/plugins': 'Plugins',
+  '/backups': 'Backups'
 };
 export default routes;
