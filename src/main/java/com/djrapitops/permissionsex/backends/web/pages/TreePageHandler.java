@@ -54,12 +54,7 @@ public abstract class TreePageHandler implements PageHandler {
 		}
 		String targetPage = target.get(0);
 		target.remove(0);
-		PageHandler pageHandler = pages.get(targetPage);
-		if (pageHandler instanceof TreePageHandler) {
-			return ((TreePageHandler) pageHandler).getPageHandler(target);
-		} else {
-			return pageHandler;
-		}
+		return pages.get(targetPage);
 	}
 
 	public PageHandler getPageHandler(String targetPage) {
