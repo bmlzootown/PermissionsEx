@@ -1,7 +1,10 @@
 import React from 'react'
 
+import { Card, CardBody } from 'reactstrap'
+
 const Dummy = () => (
-        <div>
+    <Card>
+        <CardBody>
             <h3>Links to backend GET requests</h3>
             <ul>
                 <li><a href="/api/users">GET /api/users</a></li>
@@ -16,7 +19,20 @@ const Dummy = () => (
                 <li><a href="/api/worlds/WorldName">GET /api/worlds/WorldName</a></li>
                 <li><a href="/api/plugins/PluginName">GET /api/worlds/WorldName (Dummy returns error JSON)</a></li>
             </ul>
-        </div>
+            <h3>Other backend requests</h3>
+            <ul>
+                <li>PUT /api/users</li>
+                <li>PUT /api/groups</li>
+                <li>PUT /api/worlds</li>
+                <li>POST /api/login</li>
+                <li>POST /api/register</li>
+                <li>POST /api/backups</li>
+                <li>POST /api/backups/restore/:name</li>
+                <li>POST /api/backups/clone/:name</li>
+                <li>DELETE /api/backups/:name</li>
+            </ul>
+        </CardBody>
+    </Card>
 )
 
 export default Dummy
