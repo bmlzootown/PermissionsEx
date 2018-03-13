@@ -61,7 +61,7 @@ public class RegisterRestAPI extends RestAPIHandler {
 						String registerCode = Base64.getEncoder().encodeToString(username.getBytes());
 
 						String saltedPassHash = BCrypt.hashpw(password, BCrypt.gensalt());
-						
+
 						registerStore.queueForRegistration(registerCode, username, saltedPassHash);
 
 						return new JsonResponse("{registerCode: " + registerCode + "}", 200);
@@ -77,11 +77,6 @@ public class RegisterRestAPI extends RestAPIHandler {
 
 	@Override
 	public Response getResponse(Request request, List<String> target) {
-		Response errorResponse = checkAuthValidity(request);
-		if (errorResponse != null) {
-			return errorResponse;
-		}
-
 		PageHandler pageHandler = getPageHandler(target);
 		if (pageHandler != null) {
 			Response response = pageHandler.getResponse(request, target);

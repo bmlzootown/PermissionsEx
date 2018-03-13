@@ -76,11 +76,6 @@ public class LoginRestAPI extends RestAPIHandler {
 
 	@Override
 	public Response getResponse(Request request, List<String> target) {
-		Response errorResponse = checkAuthValidity(request);
-		if (errorResponse != null) {
-			return errorResponse;
-		}
-
 		PageHandler pageHandler = getPageHandler(target);
 		if (pageHandler != null) {
 			Response response = pageHandler.getResponse(request, target);
