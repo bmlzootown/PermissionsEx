@@ -4,8 +4,6 @@ import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.util.UUID;
-
 /**
  * Interface for JSON conversion coming from and going to the Users RestAPI.
  *
@@ -58,12 +56,12 @@ public interface UserJSONService {
 	/**
 	 * Used to get a JSON of a single user.
 	 *
-	 * @param uuid UUID of the player.
+	 * @param playerName Name of the player.
 	 * @return user in User JSON format.
-	 * @throws IllegalArgumentException if UUID is not a known player to Pex.
+	 * @throws IllegalArgumentException if player is not known to Pex.
 	 *                                  Error message should be displayable with "Invalid UUID: message"
 	 */
-	JsonObject getUser(UUID uuid) throws IllegalArgumentException;
+	JsonObject getUser(String playerName) throws IllegalArgumentException;
 
 	/**
 	 * Used to get update users in the original JsonArray source.

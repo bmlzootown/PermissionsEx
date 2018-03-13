@@ -11,7 +11,6 @@ import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonArray;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * RestAPI endpoint for /api/users.
@@ -68,13 +67,12 @@ public class UserRestAPI extends RestAPIHandler {
 		}
 
 		if ("GET".equals(request.getRequestMethod())) {
-			// GET /api/users/:uuid - provides a user
+			// GET /api/users/:name - provides a user
 			try {
-				String id = target.get(0);
-				UUID uuid = UUID.fromString(id);
-				return new JsonResponse(userJSONService.getUser(uuid));
+				String name = target.get(0).replace("%20", " ");
+				return new JsonResponse(userJSONService.getUser(name));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid UUID: " + e.getMessage(), 400);
+				return new JsonResponse("Invalid Name: " + e.getMessage(), 400);
 			}
 		}
 
