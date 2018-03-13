@@ -55,7 +55,11 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonObject getGroup(String groupName) throws IllegalArgumentException {
-		return null;
+		return (JsonObject) getFromJSON("{\"name\": \"GroupName\",\"inheritance\": [\"InheritedGroupName\",\"SecondInheritedGroupName\"]," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
+				"\"worlds:\": [{\"name\": \"WorldName\"," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
+				"{\"name\": \"WorldName2\",\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}");
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonObject getPlugin(String pluginName) throws IllegalArgumentException {
-		return null;
+		throw new IllegalArgumentException("Not found with name " + pluginName);
 	}
 
 	@Override
@@ -107,7 +111,8 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonObject getWorld(String worldName) throws IllegalArgumentException {
-		return null;
+		return (JsonObject) getFromJSON("{\"name\": \"WorldName\",\"inheritance\": [\"WorldName2\"]," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}");
 	}
 
 	@Override
@@ -131,8 +136,8 @@ public class DummyJSONService extends PexJSONService
 	}
 
 	@Override
-	public void duplicateBackup(String name) throws IllegalArgumentException {
-
+	public JsonObject duplicateBackup(String name) throws IllegalArgumentException {
+		return null;
 	}
 
 	@Override

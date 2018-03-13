@@ -42,9 +42,10 @@ public interface BackupJSONService {
 	 * Creates a copy of a backup.
 	 *
 	 * @param name Name of the backup to be duplicated.
+	 * @return Backup JSON Format of the created duplicate
 	 * @throws IllegalArgumentException If a backup with the name can not be found.
 	 */
-	void duplicateBackup(String name) throws IllegalArgumentException;
+	JsonObject duplicateBackup(String name) throws IllegalArgumentException;
 
 	/**
 	 * Restores a backup.
