@@ -69,7 +69,7 @@ public class GroupRestAPI extends RestAPIHandler {
 		if ("GET".equals(request.getRequestMethod())) {
 			// GET /api/groups/:name - provides a group
 			try {
-				String groupName = target.get(0);
+				String groupName = target.get(0).replace("%20", " ");
 				return new JsonResponse(groupJSONService.getGroup(groupName));
 			} catch (IllegalArgumentException e) {
 				return new JsonResponse("Invalid Group Name: " + e.getMessage(), 400);
