@@ -5,8 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.UUID;
-
 /**
  * Dummmy to use until proper implementations.
  *
@@ -89,7 +87,7 @@ public class DummyJSONService extends PexJSONService
 	}
 
 	@Override
-	public JsonObject getUser(UUID uuid) throws IllegalArgumentException {
+	public JsonObject getUser(String name) throws IllegalArgumentException {
 		return (JsonObject) getFromJSON("{\"name\": \"Player Name\",\"groups\": [{\"name\": \"GroupName\"}," +
 				"{\"name\": \"GroupName2\"}]," +
 				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
