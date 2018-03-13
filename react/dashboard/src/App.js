@@ -14,8 +14,8 @@ class App extends Component {
                     <li><a href="/api/backups">GET /api/backups</a></li>
                 </ul>
                 <ul>
-                    <li><a href="/api/user/Player Name">GET /api/Player Name</a></li>
-                    <li><a href="/api/groups/Group Name">GET /api/groups/GroupName</a></li>
+                    <li><a href="/api/users/Player Name">GET /api/users/Player Name</a></li>
+                    <li><a href="/api/groups/Group Name">GET /api/groups/Group Name</a></li>
                     <li><a href="/api/worlds/WorldName">GET /api/worlds/WorldName</a></li>
                     <li><a href="/api/plugins/PluginName">GET /api/worlds/WorldName (Dummy returns error JSON)</a></li>
                 </ul>
