@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon, InputGroupText} from 'reactstrap';
+import React, { Component } from 'react';
+import { Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
 
 class Login extends Component {
   render() {
     return (
-      <div className="app flex-row align-items-center">
+      <div className="app flex-row align-items-center animated fadeIn">
         <Container>
           <Row className="justify-content-center">
             <Col md="8">
@@ -20,7 +20,7 @@ class Login extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Username"/>
+                      <Input type="text" placeholder="Username" />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -28,14 +28,14 @@ class Login extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Password"/>
+                      <Input type="password" placeholder="Password" />
                     </InputGroup>
                     <Row>
                       <Col xs="6">
                         <Button color="primary" className="px-4">Login</Button>
                       </Col>
                       <Col xs="6" className="text-right">
-                        <Button color="link" className="px-0">Forgot password?</Button>
+                        <Button disabled color="link" className="px-0">Forgot password?</Button>
                       </Col>
                     </Row>
                   </CardBody>
@@ -44,9 +44,8 @@ class Login extends Component {
                   <CardBody className="text-center">
                     <div>
                       <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
+                      <p>Registering an account requires<br></br>TODO Add info about requirements</p>
+                      <Button onClick={() => this.props.history.push('/register')} color="primary" className="mt-3" active>Register</Button>
                     </div>
                   </CardBody>
                 </Card>

@@ -13,7 +13,11 @@ import Worlds from '../../views/Worlds/Worlds';
 import Plugins from '../../views/Plugins/Plugins';
 import Backups from '../../views/Backups/Backups';
 
+import Login from '../../views/Login/Login'
+import Register from '../../views/Login/Register'
+
 import { initialize } from '../../reducers/initializer'
+import { getLogin } from '../../localstorage/localstorage';
 
 class Full extends Component {
 
@@ -22,6 +26,16 @@ class Full extends Component {
   }
 
   render() {
+    const login = getLogin()
+    if (!login) {
+      return <div>
+        <Switch>
+          <Route path="/login" name="Login" component={Login} />
+          <Route path="/register" name="Register" component={Register} />
+          <Redirect from="/" to="/login" />
+        </Switch>
+      </div>
+    }
     return (
       <div className="app">
         <Header />
