@@ -1,4 +1,4 @@
-import backupSvc from '../services/backupsService'
+import backupSvc from '../services/backups'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_BACKUPS') {

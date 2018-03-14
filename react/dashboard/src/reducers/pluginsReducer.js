@@ -1,4 +1,4 @@
-import pluginsSvc from '../services/pluginsService'
+import pluginsSvc from '../services/plugins'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_BACKUPS') {
@@ -9,13 +9,21 @@ const reducer = (store = [], action) => {
 
 export const initializePlugins = () => {
     return async (dispatch) => {
-        const plugins = await pluginsSvc.getAll()
-        dispatch({
-            type: 'INIT_BACKUPS',
-            data: {
-                plugins
+        try {
+            const plugins = await pluginsSvc.getAll()
+            dispatch({
+                type: 'INIT_BACKUPS',
+                data: {
+                    plugins
+                }
+            })
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response)
+            } else {
+                console.log(error)
             }
-        })
+        }
     }
 }
 

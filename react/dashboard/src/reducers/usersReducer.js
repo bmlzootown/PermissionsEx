@@ -1,4 +1,4 @@
-import usersSvc from '../services/usersService'
+import usersSvc from '../services/users'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_USERS') {
@@ -7,9 +7,11 @@ const reducer = (store = [], action) => {
     return store
 }
 
-export const initializeUsers = () => {
+export const initializeUsers = (users) => {
     return async (dispatch) => {
-        const users = await usersSvc.getAll()
+        if (!users) {
+            users = await usersSvc.getAll()
+        }
         dispatch({
             type: 'INIT_USERS',
             data: {

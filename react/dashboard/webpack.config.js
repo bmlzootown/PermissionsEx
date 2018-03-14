@@ -29,7 +29,10 @@ module.exports = (env = {}) => {
       //   port: 9001,
       compress: true,
       hot: true,
-      open: true
+      open: true,
+      proxy: {
+        "/api": "http://localhost:5950"
+      }
     },
     module: {
       rules: [

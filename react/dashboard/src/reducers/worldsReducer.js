@@ -1,4 +1,4 @@
-import worldsSvc from '../services/worldsService'
+import worldsSvc from '../services/worlds'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_WORLDS') {
@@ -7,9 +7,11 @@ const reducer = (store = [], action) => {
     return store
 }
 
-export const initializeWorlds = () => {
+export const initializeWorlds = (worlds) => {
     return async (dispatch) => {
-        const worlds = await worldsSvc.getAll()
+        if (!worlds) {
+            const worlds = await worldsSvc.getAll()
+        }
         dispatch({
             type: 'INIT_WORLDS',
             data: {
