@@ -7,7 +7,11 @@ import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 
-import Dashboard from '../../views/Dashboard/';
+import Users from '../../views/Users/Users';
+import Groups from '../../views/Groups/Groups';
+import Worlds from '../../views/Worlds/Worlds';
+import Plugins from '../../views/Plugins/Plugins';
+import Backups from '../../views/Backups/Backups';
 
 class Full extends Component {
   render() {
@@ -20,7 +24,11 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
-                <Route path="/users" name="Users" component={Dashboard}/>
+                <Route path="/users" name="Users" component={Users}/>
+                <Route path="/groups" name="Groups" component={Groups}/>
+                <Route path="/worlds" name="Worlds" component={Worlds}/>
+                <Route path="/plugins" name="Plugins" component={Plugins}/>
+                <Route path="/backups" name="Backups" component={Backups}/>
                 <Redirect from="/" to="/users"/>
               </Switch>
             </Container>
