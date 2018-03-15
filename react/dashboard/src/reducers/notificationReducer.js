@@ -17,7 +17,7 @@ const reducer = (store = initialState, action) => {
     return store
 }
 
-const sendMessage = (type, message, dispatch) => {
+export const sendMessage = (type, message, dispatch) => {
     dispatch({
         type,
         data: {

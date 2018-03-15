@@ -11,7 +11,9 @@ import {
   Input,
   InputGroupText
 } from 'reactstrap'
+
 import Icon from '../../components/Icon';
+import Notification from '../../components/Notification/Notification';
 
 class Users extends Component {
 
@@ -34,6 +36,7 @@ class Users extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        <Notification />
         <this.SearchBox />
         <Dummy />
       </div>

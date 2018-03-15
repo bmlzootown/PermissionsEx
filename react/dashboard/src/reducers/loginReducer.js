@@ -1,6 +1,8 @@
 import loginSvc from '../services/login'
 import localStorage from '../localstorage/localstorage'
 
+import { sendMessage } from './notificationReducer'
+
 const initialState = {
     login: undefined
 };
@@ -39,6 +41,8 @@ export const login = (username, password) => {
 
             const token = response.data.token
 
+            sendMessage('SUCCESS', 'Logged in successfully', dispatch)
+
             localStorage.loggedIn({ username, token });
 
             dispatch({
@@ -52,13 +56,7 @@ export const login = (username, password) => {
             })
         } catch (error) {
             if (error.response) {
-                console.log(error.response)
-                dispatch({
-                    type: 'ERROR',
-                    data: {
-                        message: error.response.data.error
-                    }
-                })
+                sendMessage('ERROR', error.response.data.error, dispatch)
             } else {
                 console.log(error)
             }
@@ -68,6 +66,7 @@ export const login = (username, password) => {
 
 export const logout = () => {
     return async (dispatch) => {
+        sendMessage('SUCCESS', 'Logged out successfully', dispatch)
         localStorage.loggedOut()
         dispatch({
             type: 'LOGOUT'
