@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Link, Switch, Route, Redirect } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import React, {Component} from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -14,10 +14,9 @@ import Plugins from '../../views/Plugins/Plugins';
 import Backups from '../../views/Backups/Backups';
 
 import Login from '../../views/Login/Login'
-import Register from '../../views/Login/Register'
 
-import { initialize } from '../../reducers/initializer'
-import { getLogin } from '../../localstorage/localstorage';
+import {initialize} from '../../reducers/initializer'
+import {getLogin} from '../../localstorage/localstorage';
 
 class Full extends Component {
 
@@ -26,12 +25,12 @@ class Full extends Component {
   }
 
   render() {
-    const login = getLogin()
+      const login = getLogin();
+      //  <Route path="/register" name="Register" component={Register} />
     if (!login) {
       return <div>
         <Switch>
           <Route path="/login" name="Login" component={Login} />
-          <Route path="/register" name="Register" component={Register} />
           <Redirect from="/" to="/login" />
         </Switch>
       </div>
