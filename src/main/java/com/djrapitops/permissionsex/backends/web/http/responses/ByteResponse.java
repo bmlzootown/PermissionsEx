@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ImageResponse extends Response {
+public class ByteResponse extends Response {
 
 	private final String fileName;
 
-	public ImageResponse(String fileName) {
-		super("image/gif");
+	public ByteResponse(String type, String fileName) {
+		super(type);
 		this.fileName = fileName;
 
 		setHeader("HTTP/1.1 200 OK");

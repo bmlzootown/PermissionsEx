@@ -3,8 +3,8 @@ package com.djrapitops.permissionsex.backends.web;
 import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
+import com.djrapitops.permissionsex.backends.web.http.responses.ByteResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
-import com.djrapitops.permissionsex.backends.web.http.responses.ImageResponse;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIPageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.TreePageHandler;
 
@@ -56,6 +56,11 @@ public class ResponseHandler extends TreePageHandler {
 		boolean isJson = targetString.endsWith(".json");
 		boolean isSourceMap = targetString.endsWith(".map");
 		boolean isImage = targetString.endsWith(".png");
+		boolean isFont = targetString.endsWith(".eot")
+				|| targetString.endsWith(".woff2")
+				|| targetString.endsWith(".woff")
+				|| targetString.endsWith(".tff")
+				|| targetString.endsWith(".svg");
 
 		if (isCss) {
 			return new FileResponse("text/css", "web" + targetString);
@@ -63,10 +68,10 @@ public class ResponseHandler extends TreePageHandler {
 			return new FileResponse("text/javascript", "web" + targetString);
 		} else if (isJson || isSourceMap) {
 			return new FileResponse("application/json", "web" + targetString);
-		}
-
-		if (isImage) {
-			return new ImageResponse("web" + targetString);
+		} else if (isImage) {
+			return new ByteResponse("image/gif", "web" + targetString);
+		} else if (isFont) {
+			return new ByteResponse("font/opentype", "web" + targetString);
 		}
 
 		// In this case the target is not a relative file that needs to be loaded from a static location.
