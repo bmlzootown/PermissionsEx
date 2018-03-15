@@ -4,14 +4,13 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
-import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
+import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
 import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -24,11 +23,11 @@ import java.util.List;
 public class LoginRestAPI extends RestAPIHandler {
 
 	private final TokenVerifier verifier;
-	private final PassHashStorage passHashStorage;
+	private final PasswordStorage passwordStorage;
 
-	public LoginRestAPI(TokenVerifier verifier, PassHashStorage passHashStorage) {
+	public LoginRestAPI(TokenVerifier verifier, PasswordStorage passwordStorage) {
 		this.verifier = verifier;
-		this.passHashStorage = passHashStorage;
+		this.passwordStorage = passwordStorage;
 		registerAPIEndPoints();
 	}
 
@@ -53,12 +52,7 @@ public class LoginRestAPI extends RestAPIHandler {
 						String username = usernameJSON.getAsString();
 						String password = passwordJSON.getAsString();
 
-						String hashedPass = passHashStorage.getHash(username);
-						if (hashedPass == null) {
-							return new JsonErrorResponse("User has not registered.", 401);
-						}
-
-						if (!BCrypt.checkpw(password, hashedPass)) {
+						if (!passwordStorage.passwordMatches(username, password)) {
 							return new JsonErrorResponse("User and Password did not match.", 401);
 						}
 

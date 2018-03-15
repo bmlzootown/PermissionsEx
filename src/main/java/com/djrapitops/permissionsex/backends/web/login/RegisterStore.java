@@ -9,10 +9,10 @@ import java.util.Map;
 public class RegisterStore {
 
 	private final Map<String, String[]> codeAndUserInfo;
-	private final PassHashStorage passHashStorage;
+	private final PasswordStorage passwordStorage;
 
-	public RegisterStore(PassHashStorage passHashStorage) {
-		this.passHashStorage = passHashStorage;
+	public RegisterStore(PasswordStorage passwordStorage) {
+		this.passwordStorage = passwordStorage;
 		codeAndUserInfo = new HashMap<>();
 	}
 
@@ -21,14 +21,14 @@ public class RegisterStore {
 	 *
 	 * @param code     Code to check register command for.
 	 * @param username Username that is being registered.
-	 * @param passHash Password hash of the user.
+	 * @param password Password hash of the user.
 	 */
-	public void queueForRegistration(String code, String username, String passHash) {
-		codeAndUserInfo.put(code, new String[]{username, passHash});
+	public void queueForRegistration(String code, String username, String password) {
+		codeAndUserInfo.put(code, new String[]{username, password});
 	}
 
 	/**
-	 * Registers a queued password hash to the PassHashStorage.
+	 * Registers a queued password hash to the PasswordStorage.
 	 *
 	 * @param player Player that is registering.
 	 * @param code   Register code.
@@ -39,7 +39,6 @@ public class RegisterStore {
 	public void register(Player player, String code)
 			throws IllegalStateException, IllegalArgumentException, IOException {
 		try {
-			// TODO Add registration permission
 			if (!player.hasPermission("pex.dashboard.use")) {
 				throw new IllegalStateException("User doesn't have permission to use the dashboard");
 			}
@@ -48,7 +47,7 @@ public class RegisterStore {
 			if (userAndPass == null) {
 				throw new IllegalArgumentException("Code not present");
 			}
-			passHashStorage.storeHash(player.getUniqueId(), userAndPass[0], userAndPass[1]);
+			passwordStorage.storePassword(userAndPass[0], userAndPass[1], player.getUniqueId().toString());
 		} finally {
 			codeAndUserInfo.remove(code);
 		}

@@ -3,11 +3,13 @@ package com.djrapitops.permissionsex.backends;
 import com.djrapitops.permissionsex.backends.json.DummyJSONService;
 import com.djrapitops.permissionsex.backends.json.PexJSONService;
 import com.djrapitops.permissionsex.backends.web.WebServer;
-import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
+import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
 import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
-import com.djrapitops.permissionsex.backends.web.login.YamlPassHashStorage;
+import com.djrapitops.permissionsex.backends.web.login.YamlPasswordStorage;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+
+import java.io.IOException;
 
 /**
  * Central class for initializing the Pex Dashboard.
@@ -19,18 +21,25 @@ public class PexDashboard {
 	private final WebServer webServer;
 
 	private final PexJSONService pexJSONService;
-	private final RegisterStore registerStore;
-	private PassHashStorage passHashStorage;
+	private RegisterStore registerStore;
+	private PasswordStorage passwordStorage;
 
 	public PexDashboard(PermissionsEx plugin) {
 		webServer = new WebServer(plugin, this);
-		passHashStorage = new YamlPassHashStorage(plugin.getDataFolder());
+		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
 		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
-		registerStore = new RegisterStore(passHashStorage);
+//		registerStore = new RegisterStore(passwordStorage);
 	}
 
-	public void enable() throws WebServerException {
+	public void enable() throws WebServerException, IOException {
 		webServer.enable();
+
+		// Create dashboard_users.yml file.
+		if (webServer.isEnabled()) {
+			if (passwordStorage instanceof YamlPasswordStorage) {
+				((YamlPasswordStorage) passwordStorage).save();
+			}
+		}
 	}
 
 	public void disable() {
@@ -41,8 +50,8 @@ public class PexDashboard {
 		return webServer;
 	}
 
-	public PassHashStorage getPassHashStorage() {
-		return passHashStorage;
+	public PasswordStorage getPasswordStorage() {
+		return passwordStorage;
 	}
 
 	public RegisterStore getRegisterStore() {

@@ -4,14 +4,13 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
-import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
+import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
 import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Base64;
 import java.util.List;
@@ -24,11 +23,11 @@ import java.util.List;
 public class RegisterRestAPI extends RestAPIHandler {
 
 	private final RegisterStore registerStore;
-	private final PassHashStorage passHashStorage;
+	private final PasswordStorage passwordStorage;
 
-	public RegisterRestAPI(RegisterStore registerStore, PassHashStorage passHashStorage) {
+	public RegisterRestAPI(RegisterStore registerStore, PasswordStorage passwordStorage) {
 		this.registerStore = registerStore;
-		this.passHashStorage = passHashStorage;
+		this.passwordStorage = passwordStorage;
 		registerAPIEndPoints();
 	}
 
@@ -52,7 +51,7 @@ public class RegisterRestAPI extends RestAPIHandler {
 
 						String username = usernameJSON.getAsString();
 
-						if (passHashStorage.getHash(username) != null) {
+						if (passwordStorage.userExists(username)) {
 							return new JsonErrorResponse("Username has already exists.", 400);
 						}
 
@@ -60,9 +59,7 @@ public class RegisterRestAPI extends RestAPIHandler {
 
 						String registerCode = Base64.getEncoder().encodeToString(username.getBytes());
 
-						String saltedPassHash = BCrypt.hashpw(password, BCrypt.gensalt());
-
-						registerStore.queueForRegistration(registerCode, username, saltedPassHash);
+						registerStore.queueForRegistration(registerCode, username, password);
 
 						return new JsonResponse("{registerCode: " + registerCode + "}", 200);
 					}
