@@ -10,6 +10,8 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Central class for initializing the Pex Dashboard.
@@ -18,6 +20,8 @@ import java.io.IOException;
  */
 public class PexDashboard {
 
+	private Logger logger;
+
 	private final WebServer webServer;
 
 	private final PexJSONService pexJSONService;
@@ -25,6 +29,7 @@ public class PexDashboard {
 
 	public PexDashboard(PermissionsEx plugin) {
 		webServer = new WebServer(plugin, this);
+		logger = plugin.getLogger();
 		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
 		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
 	}
@@ -34,11 +39,8 @@ public class PexDashboard {
 
 		// Create dashboard_users.yml file.
 		if (webServer.isEnabled()) {
-			if (passwordStorage instanceof YamlPasswordStorage) {
-				YamlPasswordStorage passwordStorage = (YamlPasswordStorage) this.passwordStorage;
-				passwordStorage.createEmptyFile();
-				passwordStorage.load();
-			}
+			logger.log(Level.INFO, "Loading dashboard users..");
+			logger.log(Level.INFO, "Loaded " + passwordStorage.loadAndHash() + " users.");
 		}
 	}
 
