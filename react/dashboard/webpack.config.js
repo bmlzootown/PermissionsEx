@@ -58,7 +58,7 @@ module.exports = (env = {}) => {
             use: [
               {
                 loader: 'css-loader',
-                options: {alias: {'../img': '../public/img'}}
+                  options: {alias: {'../img': '../public/img'}}
               },
               {
                 loader: 'sass-loader'
@@ -95,7 +95,7 @@ module.exports = (env = {}) => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.optimize.UglifyJsPlugin({sourceMap: true}),
+        new webpack.optimize.UglifyJsPlugin({sourceMap: true}),
       new webpack.NamedModulesPlugin(),
       extractCSS,
       extractSCSS,
@@ -106,9 +106,9 @@ module.exports = (env = {}) => {
         }
       ),
       new CopyWebpackPlugin([
-          {from: './public/img', to: 'img'}
-        ],
-        {copyUnmodified: false}
+              {from: './public/img', to: 'img'}
+          ],
+          {copyUnmodified: false}
       )
     ]
   }

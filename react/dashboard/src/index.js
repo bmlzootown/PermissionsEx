@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import {HashRouter, Route, Switch} from 'react-router-dom';
 
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import store from './store';
-
 // Styles
-// Import Flag Icons Set
-import 'flag-icon-css/css/flag-icon.min.css';
 // Import Font Awesome Icons Set
 import 'font-awesome/css/font-awesome.min.css';
 // Import Simple Line Icons Set
@@ -16,7 +13,6 @@ import 'simple-line-icons/css/simple-line-icons.css';
 import '../scss/style.scss'
 // Temp fix for reactstrap
 import '../scss/core/_dropdown-menu-right.scss'
-
 // Containers
 import Full from './containers/Full/'
 
@@ -30,8 +26,8 @@ const render = () => {
       </HashRouter>
     </Provider>
   ), document.getElementById('root'));
-}
+};
 
-render()
-store.subscribe(render)
+render();
+store.subscribe(render);
 
