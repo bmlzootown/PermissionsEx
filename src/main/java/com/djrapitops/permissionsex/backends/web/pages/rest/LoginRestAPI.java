@@ -50,6 +50,11 @@ public class LoginRestAPI extends RestAPIHandler {
 						}
 
 						String username = usernameJSON.getAsString();
+
+						if (!passwordStorage.userExists(username)) {
+							return new JsonErrorResponse("User doesn't exist.", 401);
+						}
+
 						String password = passwordJSON.getAsString();
 
 						if (!passwordStorage.passwordMatches(username, password)) {

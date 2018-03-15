@@ -7,6 +7,7 @@ import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
 import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
 import com.djrapitops.permissionsex.backends.web.login.YamlPasswordStorage;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
+import org.bukkit.configuration.InvalidConfigurationException;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.IOException;
@@ -31,13 +32,15 @@ public class PexDashboard {
 //		registerStore = new RegisterStore(passwordStorage);
 	}
 
-	public void enable() throws WebServerException, IOException {
+	public void enable() throws WebServerException, IOException, InvalidConfigurationException {
 		webServer.enable();
 
 		// Create dashboard_users.yml file.
 		if (webServer.isEnabled()) {
 			if (passwordStorage instanceof YamlPasswordStorage) {
-				((YamlPasswordStorage) passwordStorage).createEmptyFile();
+				YamlPasswordStorage passwordStorage = (YamlPasswordStorage) this.passwordStorage;
+				passwordStorage.createEmptyFile();
+				passwordStorage.load();
 			}
 		}
 	}
