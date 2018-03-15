@@ -32,7 +32,6 @@ export const initializeLogin = () => {
 export const login = (username, password) => {
     return async (dispatch) => {
         try {
-            console.log('logging in..');
             const response = await loginSvc.login({
                 username: username,
                 password: password
@@ -54,6 +53,12 @@ export const login = (username, password) => {
         } catch (error) {
             if (error.response) {
                 console.log(error.response)
+                dispatch({
+                    type: 'ERROR',
+                    data: {
+                        message: error.response.data.error
+                    }
+                })
             } else {
                 console.log(error)
             }

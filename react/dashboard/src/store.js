@@ -9,13 +9,16 @@ import backupsReducer from './reducers/backupsReducer'
 
 import loginReducer from './reducers/loginReducer'
 
+import notificationReducer from './reducers/notificationReducer'
+
 const reducer = combineReducers({
     users: usersReducer,
     groups: groupsReducer,
     worlds: worldsReducer,
     plugins: pluginsReducer,
     backups: backupsReducer,
-    login: loginReducer
+    login: loginReducer,
+    notification: notificationReducer
 })
 
 const loggerMiddleware = store => next => action => {

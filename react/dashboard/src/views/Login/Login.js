@@ -25,6 +25,8 @@ import RegisterInfo from '../../components/Modals/Login/RegisterInfo'
 
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
+import { error } from '../../reducers/notificationReducer' 
+import Notification from '../../components/Notification/Notification';
 
 class Login extends Component {
 
@@ -43,16 +45,14 @@ class Login extends Component {
   handleLogin = (target) => {
     const username = target.username.value;
     if (!username || username.length === 0) {
-      console.log('No username specified');
-      // TODO Error notification "unknown user ect"
+      this.props.error('Please write your username');
       return
     }
 
     const password = target.password.value;
 
     if (!password || password.length === 0) {
-      console.log('No password specified');
-      // TODO Error notification "unknown user ect"
+      this.props.error('Please write your password');
       return
     }
 
@@ -134,6 +134,7 @@ class Login extends Component {
         <Container>
           <Row className="justify-content-center">
             <Col md="8">
+              <Notification />
               <CardGroup>
                 <this.LoginPart />
               </CardGroup>
@@ -150,5 +151,5 @@ Login.contextTypes = {
 };
 
 export default connect(
-  null, { login }
+  null, { login, error }
 )(Login);
