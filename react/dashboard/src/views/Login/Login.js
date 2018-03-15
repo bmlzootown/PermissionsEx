@@ -80,18 +80,9 @@ class Login extends Component {
     </Card>
   );
 
-    // <Col xs="6" className="text-right">
-    // <Button type="submit" disabled color="link" className="px-0">Forgot password?</Button>
-  RegisterPart = () => (
-    <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
-      <CardBody className="text-center">
-        <div>
-          <h2>Sign up</h2>
-          <p>Registering an account requires<br></br>TODO Add info about requirements</p>
-          <Button onClick={() => this.props.history.push('/register')} color="primary" className="mt-3" active>Register</Button>
-        </div>
-      </CardBody>
-    </Card>
+    RegisterPart = () => (
+        <div></div> // TODO Create a modal with register instructions
+        // TODO Create a modal with pass reset instructions
   );
 
     componentDidMount() {

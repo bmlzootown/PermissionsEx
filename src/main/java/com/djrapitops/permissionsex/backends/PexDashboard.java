@@ -4,7 +4,6 @@ import com.djrapitops.permissionsex.backends.json.DummyJSONService;
 import com.djrapitops.permissionsex.backends.json.PexJSONService;
 import com.djrapitops.permissionsex.backends.web.WebServer;
 import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
-import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
 import com.djrapitops.permissionsex.backends.web.login.YamlPasswordStorage;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -22,14 +21,12 @@ public class PexDashboard {
 	private final WebServer webServer;
 
 	private final PexJSONService pexJSONService;
-	private RegisterStore registerStore;
 	private PasswordStorage passwordStorage;
 
 	public PexDashboard(PermissionsEx plugin) {
 		webServer = new WebServer(plugin, this);
 		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
 		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
-//		registerStore = new RegisterStore(passwordStorage);
 	}
 
 	public void enable() throws WebServerException, IOException, InvalidConfigurationException {
@@ -55,10 +52,6 @@ public class PexDashboard {
 
 	public PasswordStorage getPasswordStorage() {
 		return passwordStorage;
-	}
-
-	public RegisterStore getRegisterStore() {
-		return registerStore;
 	}
 
 	public PexJSONService getPexJSONService() {

@@ -26,7 +26,6 @@ class Full extends Component {
 
   render() {
       const login = getLogin();
-      //  <Route path="/register" name="Register" component={Register} />
     if (!login) {
       return <div>
         <Switch>
