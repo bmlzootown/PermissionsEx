@@ -37,7 +37,7 @@ public class PexDashboard {
 		// Create dashboard_users.yml file.
 		if (webServer.isEnabled()) {
 			if (passwordStorage instanceof YamlPasswordStorage) {
-				((YamlPasswordStorage) passwordStorage).save();
+				((YamlPasswordStorage) passwordStorage).createEmptyFile();
 			}
 		}
 	}

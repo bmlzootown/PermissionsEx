@@ -9,8 +9,15 @@ import java.util.Map;
 
 public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 
+	private File configFile;
+
 	public YamlPasswordStorage(File dataFolder) {
-		super(new File(dataFolder, "dashboard_users.yml"), new Object(), "users");
+		this(new File(dataFolder, "dashboard_users.yml"), true);
+	}
+
+	private YamlPasswordStorage(File configFile, boolean b) {
+		super(configFile, new Object(), "users");
+		this.configFile = configFile;
 	}
 
 	@Override
@@ -31,5 +38,11 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 	@Override
 	public boolean passwordMatches(String username, String password) {
 		return password != null && password.equals(getString("users." + username + ".password"));
+	}
+
+	public void createEmptyFile() throws IOException {
+		if (!configFile.exists()) {
+			configFile.createNewFile();
+		}
 	}
 }
