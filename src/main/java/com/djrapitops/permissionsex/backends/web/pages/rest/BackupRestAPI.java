@@ -120,7 +120,7 @@ class CloneHandler implements PageHandler {
 				String backupName = target.get(0).replace("%20", " ");
 				return new JsonResponse(backupJSONService.duplicateBackup(backupName));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid Backup Name: " + e.getMessage(), 400);
 			}
 		}
 
@@ -145,7 +145,7 @@ class RestoreHandler implements PageHandler {
 				backupJSONService.restoreBackup(backupName);
 				return new JsonResponse("{\"success\":true}", 200);
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid Backup Name: " + e.getMessage(), 400);
 			}
 		}
 

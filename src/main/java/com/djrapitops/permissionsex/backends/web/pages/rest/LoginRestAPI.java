@@ -46,13 +46,13 @@ public class LoginRestAPI extends RestAPIHandler {
 						}
 						JsonElement passwordJSON = loginJSON.get("password");
 						if (!passwordJSON.isJsonPrimitive()) {
-							return new JsonErrorResponse("'username' not provided or wrong format.", 400);
+							return new JsonErrorResponse("'password' not provided or wrong format.", 400);
 						}
 
 						String username = usernameJSON.getAsString();
 
 						if (!passwordStorage.userExists(username)) {
-							return new JsonErrorResponse("User doesn't exist.", 401);
+							return new JsonErrorResponse("Could not find user '" + username + "'.", 401);
 						}
 
 						String password = passwordJSON.getAsString();
@@ -62,7 +62,7 @@ public class LoginRestAPI extends RestAPIHandler {
 						}
 
 						String token = verifier.generateToken(username);
-						return new JsonResponse("{token: " + token + "}", 200);
+						return new JsonResponse("{\"token\": \"" + token + "\"}", 200);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
 				} catch (ParseException | UnsupportedEncodingException e) {

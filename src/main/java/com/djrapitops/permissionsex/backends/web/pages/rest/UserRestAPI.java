@@ -72,7 +72,7 @@ public class UserRestAPI extends RestAPIHandler {
 				String name = target.get(0).replace("%20", " ");
 				return new JsonResponse(userJSONService.getUser(name));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid Name: " + e.getMessage(), 400);
 			}
 		}
 

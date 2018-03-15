@@ -72,7 +72,7 @@ public class WorldRestAPI extends RestAPIHandler {
 				String worldName = target.get(0).replace("%20", " ");
 				return new JsonResponse(worldJSONService.getWorld(worldName));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid World Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid World Name: " + e.getMessage(), 400);
 			}
 		}
 
