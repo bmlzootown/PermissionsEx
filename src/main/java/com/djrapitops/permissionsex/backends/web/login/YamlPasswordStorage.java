@@ -4,11 +4,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.mindrot.jbcrypt.BCrypt;
 import ru.tehkode.permissions.backends.file.FileConfig;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 
@@ -19,22 +21,13 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 	}
 
 	private YamlPasswordStorage(File configFile, boolean b) {
-		super(configFile, new Object(), "users");
+		super(configFile, new Object());
 		this.configFile = configFile;
 	}
 
 	@Override
 	public boolean userExists(String username) {
-		return super.contains("users." + username);
-	}
-
-	public void storePassword(String username, String password, String registeredBy) throws IOException {
-		Map<String, String> values = new HashMap<>();
-		values.put("registered_by", registeredBy);
-		values.put("password", password);
-
-		super.set("users." + username, values);
-		super.save();
+		return getConfigurationSection("users").contains(username);
 	}
 
 	@Override
@@ -49,15 +42,17 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 		int userCount = 0;
 		for (String username : users.getKeys(false)) {
 			userCount++;
-			String key = username + ".password";
-			if (users.contains(key)) {
-				System.out.println("Contains unhashed: " + username);
+			ConfigurationSection user = users.getConfigurationSection(username);
+			String unhashedPass = user.getString("password");
+			if (unhashedPass != null) {
 				Map<String, String> newContent = new HashMap<>();
-				newContent.put("pass_hash", BCrypt.hashpw(users.getString(key), BCrypt.gensalt()));
+				newContent.put("pass_hash", BCrypt.hashpw(unhashedPass, BCrypt.gensalt()));
 				users.set(username, newContent);
-				System.out.println("Saved hashed: " + username);
+				PermissionsEx.getPlugin().getLogger().log(Level.INFO, "New User: " + username);
 			}
 		}
+
+		set("users", users);
 
 		save();
 		return userCount;
@@ -70,7 +65,8 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 	}
 
 	private String getHash(String username) {
-		return super.getString("users." + username + ".pass_hash");
+		ConfigurationSection user = getConfigurationSection("users").getConfigurationSection(username);
+		return user != null ? user.getString("pass_hash") : "";
 	}
 
 
