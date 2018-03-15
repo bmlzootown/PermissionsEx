@@ -7,7 +7,10 @@ const initialState = {
 
 const reducer = (store = initialState, action) => {
     if (action.type == 'LOGIN') {
-        return [...store, { login: action.data.login}]
+        return [...store, { login: action.data.login }]
+    }
+    if (action.type == 'LOGOUT') {
+        return [...store, { login: undefined }]
     }
     return store
 };
@@ -30,12 +33,14 @@ export const login = (username, password) => {
     return async (dispatch) => {
         try {
             console.log('logging in..');
-            const token = await loginSvc.login({
+            const response = await loginSvc.login({
                 username: username,
                 password: password
             });
 
-            localStorage.loggedIn({username, token});
+            const token = response.data.token
+
+            localStorage.loggedIn({ username, token });
 
             dispatch({
                 type: 'LOGIN',
@@ -55,5 +60,14 @@ export const login = (username, password) => {
         }
     }
 };
+
+export const logout = () => {
+    return async (dispatch) => {
+        localStorage.loggedOut()
+        dispatch({
+            type: 'LOGOUT'
+        })
+    }
+}
 
 export default reducer
