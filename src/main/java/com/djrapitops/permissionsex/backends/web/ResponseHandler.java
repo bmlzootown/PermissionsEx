@@ -4,6 +4,7 @@ import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
+import com.djrapitops.permissionsex.backends.web.http.responses.ImageResponse;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIPageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.TreePageHandler;
 
@@ -53,13 +54,19 @@ public class ResponseHandler extends TreePageHandler {
 		boolean isCss = targetString.endsWith(".css");
 		boolean isJs = targetString.endsWith(".js");
 		boolean isJson = targetString.endsWith(".json");
+		boolean isSourceMap = targetString.endsWith(".map");
+		boolean isImage = targetString.endsWith(".png");
 
 		if (isCss) {
 			return new FileResponse("text/css", "web" + targetString);
 		} else if (isJs) {
 			return new FileResponse("text/javascript", "web" + targetString);
-		} else if (isJson) {
+		} else if (isJson || isSourceMap) {
 			return new FileResponse("application/json", "web" + targetString);
+		}
+
+		if (isImage) {
+			return new ImageResponse("web" + targetString);
 		}
 
 		// In this case the target is not a relative file that needs to be loaded from a static location.

@@ -14,7 +14,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public abstract class Response {
 
-	private final String type;
+	protected final String type;
 	private String header;
 	protected String content;
 
