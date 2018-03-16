@@ -1,5 +1,7 @@
 import groupsSvc from '../services/groups'
 
+import { handleError } from './reducers'
+
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_GROUPS') {
         return [...store, ...action.data.groups]
@@ -7,17 +9,22 @@ const reducer = (store = [], action) => {
     return store
 }
 
-export const initializeGroups = (groups) => {
+export const initializeGroups = (token, groups) => {
     return async (dispatch) => {
-        if (!groups) {
-            groups = await groupsSvc.getAll()
-        }
-        dispatch({
-            type: 'INIT_GROUPS',
-            data: {
-                groups
+        try {
+            if (!groups) {
+                groups = await groupsSvc.getAll(token)
             }
-        })
+            dispatch({
+                type: 'INIT_GROUPS',
+                data: {
+                    groups
+                }
+            })
+        } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
     }
 }
 

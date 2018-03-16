@@ -25,7 +25,7 @@ import RegisterInfo from '../../components/Modals/Login/RegisterInfo'
 
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
-import { error } from '../../reducers/notificationReducer' 
+import { error } from '../../reducers/notificationReducer'
 import Notification from '../../components/Notification/Notification';
 
 class Login extends Component {
@@ -103,8 +103,7 @@ class Login extends Component {
         </CardBody>
       </Card>
       <Card className="p-4">
-        <Button onClick={this.toggleRegisterModal} color="success" className="px-4">How to create an
-                  account?</Button>
+        <Button onClick={this.toggleRegisterModal} color="success" className="px-4">How to create an account?</Button>
       </Card>
     </Col>
   );
@@ -128,19 +127,22 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="app flex-row align-items-center animated fadeIn">
-        <RegisterInfo isOpen={this.state.registerModal} toggle={this.toggleRegisterModal} />
-        <ForgotPass isOpen={this.state.forgotPassModal} toggle={this.toggleForgotPassModal} />
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="8">
-              <Notification />
-              <CardGroup>
-                <this.LoginPart />
-              </CardGroup>
-            </Col>
-          </Row>
-        </Container>
+      <div>
+        <Notification />
+        <div className="app flex-row align-items-center animated fadeIn">
+          <RegisterInfo isOpen={this.state.registerModal} toggle={this.toggleRegisterModal} />
+          <ForgotPass isOpen={this.state.forgotPassModal} toggle={this.toggleForgotPassModal} />
+          <Container>
+            <Row className="justify-content-center">
+              <Col md="8">
+
+                <CardGroup>
+                  <this.LoginPart />
+                </CardGroup>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }

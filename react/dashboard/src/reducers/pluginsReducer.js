@@ -1,28 +1,27 @@
 import pluginsSvc from '../services/plugins'
 
+import { handleError } from './reducers'
+
 const reducer = (store = [], action) => {
-    if (action.type == 'INIT_BACKUPS') {
+    if (action.type == 'INIT_PLUGINS') {
         return [...store, ...action.data.plugins]
     }
     return store
 }
 
-export const initializePlugins = () => {
+export const initializePlugins = (token) => {
     return async (dispatch) => {
         try {
-            const plugins = await pluginsSvc.getAll()
+            const plugins = await pluginsSvc.getAll(token)
             dispatch({
-                type: 'INIT_BACKUPS',
+                type: 'INIT_PLUGINS',
                 data: {
                     plugins
                 }
             })
         } catch (error) {
-            if (error.response) {
-                console.log(error.response)
-            } else {
-                console.log(error)
-            }
+            handleError(error, dispatch)
+            throw error
         }
     }
 }

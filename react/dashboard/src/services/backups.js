@@ -1,9 +1,18 @@
 import axios from 'axios'
 
-const getAll = async () => {
+import { getState } from '../store'
+
+const headers = (token) => {
+    return token ? { headers: { 'Authorization': 'bearer ' + token } } : undefined
+}
+
+const getAll = async (token) => {
     const response = await axios.get(
-        '/api/backups'
+        '/api/backups',
+        undefined,
+        headers(token)
     )
+    console.log(response.data)
     return response.data.list
 }
 

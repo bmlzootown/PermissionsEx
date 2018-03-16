@@ -36,7 +36,6 @@ class Users extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Notification />
         <this.SearchBox />
         <Dummy />
       </div>

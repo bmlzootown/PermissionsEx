@@ -9,17 +9,17 @@ const initialState = {
 
 const reducer = (store = initialState, action) => {
     if (action.type == 'LOGIN') {
-        return [...store, { login: action.data.login }]
+        return {...store, ...{ login: action.data.login }}
     }
     if (action.type == 'LOGOUT') {
-        return [...store, { login: undefined }]
+        return {...store, ...{ login: undefined }}
     }
     return store
 };
 
 export const initializeLogin = () => {
-    return async (dispatch) => {
-        const login = await localStorage.getLogin();
+    return (dispatch) => {
+        const login = localStorage.getLogin();
         if (login) {
             dispatch({
                 type: 'LOGIN',
@@ -41,8 +41,6 @@ export const login = (username, password) => {
 
             const token = response.data.token
 
-            sendMessage('SUCCESS', 'Logged in successfully', dispatch)
-
             localStorage.loggedIn({ username, token });
 
             dispatch({
@@ -54,6 +52,7 @@ export const login = (username, password) => {
                     }
                 }
             })
+            sendMessage('SUCCESS', 'Logged in successfully', dispatch)
         } catch (error) {
             if (error.response) {
                 sendMessage('ERROR', error.response.data.error, dispatch)
@@ -66,12 +65,20 @@ export const login = (username, password) => {
 
 export const logout = () => {
     return async (dispatch) => {
-        sendMessage('SUCCESS', 'Logged out successfully', dispatch)
         localStorage.loggedOut()
         dispatch({
             type: 'LOGOUT'
         })
+        sendMessage('SUCCESS', 'Logged out successfully', dispatch)
     }
+}
+
+export const logoutExpiredToken = (dispatch, errorMsg) => {
+    localStorage.loggedOut()
+    dispatch({
+        type: 'LOGOUT'
+    })
+    sendMessage('ERROR', errorMsg, dispatch)
 }
 
 export default reducer

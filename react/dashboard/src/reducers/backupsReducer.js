@@ -1,5 +1,7 @@
 import backupSvc from '../services/backups'
 
+import { handleError } from './reducers'
+
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_BACKUPS') {
         return [...store, ...action.data.backups]
@@ -7,15 +9,20 @@ const reducer = (store = [], action) => {
     return store
 }
 
-export const initializeBackups = () => {
+export const initializeBackups = (token) => {
     return async (dispatch) => {
-        const backups = await backupSvc.getAll()
-        dispatch({
-            type: 'INIT_BACKUPS',
-            data: {
-                backups
-            }
-        })
+        try {
+            const backups = await backupSvc.getAll(token)
+            dispatch({
+                type: 'INIT_BACKUPS',
+                data: {
+                    backups
+                }
+            })
+        } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
     }
 }
 
