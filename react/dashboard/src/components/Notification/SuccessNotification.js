@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Alert, Collapse } from 'reactstrap';
+import { Alert } from 'reactstrap';
 
 class SuccessNotification extends React.Component {
 
@@ -14,16 +14,18 @@ class SuccessNotification extends React.Component {
         this.unsubscribe = store.subscribe(() => this.forceUpdate())
     }
 
-    render() {
-        const message = this.context.store.getState().notification.success
-        if (!message || message.length === 0) {
-            return null
-        }
-        const isClosed = !message || message.length === 0
+    random = () => {
+        return Math.random()
+    }
 
-        return <Collapse isOpen={!isClosed}>
-            <Alert color="success">{message}</Alert>
-        </Collapse>
+    render() {
+        const messages = this.context.store.getState().notification
+            .filter(n => n.type === 'SUCCESS')
+            .map(n => <Alert key={this.random()} color="success">{n.message}</Alert>)
+
+        return <div>
+            {messages}
+        </div>
     }
 
 }

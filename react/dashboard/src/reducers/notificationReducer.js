@@ -1,18 +1,17 @@
 
-const initialState = {
-    error: '',
-    success: ''
-}
+const initialState = []
 
 const reducer = (store = initialState, action) => {
     if (action.type == 'ERROR') {
-        return { ...store, ...{ error: action.data.message } }
+        return [...store, { type: 'ERROR', message: action.data.message}]
     }
     if (action.type == 'SUCCESS') {
-        return { ...store, ...{ success: action.data.message } }
+        return [...store, { type: 'SUCCESS', message: action.data.message}]
     }
     if (action.type == 'CLEAR') {
-        return initialState
+        const newState = [...store]
+        newState.shift()
+        return newState
     }
     return store
 }
@@ -28,7 +27,7 @@ export const sendMessage = (type, message, dispatch) => {
         dispatch({
             type: 'CLEAR'
         })
-    }, 5000);
+    }, 4000);
 }
 
 export const error = (message) => {
