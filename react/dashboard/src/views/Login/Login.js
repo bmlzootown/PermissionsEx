@@ -116,15 +116,6 @@ class Login extends Component {
     };
   }
 
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
-  componentDidMount() {
-    const { store } = this.context;
-    this.unsubscribe = store.subscribe(() => this.forceUpdate())
-  }
-
   render() {
     return (
       <div>
@@ -135,7 +126,6 @@ class Login extends Component {
           <Container>
             <Row className="justify-content-center">
               <Col md="8">
-
                 <CardGroup>
                   <this.LoginPart />
                 </CardGroup>

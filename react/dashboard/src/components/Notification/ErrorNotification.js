@@ -1,5 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+
+import { error } from '../../reducers/notificationReducer'
 
 import { Alert } from 'reactstrap';
 
@@ -34,4 +37,6 @@ ErrorNotification.contextTypes = {
     store: PropTypes.object
 };
 
-export default ErrorNotification
+export default connect(
+    null, { error }
+)(ErrorNotification)

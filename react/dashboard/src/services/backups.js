@@ -11,7 +11,6 @@ const getAll = async (token) => {
         '/api/backups',
         headers(token)
     )
-    console.log(response.data)
     return response.data.list
 }
 

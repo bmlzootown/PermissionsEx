@@ -26,15 +26,8 @@ import { initializeWorlds } from '../../reducers/worldsReducer'
 
 class App extends Component {
 
-    componentWillUnmount() {
-        this.unsubscribe()
-    }
-
     componentDidMount() {
-        const { store } = this.context;
-        this.unsubscribe = store.subscribe(() => this.forceUpdate())
-
-        const login = store.getState().login.login;
+        const login = this.context.store.getState().login.login;
         if (login) {
             try {
                 this.initialize(login)
@@ -53,33 +46,12 @@ class App extends Component {
 
         await this.props.initializePlugins(token)
         await this.props.initializeBackups(token)
-        console.log('Initialization complete')
+        console.log('Initialization complete', this.context.store.getState())
     }
 
     render() {
         return (
-            <div className="app">
-                <Notification />
-                <Header />
-                <div className="app-body">
-                    <Sidebar {...this.props} />
-                    <main className="main">
-                        <Breadcrumb />
-                        <Container fluid>
-                            <Switch>
-                                <Route path="/users" name="Users" component={Users} />
-                                <Route path="/groups" name="Groups" component={Groups} />
-                                <Route path="/worlds" name="Worlds" component={Worlds} />
-                                <Route path="/plugins" name="Plugins" component={Plugins} />
-                                <Route path="/backups" name="Backups" component={Backups} />
-                                <Redirect from="/" to="/users" />
-                            </Switch>
-                        </Container>
-                    </main>
-                    <Aside />
-                </div>
-                <Footer />
-            </div>
+            <div></div>
         );
     }
 }

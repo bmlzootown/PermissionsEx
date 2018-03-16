@@ -121,7 +121,7 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonArray getBackupInformation() {
-		return (JsonArray) getFromJSON("[{\"name\": \"BackupName2\",\"created\": 1520760393036 # Epoch ms}]");
+		return (JsonArray) getFromJSON("[{\"name\": \"BackupName2\",\"created\": 1520760393036}]");
 	}
 
 	@Override

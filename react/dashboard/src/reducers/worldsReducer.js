@@ -13,7 +13,7 @@ export const initializeWorlds = (token, worlds) => {
     return async (dispatch) => {
         try {
             if (!worlds) {
-                const worlds = await worldsSvc.getAll(token)
+                worlds = await worldsSvc.getAll(token)
             }
             dispatch({
                 type: 'INIT_WORLDS',
