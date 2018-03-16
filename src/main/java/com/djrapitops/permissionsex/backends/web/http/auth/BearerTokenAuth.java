@@ -3,8 +3,6 @@ package com.djrapitops.permissionsex.backends.web.http.auth;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Authentication that uses tokens.
  *
@@ -27,13 +25,6 @@ public class BearerTokenAuth implements Authentication {
 
 	@Override
 	public boolean isValid() {
-		if (token == null) {
-			return false;
-		}
-		try {
-			return verifier.isTokenValid(token);
-		} catch (UnsupportedEncodingException e) {
-			return false;
-		}
+		return token != null && verifier.isTokenValid(token);
 	}
 }

@@ -14,29 +14,27 @@ import java.io.UnsupportedEncodingException;
  */
 public class TokenVerifier {
 
-	private String secret;
+	private Algorithm algorithmHS;
 
-	public TokenVerifier() {
-		this.secret = new RandomString(100).nextString();
+	public TokenVerifier() throws UnsupportedEncodingException {
+		String secret = new RandomString(100).nextString();
+		algorithmHS = Algorithm.HMAC256(secret);
 	}
 
-	public String generateToken(String user) throws UnsupportedEncodingException, JWTCreationException {
-		Algorithm algorithmHS = Algorithm.HMAC256(secret);
-
+	public String generateToken(String user) throws JWTCreationException {
 		return JWT.create()
 				.withSubject(user)
 				.sign(algorithmHS);
 	}
 
-	public boolean isTokenValid(String token) throws UnsupportedEncodingException {
+	public boolean isTokenValid(String token) {
 		try {
-			Algorithm algorithmHS = Algorithm.HMAC256(secret);
-
 			JWT.require(algorithmHS)
 					.build()
 					.verify(token);
 			return true;
 		} catch (JWTVerificationException e) {
+			e.printStackTrace(); // TODO Remove
 			return false;
 		}
 	}

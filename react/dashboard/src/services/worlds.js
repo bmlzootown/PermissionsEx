@@ -7,7 +7,6 @@ const headers = (token) => {
 const getAll = async (token) => {
     const response = await axios.get(
         '/api/worlds',
-        undefined,
         headers(token)
     )
     return response.data.list

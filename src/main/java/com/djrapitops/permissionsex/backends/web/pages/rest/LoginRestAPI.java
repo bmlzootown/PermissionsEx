@@ -65,7 +65,7 @@ public class LoginRestAPI extends RestAPIHandler {
 						return new JsonResponse("{\"token\": \"" + token + "\"}", 200);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-				} catch (ParseException | UnsupportedEncodingException e) {
+				} catch (ParseException e) {
 					return new JsonErrorResponse(e.getMessage(), 500);
 				}
 			}

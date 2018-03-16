@@ -67,7 +67,8 @@ public class DummyJSONService extends PexJSONService
 
 	@Override
 	public JsonArray getAllPlugins() {
-		return (JsonArray) getFromJSON("[]");
+		return (JsonArray) getFromJSON("[{\"name\": \"PluginName\"," +
+				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]");
 	}
 
 	@Override

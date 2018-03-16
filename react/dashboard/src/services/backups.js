@@ -9,7 +9,6 @@ const headers = (token) => {
 const getAll = async (token) => {
     const response = await axios.get(
         '/api/backups',
-        undefined,
         headers(token)
     )
     console.log(response.data)

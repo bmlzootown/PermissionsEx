@@ -21,9 +21,9 @@ public class RequestHandler implements HttpHandler {
 	private final ResponseHandler responseHandler;
 	private final TokenVerifier tokenVerifier;
 
-	RequestHandler(ResponseHandler responseHandler) {
+	RequestHandler(ResponseHandler responseHandler, TokenVerifier tokenVerifier) {
 		this.responseHandler = responseHandler;
-		this.tokenVerifier = new TokenVerifier();
+		this.tokenVerifier = tokenVerifier;
 	}
 
 	@Override
