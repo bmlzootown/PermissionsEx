@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-
 import Dummy from '../../components/Dummy'
 import { initializePlugins } from '../../reducers/pluginsReducer'
 
+import { Row, Col, Button } from 'reactstrap'
+
 import Plugin from './Plugin'
+import Icon from '../../components/Icon'
 
 class Plugins extends Component {
 
@@ -26,9 +28,25 @@ class Plugins extends Component {
       ? (<p>No Plugins with permissions in plugin.yml</p>)
       : (<div>{plugins.map(plugin => <Plugin key={plugin.name} plugin={plugin} />)}</div>)
 
+    const alignButton = {
+      color: '#fff',
+      backgroundColor: '#757575',
+      padding: '10px 15px',
+      fontSize: '26px',
+      borderColor: '#686868'
+    }
+
     return (
       <div className="animated fadeIn">
-        {Plugins}
+        <Col>
+          <Button className="float-right" title='Tree Permission view' style={alignButton}><Icon i='fa fa-align-left' /></Button>
+          <Button className="float-right" title='Flat Permission view' style={alignButton}><Icon i='fa fa-align-justify' /></Button>
+        </Col>
+        <Row>
+          <Col>
+            {Plugins}
+          </Col>
+        </Row>
       </div>
     )
   }
