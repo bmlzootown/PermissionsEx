@@ -4,7 +4,7 @@ import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_BACKUPS') {
-        return [...store, ...action.data.backups]
+        return [...action.data.backups]
     }
     return store
 }

@@ -4,7 +4,7 @@ import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_PLUGINS') {
-        return [...store, ...action.data.plugins]
+        return [...action.data.plugins]
     }
     return store
 }

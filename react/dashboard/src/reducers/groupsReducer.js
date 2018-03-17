@@ -4,7 +4,7 @@ import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_GROUPS') {
-        return [...store, ...action.data.groups]
+        return [...action.data.groups]
     }
     return store
 }

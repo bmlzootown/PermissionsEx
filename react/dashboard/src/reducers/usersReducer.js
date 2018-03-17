@@ -4,7 +4,7 @@ import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_USERS') {
-        return [...store, ...action.data.users]
+        return [...action.data.users]
     }
     return store
 }

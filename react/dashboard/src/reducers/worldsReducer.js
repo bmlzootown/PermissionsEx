@@ -4,7 +4,7 @@ import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
     if (action.type == 'INIT_WORLDS') {
-        return [...store, ...action.data.worlds]
+        return [...action.data.worlds]
     }
     return store
 }
