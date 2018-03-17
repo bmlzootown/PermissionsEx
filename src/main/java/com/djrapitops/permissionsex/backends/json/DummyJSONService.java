@@ -10,36 +10,10 @@ import com.google.gson.JsonObject;
  *
  * @author Rsl1122
  */
-public class DummyJSONService extends PexJSONService
-		implements GroupJSONService, PluginJSONService, UserJSONService, WorldJSONService, BackupJSONService {
+public class DummyJSONService implements GroupJSONService, PluginJSONService, UserJSONService, WorldJSONService, BackupJSONService {
 
 	private JsonElement getFromJSON(String json) {
 		return new GsonBuilder().setPrettyPrinting().create().fromJson(json, JsonElement.class);
-	}
-
-	@Override
-	public UserJSONService getUserJSONService() {
-		return this;
-	}
-
-	@Override
-	public GroupJSONService getGroupJSONService() {
-		return this;
-	}
-
-	@Override
-	public WorldJSONService getWorldJSONService() {
-		return this;
-	}
-
-	@Override
-	public PluginJSONService getPluginJSONService() {
-		return this;
-	}
-
-	@Override
-	public BackupJSONService getBackupJSONService() {
-		return this;
 	}
 
 	@Override

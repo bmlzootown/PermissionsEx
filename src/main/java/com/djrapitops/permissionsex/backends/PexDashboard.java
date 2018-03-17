@@ -1,6 +1,5 @@
 package com.djrapitops.permissionsex.backends;
 
-import com.djrapitops.permissionsex.backends.json.DummyJSONService;
 import com.djrapitops.permissionsex.backends.json.PexJSONService;
 import com.djrapitops.permissionsex.backends.web.WebServer;
 import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
@@ -38,7 +37,7 @@ public class PexDashboard {
 			logger.log(Level.SEVERE, "Failed to load token verifier, WebServer can not function: " + e.getMessage());
 		}
 		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
-		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
+		pexJSONService = new PexJSONService();
 
 		webServer = new WebServer(plugin, this);
 	}

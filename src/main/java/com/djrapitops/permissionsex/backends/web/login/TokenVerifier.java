@@ -34,7 +34,6 @@ public class TokenVerifier {
 					.verify(token);
 			return true;
 		} catch (JWTVerificationException e) {
-			e.printStackTrace(); // TODO Remove
 			return false;
 		}
 	}
