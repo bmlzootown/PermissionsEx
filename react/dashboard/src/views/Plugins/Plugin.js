@@ -33,7 +33,10 @@ class Plugin extends React.Component {
 
         return (
             <Card body>
-                <h5 onClick={this.toggle}><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /> {plugin.name}</h5>
+                <Row>
+                    <Col><h5 className="float-left" onClick={this.toggle}><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /> {plugin.name}</h5></Col>
+                    <Col><p style={{padding: 0}} className="float-right"><b>{plugin.permissions.length}</b> listed permissions</p></Col>
+                </Row>
                 <Collapse isOpen={open} >
                     <br></br>
                     <ListGroup>

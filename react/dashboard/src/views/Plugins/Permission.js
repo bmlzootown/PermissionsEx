@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { success, error } from '../../reducers/notificationReducer'
+import { copyToClipboard } from '../../utils/clipboard'
 
 import Icon from '../../components/Icon'
 
@@ -14,39 +15,6 @@ import {
 } from 'reactstrap'
 
 class Permission extends React.Component {
-
-    copyToClipboard = (text) => {
-        const textArea = document.createElement("textarea");
-        textArea.style.position = 'fixed';
-        textArea.style.top = 0;
-        textArea.style.left = 0;
-
-        textArea.style.width = '2em';
-        textArea.style.height = '2em';
-
-        textArea.style.padding = 0;
-
-        textArea.style.border = 'none';
-        textArea.style.outline = 'none';
-        textArea.style.boxShadow = 'none';
-
-        textArea.style.background = 'transparent';
-
-        textArea.value = text;
-
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            const successful = document.execCommand('copy');
-            this.props.success(`Copied '${text}' to Clipboard!`)
-        } catch (err) {
-            this.props.error('Unable to copy to clipboard.')
-        }
-
-        document.body.removeChild(textArea);
-    }
 
     render() {
         const permission = this.props.permission
@@ -64,10 +32,14 @@ class Permission extends React.Component {
             <div>
                 <Media>
                     <Media left>
-                        <Button title='Copy permission to Clipboard' id={id + 'clip'} style={clipboardButton} onClick={() => this.copyToClipboard(permission)}><Icon i='fa fa-copy' /></Button>
+                        <Button title='Copy permission to Clipboard' id={id + 'clip'} style={clipboardButton}
+                            onClick={() => copyToClipboard(permission, this.props.success, this.props.error)}><Icon i='fa fa-copy' />
+                        </Button>
                     </Media>
                     <Media left>
-                        <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={clipboardButton} onClick={() => this.copyToClipboard('-' + permission)}><Icon i='fa fa-minus-square' /></Button>
+                        <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={clipboardButton}
+                            onClick={() => this.copyToClipboard('-' + permission, this.props.success, this.props.error)}><Icon i='fa fa-minus-square' />
+                        </Button>
                     </Media>
                     <Media body>
                         <ListGroupItem color="secondary" >
