@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+
 import Dummy from '../../components/Dummy'
 import { initializePlugins } from '../../reducers/pluginsReducer'
+
+import Plugin from './Plugin'
 
 class Plugins extends Component {
 
@@ -17,9 +20,15 @@ class Plugins extends Component {
   }
 
   render() {
+    const plugins = this.context.store.getState().plugins
+
+    const Plugins = !plugins || plugins.length === 0
+      ? (<p>No Plugins with permissions in plugin.yml</p>)
+      : (<div>{plugins.map(plugin => <Plugin key={plugin.name} plugin={plugin} />)}</div>)
+
     return (
       <div className="animated fadeIn">
-        <Dummy />
+        {Plugins}
       </div>
     )
   }
