@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 
 class SidebarForm extends Component {
 
   render() {
-    // Uncomment following code lines to add Sidebar Form
+    const login = this.context.store.getState().login.login
+    const name = login ? login.username : ''
    return (
-      <div className="sidebar-form"><p className="text-center">Logged in as Rsl1122</p></div>
+      <div className="sidebar-form"><p className="text-center">Logged in as {name}</p></div>
     )
   }
+}
+
+SidebarForm.contextTypes = {
+  store: PropTypes.object
 }
 
 export default SidebarForm;
