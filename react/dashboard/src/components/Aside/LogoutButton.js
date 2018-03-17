@@ -11,6 +11,7 @@ class LogoutButton extends Component {
     handleLogout = (event) => {
         event.preventDefault()
         this.props.logout()
+        document.body.classList.toggle('aside-menu-hidden');
     }
 
     render() {
