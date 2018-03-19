@@ -12,3 +12,11 @@ export const handleError = (error, dispatch) => {
         console.log(error)
     }
 }
+
+export const toggleDash = (permission) => {
+    if (permission.startsWith('-')) {
+        return permission.substring(1)
+    } else {
+        return '-' + permission
+    }
+}

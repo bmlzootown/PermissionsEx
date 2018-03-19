@@ -29,4 +29,4 @@ const render = () => {
 };
 
 render();
-//store.subscribe(render);
+// store.subscribe(render);
