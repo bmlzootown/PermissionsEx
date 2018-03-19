@@ -20,8 +20,8 @@ class Permission extends React.Component {
         const permission = this.props.permission
 
         const clipboardButton = {
-            color: '#fff',
             backgroundColor: '#AF6E4D',
+            color: '#fff',
             padding: '12px 15px',
             borderColor: '#a06648'
         }
@@ -29,25 +29,23 @@ class Permission extends React.Component {
         const id = (this.props.pluginName + '_' + permission + '_').replace(' ', '')
 
         return (
-            <div>
-                <Media>
-                    <Media left>
-                        <Button title='Copy permission to Clipboard' id={id + 'clip'} style={clipboardButton}
-                            onClick={() => copyToClipboard(permission, this.props.success, this.props.error)}><Icon i='fa fa-copy' />
-                        </Button>
-                    </Media>
-                    <Media left>
-                        <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={clipboardButton}
-                            onClick={() => this.copyToClipboard('-' + permission, this.props.success, this.props.error)}><Icon i='fa fa-minus-square' />
-                        </Button>
-                    </Media>
-                    <Media body>
-                        <ListGroupItem color="secondary" >
-                            {permission}
-                        </ListGroupItem>
-                    </Media>
+            <Media>
+                <Media left>
+                    <Button title='Copy permission to Clipboard' id={id + 'clip'} style={clipboardButton}
+                        onClick={() => copyToClipboard(permission, this.props.success, this.props.error)}><Icon i='fa fa-copy' />
+                    </Button>
                 </Media>
-            </div>
+                <Media left>
+                    <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={clipboardButton}
+                        onClick={() => this.copyToClipboard('-' + permission, this.props.success, this.props.error)}><Icon i='fa fa-minus-square' />
+                    </Button>
+                </Media>
+                <Media body>
+                    <ListGroupItem color="secondary" >
+                        {permission}
+                    </ListGroupItem>
+                </Media>
+            </Media>
         )
     }
 }

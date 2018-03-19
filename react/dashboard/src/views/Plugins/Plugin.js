@@ -4,14 +4,16 @@ import {
     Card, CardBody, CardTitle,
     Collapse,
     ListGroup,
+    ListGroupItemText,
     ListGroupItem,
     Media,
     Button,
     Row, Col
 } from 'reactstrap'
 
-import Permission from './Permission'
-import Icon from '../../components/Icon'
+import Permission from './Permission';
+import Icon from '../../components/Icon';
+import SubHeader from '../../components/Text/SubHeader';
 
 class Plugin extends React.Component {
 
@@ -32,14 +34,17 @@ class Plugin extends React.Component {
         const open = this.state.open
 
         return (
-            <Card body>
-                <Row>
-                    <Col><h5 className="float-left" onClick={this.toggle}><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /> {plugin.name}</h5></Col>
-                    <Col><p style={{padding: 0}} className="float-right"><b>{plugin.permissions.length}</b> listed permissions</p></Col>
+            <ListGroupItem>
+                <Row onClick={this.toggle}>
+                    <Col><h5 style={{ padding: 0 }} className="float-left">{plugin.name}</h5></Col>
+                    <Col>
+                        <h5 style={{ padding: 0 }} className="float-right"><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></h5>
+                        <p style={{ padding: 0 }} className="float-right"><b>{plugin.permissions.length}</b> listed permissions&nbsp;</p>
+                    </Col>
                 </Row>
                 <Collapse isOpen={open} >
-                    <br></br>
                     <ListGroup>
+                        <SubHeader text='Permissions' />
                         {[...new Set(plugin.permissions)]
                             .filter(permission => !permission.startsWith('-'))
                             .map(permission =>
@@ -47,7 +52,7 @@ class Plugin extends React.Component {
                             )}
                     </ListGroup>
                 </Collapse>
-            </Card>
+            </ListGroupItem>
         )
     }
 }

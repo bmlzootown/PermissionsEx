@@ -5,7 +5,12 @@ import { connect } from 'react-redux'
 import Dummy from '../../components/Dummy'
 import { initializePlugins } from '../../reducers/pluginsReducer'
 
-import { Row, Col, Button } from 'reactstrap'
+import {
+  Row,
+  Col,
+  Button,
+  ListGroup
+} from 'reactstrap'
 
 import Plugin from './Plugin'
 import Icon from '../../components/Icon'
@@ -44,7 +49,9 @@ class Plugins extends Component {
         </Col>
         <Row>
           <Col>
-            {Plugins}
+            <ListGroup>
+              {Plugins}
+            </ListGroup>
           </Col>
         </Row>
       </div>
