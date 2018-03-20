@@ -334,6 +334,9 @@ export const swapWorld = (oldIndex, newIndex) => {
 
 export const renameWorld = (world, newName) => {
     return async (dispatch) => {
+        if (!newName) {
+            return
+        }
         try {
             const oldName = world.name
             const newWorld = {
