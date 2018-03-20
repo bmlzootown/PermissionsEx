@@ -21,11 +21,12 @@ import {
     removePermission, removeInheritedWorld,
     swapPermission, swapInheritedWorld,
     addPermission, addInheritedWorld,
-    removeWorld
+    removeWorld, renameWorld
 } from '../../reducers/worldsReducer'
 import NegateButton from '../../components/Buttons/NegateButton';
 import { RemoveButton, BiggerRemoveButton } from '../../components/Buttons/RemoveButton';
 import { AddButton } from '../../components/Buttons/AddButton';
+import { EditButton } from '../../components/Buttons/EditButton';
 
 class World extends React.Component {
 
@@ -73,44 +74,48 @@ class World extends React.Component {
             }
         })
 
+        const circularInheritance = world.inheritedWorlds.map(w => w.name).includes(world.name)
+
         return (
             <Media>
                 <Media body>
-                    <ListGroupItem>
-                        <Row onClick={this.toggle} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
-                            <Col><h5 style={{ padding: 0 }} className="float-left">{world.name}</h5></Col>
-                            <Col>
-                                <h5  style={{ padding: 0 }} className="float-right">
-                                    <Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} />
-                                </h5>
-                            </Col>
-                        </Row>
-                        <Collapse isOpen={open} >
-                            <SubHeader text={<span>
-                                Permissions{' '}
-                                <AddButton what='new permission' add={() => this.props.addPermission(world, prompt('Add Permission'))} />
-                            </span>} />
-                            <SortableComponent items={permissions} onSortEnd={this.swapPermission} />
-                            <br></br>
-                            <SubHeader text={<span>
-                                Inherited Worlds{' '}
-                                <AddButton what='new inherited world' add={() => this.props.addInheritedWorld(world, prompt('Inherited World Name'))} />
-                            </span>} />
-                            <SortableComponent items={inheritance} onSortEnd={this.swapInheritedWorld} />
-                            <br></br>
-                            <SubHeader text='Inherited Permissions' />
-                            <ListGroup>
-                                {(world.inheritedWorlds ? world.inheritedWorlds : [])
-                                    .map((inheritedWorld, idx) => (
-                                        <InheritedPerms key={idx} name={inheritedWorld.name} permissions={inheritedWorld.permissions} />
-                                    ))
-                                }
-                            </ListGroup>
-                        </Collapse>
-                    </ListGroupItem>
-                </Media>
-                <Media>
-                    <BiggerRemoveButton remove={() => this.props.removeWorld(world)} />
+                    <Row onClick={this.toggle} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
+                        <Col>
+                            <span>
+                                <h5 style={{ padding: 0 }} className="float-left">{world.name + ' '}</h5>
+                                <EditButton what='Change World Name' edit={() => this.props.renameWorld(world, prompt('Rename World', world.name))} />
+                            </span>
+                        </Col>
+                        <Col>
+                            <h5 style={{ padding: 0 }} className="float-right">
+                                <Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} />
+                            </h5>
+                        </Col>
+                    </Row>
+                    <Collapse isOpen={open} >
+                        <SubHeader text={<span>
+                            Permissions{' '}
+                            <AddButton what='new permission' add={() => this.props.addPermission(world, prompt('Add Permission'))} />
+                        </span>} />
+                        <SortableComponent items={permissions} onSortEnd={this.swapPermission} />
+                        <br></br>
+                        <SubHeader text={<span>
+                            Inherited Worlds{' '}
+                            <AddButton what='new inherited world' add={() => this.props.addInheritedWorld(world, prompt('Inherited World Name'))} />
+                        </span>} />
+                        <SortableComponent items={inheritance} onSortEnd={this.swapInheritedWorld} />
+                        <br></br>
+                        <SubHeader text={(circularInheritance
+                            ? (<span title='World can not inherit itself' style={{ color: '#b71c1c' }}>Inherited Permissions <Icon i='fa fa-warning' /></span>)
+                            : 'Inherited Permissions')} />
+                        <ListGroup>
+                            {(world.inheritedWorlds ? world.inheritedWorlds : [])
+                                .map((inheritedWorld, idx) => (
+                                    <InheritedPerms key={idx} name={inheritedWorld.name} permissions={inheritedWorld.permissions} />
+                                ))
+                            }
+                        </ListGroup>
+                    </Collapse>
                 </Media>
             </Media>
         )
@@ -123,6 +128,6 @@ export default connect(
         removePermission, removeInheritedWorld,
         swapPermission, swapInheritedWorld,
         addPermission, addInheritedWorld,
-        removeWorld
+        removeWorld, renameWorld
     }
 )(World);

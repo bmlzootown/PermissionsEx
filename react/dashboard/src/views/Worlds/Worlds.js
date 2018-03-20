@@ -12,7 +12,12 @@ import {
 import World from './World'
 import Icon from '../../components/Icon'
 
-import { addWorld, addInheritedWorld, addPermission, removePermission, removeInheritedWorld, negatePermission } from '../../reducers/worldsReducer'
+import { addWorld, swapWorld, removeWorld, duplicateWorld } from '../../reducers/worldsReducer'
+
+import { BiggerRemoveButton } from '../../components/Buttons/RemoveButton';
+import { BiggerDuplicateButton } from '../../components/Buttons/DuplicateButton';
+
+import SortableComponent from '../../components/Sortable/SortableWithElements';
 
 class Worlds extends Component {
 
@@ -25,12 +30,22 @@ class Worlds extends Component {
     this.unsubscribe()
   }
 
+  swapWorld = ({ oldIndex, newIndex}) => {
+    this.props.swapWorld(oldIndex, newIndex)
+  }
+
   render() {
     const worlds = this.context.store.getState().worlds
 
-    const Worlds = !worlds || worlds.length === 0
-      ? (<p>No Worlds (yet)</p>)
-      : (<div>{worlds.map(world => <World key={world.name} world={world} />)}</div>)
+    const Worlds = worlds.map(world => {
+      return {
+        value: <World key={world.name} world={world} />,
+        after: <span>
+          <BiggerDuplicateButton duplicate={() => this.props.duplicateWorld(world, prompt('Name of the duplicated world'))} />
+          <BiggerRemoveButton remove={() => this.props.removeWorld(world)} />
+        </span>
+      }
+    })
 
     const addButton = {
       color: '#fff',
@@ -47,9 +62,7 @@ class Worlds extends Component {
             <Button onClick={() => this.props.addWorld(prompt('Name of the World'))} className="float-left" title='Add World' style={addButton}><Icon i='fa fa-plus' /></Button>
           </Col>
           <Col>
-            <ListGroup>
-              {Worlds}
-            </ListGroup>
+            <SortableComponent items={Worlds} onSortEnd={this.swapWorld} />
           </Col>
         </Row>
       </div>
@@ -62,5 +75,5 @@ Worlds.contextTypes = {
 }
 
 export default connect(
-  null, { addWorld, addInheritedWorld, addPermission, removePermission, removeInheritedWorld, negatePermission }
+  null, { addWorld, swapWorld, removeWorld, duplicateWorld }
 )(Worlds);

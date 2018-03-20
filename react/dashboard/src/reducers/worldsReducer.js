@@ -23,8 +23,15 @@ const reducer = (store = [], action) => {
     if (action.type === 'ADD_WORLD') {
         newState = newState.concat(action.data.world)
     }
+    if (action.type === 'MOVE_WORLD') {
+        newState = moveArray(newState, action.data.oldIndex, action.data.newIndex)
+    }
     if (action.type === 'REMOVE_WORLD') {
         newState = newState.filter(world => world.name !== action.data.worldName)
+    }
+    if (action.type === 'RENAME_WORLD') {
+        const replacing = action.data.world
+        newState[newState.indexOf(newState.find(world => world.name === action.data.oldName))] = replacing
     }
     if (action.type === 'NEGATE_WORLD_PERMISSION'
         || action.type === 'MOVE_WORLD_PERMISSION'
@@ -35,9 +42,10 @@ const reducer = (store = [], action) => {
         || action.type === 'ADD_WORLD_PERMISSION'
     ) {
         const replacing = action.data.world
-        newState = newState.filter(world => world.name !== replacing.name).concat(replacing)
+        newState[newState.indexOf(newState.find(world => world.name === replacing.name))] = replacing
+        newState = newState
     }
-    return solveInheritance(newState.sort((a, b) => a.name > b.name ? 1 : -1))
+    return solveInheritance(newState)
 }
 
 export const initializeWorlds = (token, worlds) => {
@@ -232,6 +240,31 @@ export const addWorld = (worldName) => {
     }
 }
 
+export const duplicateWorld = (world, worldName) => {
+    return async (dispatch) => {
+        if (!worldName) {
+            return
+        }
+        try {
+            const newWorld = {
+                name: worldName,
+                inheritance: world.inheritance,
+                permissions: world.permissions
+            }
+
+            dispatch({
+                type: 'ADD_WORLD',
+                data: {
+                    world: newWorld
+                }
+            })
+        } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
 export const swapPermission = (world, oldIndex, newIndex) => {
     return async (dispatch) => {
         try {
@@ -273,6 +306,46 @@ export const swapInheritedWorld = (world, oldIndex, newIndex) => {
                 type: 'MOVE_WORLD_INHERITED',
                 data: {
                     world: newWorld
+                }
+            })
+        } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const swapWorld = (oldIndex, newIndex) => {
+    return async (dispatch) => {
+        try {
+            dispatch({
+                type: 'MOVE_WORLD',
+                data: {
+                    oldIndex,
+                    newIndex
+                }
+            })
+        } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const renameWorld = (world, newName) => {
+    return async (dispatch) => {
+        try {
+            const oldName = world.name
+            const newWorld = {
+                name: newName,
+                inheritance: world.inheritance,
+                permissions: world.permissions
+            }
+            dispatch({
+                type: 'RENAME_WORLD',
+                data: {
+                    world: newWorld,
+                    oldName
                 }
             })
         } catch (error) {

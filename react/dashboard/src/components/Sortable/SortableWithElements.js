@@ -10,7 +10,8 @@ import {
 import {
     ListGroup,
     ListGroupItem,
-    Media
+    Media,
+    Row, Col
 } from 'reactstrap'
 
 import Icon from '../Icon'
@@ -22,8 +23,10 @@ const SortableItem = SortableElement(({ value }) => {
         <Media >
             <Media body>
                 <ListGroupItem color={value.color ? value.color : undefined}>
-                    <DragHandle />{' '}
-                    {value.value}
+                    <Row>
+                        <Col md='0'><DragHandle />{' '}</Col>
+                        <Col>{value.value}</Col>
+                    </Row>
                 </ListGroupItem>
             </Media>
             <Media>{value.after}</Media>
