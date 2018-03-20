@@ -1,5 +1,7 @@
 import { logoutExpiredToken } from './loginReducer'
 
+import { arrayMove } from 'react-sortable-hoc';
+
 export const handleError = (error, dispatch) => {
     console.log('catch:', error)
     if (error.response) {
@@ -19,4 +21,8 @@ export const toggleDash = (permission) => {
     } else {
         return '-' + permission
     }
+}
+
+export const moveArray = (items, oldIndex, newIndex) => {
+    return  arrayMove(items, oldIndex, newIndex)
 }

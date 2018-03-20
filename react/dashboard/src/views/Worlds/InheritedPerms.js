@@ -29,8 +29,10 @@ class InheritedPerms extends React.Component {
 
                 <Media body >
                     <Collapse isOpen={this.state.open} >
-                        {this.props.permissions
-                            .map((perm, idx) => (<ListGroupItem color="secondary" key={idx}>{perm}</ListGroupItem>))}
+                        {this.props.permissions.length !== 0 ? this.props.permissions
+                            .map((perm, idx) => (<ListGroupItem color="secondary" key={idx}>{perm}</ListGroupItem>))
+                            : <ListGroupItem color="secondary">(none)</ListGroupItem>
+                        }
                     </Collapse>
                 </Media>
 

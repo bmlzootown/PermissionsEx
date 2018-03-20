@@ -15,15 +15,13 @@ import {
 
 import Icon from '../Icon'
 
-// TODO Refactor to use Redux store for updates
-
 const DragHandle = SortableHandle(() => <Icon i='fa fa-bars' />); // This can be any component you want
 
 const SortableItem = SortableElement(({ value }) => {
     return (
         <Media >
             <Media body>
-                <ListGroupItem>
+                <ListGroupItem color={value.color ? value.color : undefined}>
                     <DragHandle />{' '}
                     {value.value}
                 </ListGroupItem>
@@ -44,26 +42,10 @@ const SortableList = SortableContainer(({ items }) => {
 });
 
 class SortableComponent extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            items: props.items
-        }
-    }
-
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        const { items } = this.state;
-
-        this.setState({
-            items: arrayMove(items, oldIndex, newIndex),
-        });
-    };
-
     render() {
-        const { items } = this.state;
+        const items = this.props.items;
 
-        return <SortableList items={items} onSortEnd={this.onSortEnd} useDragHandle={true} />;
+        return <SortableList items={items} onSortEnd={this.props.onSortEnd} useDragHandle={true} />;
     }
 }
 
