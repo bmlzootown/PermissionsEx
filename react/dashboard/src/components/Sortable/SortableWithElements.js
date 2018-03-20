@@ -45,7 +45,7 @@ class SortableComponent extends Component {
     render() {
         const items = this.props.items;
 
-        return <SortableList items={items} onSortEnd={this.props.onSortEnd} useDragHandle={true} />;
+        return <SortableList helperClass='sortableHelper' items={items} onSortEnd={this.props.onSortEnd} useDragHandle={true} />;
     }
 }
 
