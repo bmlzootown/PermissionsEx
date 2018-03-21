@@ -15,24 +15,23 @@ import {
 import Icon from '../../components/Icon';
 import SortableComponent from '../../components/Sortable/SortableWithElements';
 import SubHeader from '../../components/Text/SubHeader';
-import InheritedPerms from './InheritedPerms'
+import InheritedPerms from '../Worlds/InheritedPerms'
 
 import {
     negatePermission,
-    removePermission, removeInheritedWorld,
-    swapPermission, swapInheritedWorld,
-    addPermission, addInheritedWorld,
-    removeWorld, renameWorld
-} from '../../reducers/worldsReducer'
-
-import { isOpen, toggleWorld } from '../../reducers/openReducer'
+    removePermission, removeInheritedGroup,
+    swapPermission, swapInheritedGroup,
+    addPermission, addInheritedGroup,
+    removeGroup, renameGroup
+} from '../../reducers/groupsReducer'
+import { isOpen, toggleGroup } from '../../reducers/openReducer'
 
 import NegateButton from '../../components/Buttons/NegateButton';
 import { RemoveButton, BiggerRemoveButton } from '../../components/Buttons/RemoveButton';
 import { AddButton } from '../../components/Buttons/AddButton';
 import { EditButton } from '../../components/Buttons/EditButton';
 
-class World extends React.Component {
+class Group extends React.Component {
 
     componentDidMount() {
         const { store } = this.context
@@ -44,42 +43,42 @@ class World extends React.Component {
     }
 
     toggle = () => {
-        this.props.toggleWorld(this.props.world.name)
+        this.props.toggleGroup(this.props.group.name)
     }
 
     swapPermission = ({ oldIndex, newIndex }) => {
-        const world = this.props.world
-        this.props.swapPermission(world, oldIndex, newIndex)
+        const group = this.props.group
+        this.props.swapPermission(group, oldIndex, newIndex)
     }
 
-    swapInheritedWorld = ({ oldIndex, newIndex }) => {
-        const world = this.props.world
-        this.props.swapInheritedWorld(world, oldIndex, newIndex)
+    swapInheritedGroup = ({ oldIndex, newIndex }) => {
+        const group = this.props.group
+        this.props.swapInheritedGroup(group, oldIndex, newIndex)
     }
 
     render() {
-        const world = this.props.world
-        const open = isOpen(this.context.store.getState().open.openWorlds, world.name)
+        const group = this.props.group
+        const open = isOpen(this.context.store.getState().open.openGroups, group.name)
 
-        const permissions = world.permissions.map(permission => {
+        const permissions = group.permissions.map(permission => {
             const negated = permission.startsWith('-')
             return {
                 value: permission,
                 after: <span>
-                    <NegateButton negated={negated} negate={() => this.props.negatePermission(world, permission)} />
-                    <RemoveButton remove={() => this.props.removePermission(world, permission)} />
+                    <NegateButton negated={negated} negate={() => this.props.negatePermission(group, permission)} />
+                    <RemoveButton remove={() => this.props.removePermission(group, permission)} />
                 </span>
             }
         })
 
-        const inheritance = world.inheritance.map(inheritedWorld => {
+        const inheritance = group.inheritance.map(inheritedGroup => {
             return {
-                value: inheritedWorld,
-                after: <RemoveButton remove={() => this.props.removeInheritedWorld(world, inheritedWorld)} />
+                value: inheritedGroup,
+                after: <RemoveButton remove={() => this.props.removeInheritedGroup(group, inheritedGroup)} />
             }
         })
 
-        const circularInheritance = world.inheritedWorlds.map(w => w.name).includes(world.name)
+        const circularInheritance = group.inheritedGroups.map(group => group.name).includes(group.name)
 
         return (
             <Media>
@@ -90,11 +89,11 @@ class World extends React.Component {
                                 <h5 style={{ padding: 0 }} className="float-left">
                                     {
                                         (circularInheritance
-                                            ? <span title='World can not inherit itself' style={{ color: '#b71c1c' }}>{world.name} <Icon i='fa fa-warning' /> </span>
-                                            : world.name + ' ')
+                                            ? <span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>{group.name} <Icon i='fa fa-warning' /> </span>
+                                            : group.name + ' ')
                                     }
                                 </h5>
-                                <EditButton what='Change World Name' edit={() => this.props.renameWorld(world, prompt('Rename World', world.name))} />
+                                <EditButton what='Change Group Name' edit={() => this.props.renameGroup(group, prompt('Rename Group', group.name))} />
                             </span>
                         </Col>
                         <Col>
@@ -106,23 +105,23 @@ class World extends React.Component {
                     <Collapse isOpen={open} >
                         <SubHeader text={<span>
                             Permissions{' '}
-                            <AddButton what='new permission' add={() => this.props.addPermission(world, prompt('Add Permission'))} />
+                            <AddButton what='new permission' add={() => this.props.addPermission(group, prompt('Add Permission'))} />
                         </span>} />
                         <SortableComponent items={permissions} onSortEnd={this.swapPermission} />
                         <br></br>
                         <SubHeader text={<span>
-                            Inherited Worlds{' '}
-                            <AddButton what='new inherited world' add={() => this.props.addInheritedWorld(world, prompt('Inherited World Name'))} />
+                            Inherited Groups{' '}
+                            <AddButton what='new inherited group' add={() => this.props.addInheritedGroup(group, prompt('Inherited Group Name'))} />
                         </span>} />
-                        <SortableComponent items={inheritance} onSortEnd={this.swapInheritedWorld} />
+                        <SortableComponent items={inheritance} onSortEnd={this.swapInheritedGroup} />
                         <br></br>
                         <SubHeader text={(circularInheritance
-                            ? (<span title='World can not inherit itself' style={{ color: '#b71c1c' }}>Inherited Permissions <Icon i='fa fa-warning' /></span>)
+                            ? (<span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>Inherited Permissions <Icon i='fa fa-warning' /></span>)
                             : 'Inherited Permissions')} />
                         <ListGroup>
-                            {(world.inheritedWorlds ? world.inheritedWorlds : [])
-                                .map((inheritedWorld, idx) => (
-                                    <InheritedPerms key={idx} name={inheritedWorld.name} permissions={inheritedWorld.permissions} />
+                            {(group.inheritedGroups ? group.inheritedGroups : [])
+                                .map((inheritedGroup, idx) => (
+                                    <InheritedPerms key={idx} name={inheritedGroup.name} permissions={inheritedGroup.permissions} />
                                 ))
                             }
                         </ListGroup>
@@ -133,16 +132,17 @@ class World extends React.Component {
     }
 }
 
-World.contextTypes = {
+Group.contextTypes = {
     store: PropTypes.object
 }
 
 export default connect(
     null, {
         negatePermission,
-        removePermission, removeInheritedWorld,
-        swapPermission, swapInheritedWorld,
-        addPermission, addInheritedWorld,
-        removeWorld, renameWorld, toggleWorld
+        removePermission, removeInheritedGroup,
+        swapPermission, swapInheritedGroup,
+        addPermission, addInheritedGroup,
+        removeGroup, renameGroup,
+        toggleGroup
     }
-)(World);
+)(Group);

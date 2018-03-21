@@ -14,6 +14,7 @@ import Icon from '../../components/Icon'
 
 import { addWorld, swapWorld, removeWorld, duplicateWorld } from '../../reducers/worldsReducer'
 
+import { BigAddButton } from '../../components/Buttons/AddButton';
 import { BiggerRemoveButton } from '../../components/Buttons/RemoveButton';
 import { BiggerDuplicateButton } from '../../components/Buttons/DuplicateButton';
 
@@ -47,19 +48,11 @@ class Worlds extends Component {
       }
     })
 
-    const addButton = {
-      color: '#fff',
-      backgroundColor: '#689f38',
-      padding: '10px 20px',
-      fontSize: '26px',
-      borderColor: '#686868'
-    }
-
     return (
       <div className="animated fadeIn">
         <Row>
           <Col md='0'>
-            <Button onClick={() => this.props.addWorld(prompt('Name of the World'))} className="float-left" title='Add World' style={addButton}><Icon i='fa fa-plus' /></Button>
+            <BigAddButton className="float-left" what='World' add={() => this.props.addWorld(prompt('Name of the World'))} />
           </Col>
           <Col>
             <SortableComponent items={Worlds} onSortEnd={this.swapWorld} />

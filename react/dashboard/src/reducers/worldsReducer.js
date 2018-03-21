@@ -21,7 +21,7 @@ const reducer = (store = [], action) => {
         newState = [...action.data.worlds]
     }
     if (action.type === 'ADD_WORLD') {
-        if (newState.filter(worldName => worldName === action.data.world.name).length === 0) {
+        if (newState.filter(world => world.name === action.data.world.name).length === 0) {
             newState = newState.concat(action.data.world)
         }
     }
@@ -33,13 +33,13 @@ const reducer = (store = [], action) => {
     }
     if (action.type === 'RENAME_WORLD') {
         const replacing = action.data.world
-        if (newState.filter(worldName => worldName === replacing.name).length === 0) {
+        if (newState.filter(world => world.name === replacing.name).length === 0) {
             newState[newState.indexOf(newState.find(world => world.name === action.data.oldName))] = replacing
         }
     }
     if (action.type === 'NEGATE_WORLD_PERMISSION'
         || action.type === 'MOVE_WORLD_PERMISSION'
-        || action.type === 'MOVE_WORLD_INHERITANCE'
+        || action.type === 'MOVE_WORLD_INHERITED'
         || action.type === 'REMOVE_WORLD_PERMISSION'
         || action.type === 'REMOVE_WORLD_INHERITED'
         || action.type === 'ADD_WORLD_INHERITED'
