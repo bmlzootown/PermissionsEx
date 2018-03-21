@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import {
     Card, CardBody, CardTitle,
@@ -15,23 +17,26 @@ import Permission from './Permission';
 import Icon from '../../components/Icon';
 import SubHeader from '../../components/Text/SubHeader';
 
+import { isOpen, togglePlugin } from '../../reducers/openReducer'
+
 class Plugin extends React.Component {
 
-    constructor(props) {
-        super(props)
+    componentDidMount() {
+        const { store } = this.context
+        this.unsubscribe = store.subscribe(() => this.forceUpdate())
+    }
 
-        this.state = {
-            open: false
-        }
+    componentWillUnmount() {
+        this.unsubscribe()
     }
 
     toggle = () => {
-        this.setState({ open: !this.state.open })
+        this.props.togglePlugin(this.props.plugin.name)
     }
 
     render() {
         const plugin = this.props.plugin
-        const open = this.state.open
+        const open = isOpen(this.context.store.getState().open.openPlugins, plugin.name)
 
         return (
             <ListGroupItem>
@@ -57,4 +62,10 @@ class Plugin extends React.Component {
     }
 }
 
-export default Plugin
+Plugin.contextTypes = {
+    store: PropTypes.object
+}
+
+export default connect(
+    null, { togglePlugin }
+)(Plugin)

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
@@ -23,6 +24,9 @@ import {
     addPermission, addInheritedWorld,
     removeWorld, renameWorld
 } from '../../reducers/worldsReducer'
+
+import { isOpen, toggleWorld } from '../../reducers/openReducer'
+
 import NegateButton from '../../components/Buttons/NegateButton';
 import { RemoveButton, BiggerRemoveButton } from '../../components/Buttons/RemoveButton';
 import { AddButton } from '../../components/Buttons/AddButton';
@@ -30,16 +34,17 @@ import { EditButton } from '../../components/Buttons/EditButton';
 
 class World extends React.Component {
 
-    constructor(props) {
-        super(props)
+    componentDidMount() {
+        const { store } = this.context
+        this.unsubscribe = store.subscribe(() => this.forceUpdate())
+    }
 
-        this.state = {
-            open: true
-        }
+    componentWillUnmount() {
+        this.unsubscribe()
     }
 
     toggle = () => {
-        this.setState({ open: !this.state.open })
+        this.props.toggleWorld(this.props.world.name)
     }
 
     swapPermission = ({ oldIndex, newIndex }) => {
@@ -54,7 +59,7 @@ class World extends React.Component {
 
     render() {
         const world = this.props.world
-        const open = this.state.open
+        const open = isOpen(this.context.store.getState().open.openWorlds, world.name)
 
         const permissions = world.permissions.map(permission => {
             const negated = permission.startsWith('-')
@@ -122,12 +127,16 @@ class World extends React.Component {
     }
 }
 
+World.contextTypes = {
+    store: PropTypes.object
+}
+
 export default connect(
     null, {
         negatePermission,
         removePermission, removeInheritedWorld,
         swapPermission, swapInheritedWorld,
         addPermission, addInheritedWorld,
-        removeWorld, renameWorld
+        removeWorld, renameWorld, toggleWorld
     }
 )(World);

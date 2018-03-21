@@ -10,6 +10,7 @@ import backupsReducer from './reducers/backupsReducer'
 import loginReducer from './reducers/loginReducer'
 
 import notificationReducer from './reducers/notificationReducer'
+import openReducer from './reducers/openReducer'
 
 const reducer = combineReducers({
     users: usersReducer,
@@ -18,7 +19,8 @@ const reducer = combineReducers({
     plugins: pluginsReducer,
     backups: backupsReducer,
     login: loginReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    open: openReducer
 })
 
 const loggerMiddleware = store => next => action => {
