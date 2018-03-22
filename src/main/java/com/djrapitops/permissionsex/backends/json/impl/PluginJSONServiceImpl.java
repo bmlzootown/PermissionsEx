@@ -16,11 +16,17 @@ import java.util.List;
 
 public class PluginJSONServiceImpl implements PluginJSONService {
 
+	private final PermissionsEx pex;
+
+	public PluginJSONServiceImpl(PermissionsEx pex) {
+		this.pex = pex;
+	}
+
 	@Override
 	public JsonArray getAllPlugins() {
 		List<PluginContainer> pluginContainers = new ArrayList<>();
 
-		for (Plugin plugin : PermissionsEx.getPlugin().getServer().getPluginManager().getPlugins()) {
+		for (Plugin plugin : pex.getServer().getPluginManager().getPlugins()) {
 			pluginContainers.add(new PluginContainer(plugin.getName(), plugin.getDescription().getPermissions()));
 		}
 
@@ -34,7 +40,7 @@ public class PluginJSONServiceImpl implements PluginJSONService {
 
 	@Override
 	public JsonObject getPlugin(String pluginName) throws IllegalArgumentException {
-		Plugin plugin = PermissionsEx.getPlugin().getServer().getPluginManager().getPlugin(pluginName);
+		Plugin plugin = pex.getServer().getPluginManager().getPlugin(pluginName);
 		if (plugin == null) {
 			throw new IllegalArgumentException(pluginName + " not found.");
 		}

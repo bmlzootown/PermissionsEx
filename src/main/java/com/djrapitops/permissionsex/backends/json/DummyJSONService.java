@@ -10,87 +10,10 @@ import com.google.gson.JsonObject;
  *
  * @author Rsl1122
  */
-public class DummyJSONService implements GroupJSONService, PluginJSONService, UserJSONService, WorldJSONService, BackupJSONService {
+public class DummyJSONService implements BackupJSONService {
 
 	private JsonElement getFromJSON(String json) {
 		return new GsonBuilder().setPrettyPrinting().create().fromJson(json, JsonElement.class);
-	}
-
-	@Override
-	public JsonArray getAllGroups() {
-		return (JsonArray) getFromJSON("[{\"name\": \"GroupName\",\"inheritance\": [\"InheritedGroupName\",\"SecondInheritedGroupName\"]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
-				"\"worlds:\": [{\"name\": \"WorldName\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
-				"{\"name\": \"WorldName2\",\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}]");
-	}
-
-	@Override
-	public JsonObject getGroup(String groupName) throws IllegalArgumentException {
-		return (JsonObject) getFromJSON("{\"name\": \"GroupName\",\"inheritance\": [\"InheritedGroupName\",\"SecondInheritedGroupName\"]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
-				"\"worlds:\": [{\"name\": \"WorldName\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
-				"{\"name\": \"WorldName2\",\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}");
-	}
-
-	@Override
-	public void updateGroups(JsonArray groups) {
-
-	}
-
-	@Override
-	public JsonArray getAllPlugins() {
-		return (JsonArray) getFromJSON("[{\"name\": \"PluginName\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]");
-	}
-
-	@Override
-	public JsonObject getPlugin(String pluginName) throws IllegalArgumentException {
-		throw new IllegalArgumentException("Not found with name " + pluginName);
-	}
-
-	@Override
-	public JsonArray getAllUsers() {
-		return (JsonArray) getFromJSON("[{\"name\": \"Player Name\",\"groups\": [{\"name\": \"GroupName\"}," +
-				"{\"name\": \"GroupName2\"}]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
-				"\"worlds:\": [{\"name\": \"WorldName\",\"inheritance\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
-				"{\"name\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}]");
-	}
-
-	@Override
-	public JsonObject getUser(String name) throws IllegalArgumentException {
-		return (JsonObject) getFromJSON("{\"name\": \"Player Name\",\"groups\": [{\"name\": \"GroupName\"}," +
-				"{\"name\": \"GroupName2\"}]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]," +
-				"\"worlds:\": [{\"name\": \"WorldName\",\"inheritance\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}," +
-				"{\"name\": \"WorldName2\"," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]}");
-	}
-
-	@Override
-	public void updateUsers(JsonArray users) {
-	}
-
-	@Override
-	public JsonArray getAllWorlds() {
-		return (JsonArray) getFromJSON("[{\"name\": \"WorldName\",\"inheritance\": [\"WorldName2\"]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}]");
-	}
-
-	@Override
-	public JsonObject getWorld(String worldName) throws IllegalArgumentException {
-		return (JsonObject) getFromJSON("{\"name\": \"WorldName\",\"inheritance\": [\"WorldName2\"]," +
-				"\"permissions\": [\"plugin.example.permission\",\"-plugin.example.negated.permission\"]}");
-	}
-
-	@Override
-	public void updateWorlds(JsonArray worlds) {
-
 	}
 
 	@Override

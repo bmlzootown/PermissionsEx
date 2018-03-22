@@ -37,7 +37,7 @@ public class PexDashboard {
 			logger.log(Level.SEVERE, "Failed to load token verifier, WebServer can not function: " + e.getMessage());
 		}
 		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
-		pexJSONService = new PexJSONService();
+		pexJSONService = new PexJSONService(plugin);
 
 		webServer = new WebServer(plugin, this);
 	}

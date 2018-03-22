@@ -30,14 +30,13 @@ public interface UserJSONService {
             "worlds:": [
                 {
                     "name": "WorldName",
-                    "inheritance": "WorldName2",
-                    "permissions": [
+                    "information": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
                     ]
                 },{
                     "name": "WorldName2",
-                    "permissions": [
+                    "information": [
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
                     ]
