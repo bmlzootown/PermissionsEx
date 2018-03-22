@@ -4,12 +4,23 @@ const headers = (token) => {
     return token ? { headers: { 'Authorization': 'bearer ' + token } } : undefined
 }
 
+const mapper = (group) => {
+    return {
+        name: group.name,
+        inheritance: group.inheritance,
+        permissions: group.worlds.shift().information,
+        worlds: group.worlds.map(world => {
+            return { name: world.name, permissions: world.information }
+        })
+    }
+}
+
 const getAll = async (token) => {
     const response = await axios.get(
         '/api/groups',
         headers(token)
     )
-    return response.data.list
+    return response.data.list.map(mapper)
 }
 
 export default { getAll }

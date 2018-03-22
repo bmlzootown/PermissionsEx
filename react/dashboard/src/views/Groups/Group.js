@@ -36,7 +36,7 @@ import NegateButton from '../../components/Buttons/NegateButton'
 import { RemoveButton } from '../../components/Buttons/RemoveButton'
 import { AddButton } from '../../components/Buttons/AddButton'
 import { EditButton } from '../../components/Buttons/EditButton'
-import World from '../../components/World'
+import GroupsWorld from './GroupsWorld'
 
 class Group extends React.Component {
 
@@ -93,7 +93,7 @@ class Group extends React.Component {
 
         const worlds = group.worlds.map(world => {
             return {
-                value: <World
+                value: <GroupsWorld
                     world={world}
                     open={true}
 
