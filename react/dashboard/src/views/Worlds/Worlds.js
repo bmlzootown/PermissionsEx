@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import {
-    Row,
-    Col,
-} from 'reactstrap'
+import { Col, Row, } from 'reactstrap'
 
 import WorldsWorld from './WorldsWorld'
 
-import { addWorld, swapWorld, removeWorld, duplicateWorld } from '../../reducers/worldsReducer'
+import { addWorld, duplicateWorld, removeWorld, swapWorld } from '../../reducers/worldsReducer'
 
 import { BigAddButton } from '../../components/Buttons/AddButton'
 import { BiggerRemoveButton } from '../../components/Buttons/RemoveButton'
@@ -19,25 +16,25 @@ import SortableComponent from '../../components/Sortable/SortableWithElements'
 
 class Worlds extends Component {
 
-    componentDidMount() {
-        const { store } = this.context
-        this.unsubscribe = store.subscribe(() => this.forceUpdate())
-    }
+    swapWorld = ({ oldIndex, newIndex }) => {
+        this.props.swapWorld(oldIndex, newIndex)
+    };
 
     componentWillUnmount() {
         this.unsubscribe()
     }
 
-    swapWorld = ({ oldIndex, newIndex }) => {
-        this.props.swapWorld(oldIndex, newIndex)
+    componentDidMount() {
+        const { store } = this.context
+        this.unsubscribe = store.subscribe(() => this.forceUpdate())
     }
 
     render() {
         const worlds = this.context.store.getState().worlds
 
-        const Worlds = worlds.map(world => {
+        const Worlds = worlds.map((world, indx) => {
             return {
-                value: <WorldsWorld key={world.name} world={world} />,
+                value: <WorldsWorld key={indx} world={world} />,
                 after: <span>
                     <BiggerDuplicateButton duplicate={() => this.props.duplicateWorld(world, prompt('Name of the duplicated world'))} />
                     <BiggerRemoveButton remove={() => this.props.removeWorld(world)} />

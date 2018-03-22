@@ -2,15 +2,27 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import World from '../../components/World'
+import {
+    Collapse,
+    Media,
+    Row, Col
+} from 'reactstrap'
 
 import {
-    negatePermission,
-    removePermission, removeInheritedWorld,
-    swapPermission, swapInheritedWorld,
-    addPermission, addInheritedWorld,
-    removeWorld, renameWorld
+    removeInheritedWorld,
+    swapInheritedWorld,
+    addInheritedWorld,
+    removeWorld,
+    renameWorld
 } from '../../reducers/worldsReducer'
+
+import Icon from '../../components/Icon'
+import SortableComponent from '../../components/Sortable/SortableWithElements'
+import SubHeader from '../../components/Text/SubHeader'
+
+import { RemoveButton } from '../../components/Buttons/RemoveButton'
+import { AddButton } from '../../components/Buttons/AddButton'
+import { EditButton } from '../../components/Buttons/EditButton'
 
 import { isOpen, toggleWorld } from '../../reducers/openReducer'
 
@@ -34,18 +46,10 @@ class WorldsWorld extends React.Component {
                 world={world}
                 open={open}
 
-                swapPermission={({ oldIndex, newIndex }) =>
-                    this.props.swapPermission(world, oldIndex, newIndex)}
-                addPermission={() =>
-                    this.props.addPermission(world, prompt('Add Permission'))}
-                negatePermission={(permission) =>
-                    this.props.negatePermission(world, permission)}
-                removePermission={(permission) =>
-                    this.props.removePermission(world, permission)}
                 swapInheritedWorld={({ oldIndex, newIndex }) =>
                     this.props.swapInheritedWorld(world, oldIndex, newIndex)}
                 addInheritedWorld={() =>
-                    this.props.addInheritedWorld(world, prompt('Inherited World Name'))}
+                    this.props.addInheritedWorld(world, prompt('Inherited World Name', world.name))}
                 removeInheritedWorld={(inheritedWorld) =>
                     this.props.removeInheritedWorld(world, inheritedWorld)}
                 renameWorld={() =>
@@ -57,16 +61,63 @@ class WorldsWorld extends React.Component {
     }
 }
 
+class World extends React.Component {
+
+    render() {
+        const world = this.props.world
+        const open = this.props.open
+
+        const inheritance = world.inheritance.map(inheritedWorld => {
+            return {
+                value: inheritedWorld,
+                after: <RemoveButton remove={() => this.props.removeInheritedWorld(inheritedWorld)} />
+            }
+        })
+
+        const circularInheritance = world.inheritedWorlds.map(w => w.name).includes(world.name)
+
+        return (
+            <Media>
+                <Media body>
+                    <Row onClick={this.props.toggleWorld} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
+                        <Col>
+                            <span>
+                                <h5 style={{ padding: 0 }} className="float-left">
+                                    {
+                                        (circularInheritance
+                                            ? <span title='World can not inherit itself' style={{ color: '#b71c1c' }}>{world.name} <Icon i='fa fa-warning' /> </span>
+                                            : world.name + ' ')
+                                    }
+                                </h5>
+                                <EditButton what='Change World Name' edit={() => this.props.renameWorld()} />
+                            </span>
+                        </Col>
+                        <Col>
+                            <h5 style={{ padding: 0 }} className="float-right">
+                                <Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} />
+                            </h5>
+                        </Col>
+                    </Row>
+                    <Collapse isOpen={open} >
+                        <SubHeader text={<span>
+                            Inherited Worlds{' '}
+                            <AddButton what='new inherited world' add={() => this.props.addInheritedWorld()} />
+                        </span>} />
+                        <SortableComponent items={inheritance} onSortEnd={this.props.swapInheritedWorld} />
+                    </Collapse>
+                </Media>
+            </Media>
+        )
+    }
+}
+
 WorldsWorld.contextTypes = {
     store: PropTypes.object
 }
 
 export default connect(
     null, {
-        negatePermission,
-        removePermission, removeInheritedWorld,
-        swapPermission, swapInheritedWorld,
-        addPermission, addInheritedWorld,
-        removeWorld, renameWorld, toggleWorld
+        removeInheritedWorld, swapInheritedWorld,
+        addInheritedWorld, removeWorld, renameWorld, toggleWorld
     }
 )(WorldsWorld)
