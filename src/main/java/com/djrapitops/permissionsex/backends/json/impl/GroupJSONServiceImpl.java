@@ -48,16 +48,12 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 		Map<String, List<String>> allPermissions = permissionGroup.getAllPermissions();
 		List<WorldContainer> worlds = new ArrayList<>();
 		for (Map.Entry<String, List<String>> entry : allPermissions.entrySet()) {
-			if ("".equals(entry.getKey())) {
-				continue;
-			}
 			worlds.add(new WorldContainer(entry.getKey(), entry.getValue()));
 		}
 
-		List<String> permissions = allPermissions.get("");
 		List<String> inheritance = permissionGroup.getParentIdentifiers();
 
-		return new GroupContainer(groupName, inheritance, permissions, worlds);
+		return new GroupContainer(groupName, inheritance, worlds);
 	}
 
 	@Override

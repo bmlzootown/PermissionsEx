@@ -49,16 +49,12 @@ public class UserJSONServiceImpl implements UserJSONService {
 		Map<String, List<String>> allPermissions = permissionUser.getAllPermissions();
 		List<WorldContainer> worlds = new ArrayList<>();
 		for (Map.Entry<String, List<String>> entry : allPermissions.entrySet()) {
-			if ("".equals(entry.getKey())) {
-				continue;
-			}
 			worlds.add(new WorldContainer(entry.getKey(), entry.getValue()));
 		}
 
-		List<String> permissions = allPermissions.get("");
 		List<String> groups = Arrays.asList(permissionUser.getGroupsNames());
 
-		return new UserContainer(name, groups, permissions, worlds);
+		return new UserContainer(name, groups, worlds);
 	}
 
 	@Override
