@@ -3,19 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
-    Card, CardBody, CardTitle,
     Collapse,
     ListGroup,
-    ListGroupItemText,
     ListGroupItem,
-    Media,
-    Button,
     Row, Col
 } from 'reactstrap'
 
-import Permission from './Permission';
-import Icon from '../../components/Icon';
-import SubHeader from '../../components/Text/SubHeader';
+import Permission from './Permission'
+import Icon from '../../components/Icon'
+import SubHeader from '../../components/Text/SubHeader'
 
 import { isOpen, togglePlugin } from '../../reducers/openReducer'
 
