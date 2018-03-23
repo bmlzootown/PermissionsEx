@@ -4,16 +4,23 @@ import { Button } from 'reactstrap'
 
 import Icon from '../Icon'
 
-const negateButton = {
+const active = {
     backgroundColor: '#7e57c2',
     color: '#fff',
     padding: '12px 15px',
     borderColor: '#673ab7'
 }
 
+const inactive = {
+    backgroundColor: '#ba68c8',
+    color: '#fff',
+    padding: '12px 15px',
+    borderColor: '#ab47bc'
+}
+
 const NegateButton = ({ negated, negate }) => (
-    <Button title={negated ? "Permit" : "Negate"} style={negateButton} onClick={negate}>
-        <Icon i={negated ? 'fa fa-plus-square' : 'fa fa-minus-square'} />
+    <Button title={negated ? "Permit" : "Negate"} style={negated ? active : inactive} onClick={negate}>
+        <Icon i={'fa fa-minus-square'} />
     </Button>
 )
 
