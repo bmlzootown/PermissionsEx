@@ -2,21 +2,8 @@ import worldsSvc from '../services/worlds'
 
 import { handleError, toggleDash, moveArray } from './reducers'
 
-const findWorld = (name, worlds) => {
-    return worlds.find(world => world.name === name)
-}
-
-const solveInheritance = (worlds) => {
-    worlds.forEach(world => {
-        const inherited = world.inheritance ? world.inheritance : []
-        const inheritedWorlds = inherited.map(inheritedWorld => findWorld(inheritedWorld, worlds)).filter(world => Boolean(world))
-        world.inheritedWorlds = inheritedWorlds
-    })
-    return worlds
-}
-
 const reducer = (store = [], action) => {
-    let newState = [...store];
+    let newState = [...store]
     if (action.type === 'INIT_WORLDS') {
         newState = [...action.data.worlds]
     }
@@ -47,9 +34,8 @@ const reducer = (store = [], action) => {
     ) {
         const replacing = action.data.world
         newState[newState.indexOf(newState.find(world => world.name === replacing.name))] = replacing
-        newState = newState
     }
-    return solveInheritance(newState)
+    return newState
 }
 
 export const initializeWorlds = (token, worlds) => {

@@ -2,22 +2,9 @@ import groupsSvc from '../services/groups'
 
 import { handleError, toggleDash, moveArray } from './reducers'
 
-const findGroup = (name, groups) => {
-    return groups.find(group => group.name === name)
-}
-
-const solveInheritance = (groups) => {
-    groups.forEach(group => {
-        const inherited = group.inheritance ? group.inheritance : []
-        const inheritedGroups = inherited.map(inheritedGroup => findGroup(inheritedGroup, groups)).filter(group => Boolean(group))
-        group.inheritedGroups = inheritedGroups
-    })
-    return groups
-}
-
 const reducer = (store = [], action) => {
-    let newState = [...store];
-    if (action.type == 'INIT_GROUPS') {
+    let newState = [...store]
+    if (action.type === 'INIT_GROUPS') {
         newState = [...action.data.groups]
     }
     if (action.type === 'ADD_GROUP') {
@@ -47,9 +34,8 @@ const reducer = (store = [], action) => {
     ) {
         const replacing = action.data.group
         newState[newState.indexOf(newState.find(group => group.name === replacing.name))] = replacing
-        newState = newState
     }
-    return solveInheritance(newState)
+    return newState
 }
 
 export const initializeGroups = (token, groups) => {

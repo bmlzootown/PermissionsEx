@@ -3,7 +3,7 @@ import usersSvc from '../services/users'
 import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
-    if (action.type == 'INIT_USERS') {
+    if (action.type === 'INIT_USERS') {
         return [...action.data.users]
     }
     return store

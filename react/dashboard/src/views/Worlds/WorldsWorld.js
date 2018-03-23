@@ -74,7 +74,7 @@ class World extends React.Component {
             }
         })
 
-        const circularInheritance = world.inheritedWorlds.map(w => w.name).includes(world.name)
+        const circularInheritance = world.inheritance.includes(world.name)
 
         return (
             <Media>

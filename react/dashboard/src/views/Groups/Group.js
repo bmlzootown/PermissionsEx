@@ -2,12 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Col, Collapse, ListGroup, Media, Row } from 'reactstrap'
+import { Col, Collapse, Media, Row } from 'reactstrap'
 
 import Icon from '../../components/Icon'
 import SortableComponent from '../../components/Sortable/SortableWithElements'
 import SubHeader from '../../components/Text/SubHeader'
-import InheritedPerms from '../Worlds/InheritedPerms'
 
 import {
     addInheritedGroup,
@@ -120,7 +119,7 @@ class Group extends React.Component {
             }
         })
 
-        const circularInheritance = group.inheritedGroups.map(group => group.name).includes(group.name)
+        const circularInheritance = group.inheritance.includes(group.name)
 
         return (
             <Media>
@@ -164,18 +163,6 @@ class Group extends React.Component {
                             <AddButton what='new world' add={() => this.props.addWorld(group, prompt('World Name'))} />
                         </span>} />
                         <SortableComponent items={worlds} onSortEnd={this.swapWorld} />
-
-                        <br></br>
-                        <SubHeader text={(circularInheritance
-                            ? (<span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>Inherited Permissions <Icon i='fa fa-warning' /></span>)
-                            : 'Inherited Permissions')} />
-                        <ListGroup>
-                            {(group.inheritedGroups ? group.inheritedGroups : [])
-                                .map((inheritedGroup, idx) => (
-                                    <InheritedPerms key={idx} name={inheritedGroup.name} permissions={inheritedGroup.permissions} />
-                                ))
-                            }
-                        </ListGroup>
                     </Collapse>
                 </Media>
             </Media>
