@@ -10,8 +10,7 @@ import Icon from '../../components/Icon'
 import {
     ListGroupItem,
     Button,
-    Media,
-    UncontrolledTooltip
+    Media
 } from 'reactstrap'
 
 class Permission extends React.Component {
@@ -26,18 +25,25 @@ class Permission extends React.Component {
             borderColor: '#a06648'
         }
 
+        const negated = {
+            backgroundColor: '#7e57c2',
+            color: '#fff',
+            padding: '12px 15px',
+            borderColor: '#673ab7'
+        }
+
         const id = (this.props.pluginName + '_' + permission + '_').replace(' ', '')
 
         return (
             <Media>
                 <Media left>
                     <Button title='Copy permission to Clipboard' id={id + 'clip'} style={clipboardButton}
-                        onClick={() => copyToClipboard(permission, this.props.success, this.props.error)}><Icon i='fa fa-copy' />
+                        onClick={() => copyToClipboard(permission, this.props.success, this.props.error)}><Icon i='fa fa-clone' />
                     </Button>
                 </Media>
                 <Media left>
-                    <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={clipboardButton}
-                        onClick={() => this.copyToClipboard('-' + permission, this.props.success, this.props.error)}><Icon i='fa fa-minus-square' />
+                    <Button title='Copy negated permission to Clipboard' id={id + 'nclip'} style={negated}
+                        onClick={() => copyToClipboard('-' + permission, this.props.success, this.props.error)}><Icon i='fa fa-clone' />
                     </Button>
                 </Media>
                 <Media body>
