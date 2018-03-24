@@ -7,14 +7,14 @@ const RegisterInfo = ({ isOpen, toggle }) => (
         <Modal isOpen={isOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>User Creation instructions</ModalHeader>
             <ModalBody>
-                <p>In order to keep the dashboard secure users are registered in the dashboard_users.yml file.</p>
+                <p>In order to keep the dashboard secure, users are registered in the dashboard_users.yml file.</p>
                 <p>You can create new users by using the following format:</p>
                 <pre>
                     users:<br></br>
                     &nbsp;&nbsp;YourUsername:<br></br>
                     &nbsp;&nbsp;&nbsp;&nbsp;password: YourPassword
           </pre>
-                <p>After loading the file the passwords will be hashed with a salt to keep them secure in case of a
+                <p>After loading the file, the passwords will be hashed with a salt to keep them secure in case of a
                         breach:</p>
                 <pre>
                     users:<br></br>

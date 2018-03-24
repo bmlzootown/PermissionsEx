@@ -8,7 +8,7 @@ const Login_ForgotPass = ({ isOpen, toggle }) =>
             <Modal isOpen={isOpen} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Password Replacement instructions</ModalHeader>
                 <ModalBody>
-                    <p>You can replace a password dashboard_users.yml file in the same way you create a new user.</p>
+                    <p>You can replace a password in the dashboard_users.yml file the same way you create a new user.</p>
                     <p>Add a new password for the user:</p>
                     <pre>
                         users:<br></br>
