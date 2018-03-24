@@ -36,7 +36,7 @@ class Worlds extends Component {
             return {
                 value: <WorldsWorld key={indx} world={world} />,
                 after: <span>
-                    <BiggerDuplicateButton duplicate={() => this.props.duplicateWorld(world, prompt('Name of the duplicated world'))} />
+                    <BiggerDuplicateButton duplicate={() => this.props.duplicateWorld(world, prompt('Name of the duplicated world', world.name))} />
                     <BiggerRemoveButton remove={() => this.props.removeWorld(world)} />
                 </span>
             }

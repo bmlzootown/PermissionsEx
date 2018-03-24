@@ -4,22 +4,23 @@ import localStorage from '../localstorage/localstorage'
 import { sendMessage } from './notificationReducer'
 
 const initialState = {
+    initialized: false,
     login: undefined
-};
+}
 
 const reducer = (store = initialState, action) => {
-    if (action.type == 'LOGIN') {
-        return {...store, ...{ login: action.data.login }}
+    if (action.type === 'LOGIN') {
+        return { ...store, ...{ login: action.data.login, initialized: true } }
     }
-    if (action.type == 'LOGOUT') {
-        return {...store, ...{ login: undefined }}
+    if (action.type === 'LOGOUT') {
+        return { ...store, ...{ login: undefined } }
     }
     return store
-};
+}
 
 export const initializeLogin = () => {
     return (dispatch) => {
-        const login = localStorage.getLogin();
+        const login = localStorage.getLogin()
         if (login) {
             dispatch({
                 type: 'LOGIN',
@@ -29,7 +30,7 @@ export const initializeLogin = () => {
             })
         }
     }
-};
+}
 
 export const login = (username, password) => {
     return async (dispatch) => {
@@ -37,11 +38,11 @@ export const login = (username, password) => {
             const response = await loginSvc.login({
                 username: username,
                 password: password
-            });
+            })
 
             const token = response.data.token
 
-            localStorage.loggedIn({ username, token });
+            localStorage.loggedIn({ username, token })
 
             dispatch({
                 type: 'LOGIN',
@@ -61,7 +62,7 @@ export const login = (username, password) => {
             }
         }
     }
-};
+}
 
 export const logout = () => {
     return async (dispatch) => {

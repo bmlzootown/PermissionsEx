@@ -49,7 +49,7 @@ class WorldsWorld extends React.Component {
                 swapInheritedWorld={({ oldIndex, newIndex }) =>
                     this.props.swapInheritedWorld(world, oldIndex, newIndex)}
                 addInheritedWorld={() =>
-                    this.props.addInheritedWorld(world, prompt('Inherited World Name', world.name))}
+                    this.props.addInheritedWorld(world, prompt('Inherited World Name'))}
                 removeInheritedWorld={(inheritedWorld) =>
                     this.props.removeInheritedWorld(world, inheritedWorld)}
                 renameWorld={() =>
