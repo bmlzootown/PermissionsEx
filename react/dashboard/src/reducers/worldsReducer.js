@@ -89,7 +89,7 @@ export const negatePermission = (world, permission) => {
 export const removePermission = (world, permission) => {
     return async (dispatch) => {
         try {
-            const permissions = [...world.permissions].filter(perm => perm !== permission)
+            const permissions = world.permissions.filter(perm => perm !== permission)
 
             const newWorld = {
                 name: world.name,
@@ -113,7 +113,7 @@ export const removePermission = (world, permission) => {
 export const removeInheritedWorld = (world, inheritedWorld) => {
     return async (dispatch) => {
         try {
-            const inheritance = [...world.inheritance].filter(inherit => inherit !== inheritedWorld)
+            const inheritance = world.inheritance.filter(inherit => inherit !== inheritedWorld)
 
             const newWorld = {
                 name: world.name,
@@ -157,7 +157,7 @@ export const addPermission = (world, permission) => {
             return
         }
         try {
-            const permissions = [...world.permissions].concat(permission.replace(' ', ''))
+            const permissions = world.permissions.concat(permission.replace(' ', ''))
 
             const newWorld = {
                 name: world.name,
@@ -184,7 +184,7 @@ export const addInheritedWorld = (world, inheritedWorld) => {
             return
         }
         try {
-            const inheritance = [...world.inheritance].concat(inheritedWorld)
+            const inheritance = world.inheritance.concat(inheritedWorld)
 
             const newWorld = {
                 name: world.name,
@@ -258,9 +258,7 @@ export const duplicateWorld = (world, worldName) => {
 export const swapPermission = (world, oldIndex, newIndex) => {
     return async (dispatch) => {
         try {
-            const permissions = [...world.permissions]
-
-            const newPermisisons = moveArray(permissions, oldIndex, newIndex)
+            const newPermisisons = moveArray(world.permissions, oldIndex, newIndex)
 
             const newWorld = {
                 name: world.name,
@@ -283,9 +281,7 @@ export const swapPermission = (world, oldIndex, newIndex) => {
 export const swapInheritedWorld = (world, oldIndex, newIndex) => {
     return async (dispatch) => {
         try {
-            const inheritance = [...world.inheritance]
-
-            const newInheritance = moveArray(inheritance, oldIndex, newIndex)
+            const newInheritance = moveArray(world.inheritance, oldIndex, newIndex)
 
             const newWorld = {
                 name: world.name,
