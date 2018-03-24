@@ -9,8 +9,11 @@ const initialState = {
 }
 
 const reducer = (store = initialState, action) => {
+    if (action.type === 'INIT_LOGIN') {
+        return { ...store, ...{ initialized: true } }
+    }
     if (action.type === 'LOGIN') {
-        return { ...store, ...{ login: action.data.login, initialized: true } }
+        return { ...store, ...{ login: action.data.login } }
     }
     if (action.type === 'LOGOUT') {
         return { ...store, ...{ login: undefined } }
@@ -29,6 +32,9 @@ export const initializeLogin = () => {
                 }
             })
         }
+        dispatch({
+            type: 'INIT_LOGIN'
+        })
     }
 }
 
