@@ -1,20 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 import {
-    Collapse,
     Media,
     Row, Col
 } from 'reactstrap'
-
-import {
-    removeInheritedWorld,
-    swapInheritedWorld,
-    addInheritedWorld,
-    removeWorld,
-    renameWorld
-} from '../../reducers/worldsReducer'
 
 import Icon from '../../components/Icon'
 import SortableComponent from '../../components/Sortable/SortableWithElements'
@@ -25,7 +15,7 @@ import { AddButton } from '../../components/Buttons/AddButton'
 import { EditButton } from '../../components/Buttons/EditButton'
 import NegateButton from '../../components/Buttons/NegateButton'
 
-import { isOpen, toggleWorld } from '../../reducers/openReducer'
+import { isOpen } from '../../reducers/openReducer'
 
 class GroupsWorld extends React.Component {
 
@@ -47,16 +37,12 @@ class GroupsWorld extends React.Component {
                 world={world}
                 open={open}
 
-                swapInheritedWorld={({ oldIndex, newIndex }) =>
-                    this.props.swapInheritedWorld(world, oldIndex, newIndex)}
-                addInheritedWorld={() =>
-                    this.props.addInheritedWorld(world, prompt('Inherited World Name', world.name))}
-                removeInheritedWorld={(inheritedWorld) =>
-                    this.props.removeInheritedWorld(world, inheritedWorld)}
-                renameWorld={() =>
-                    this.props.renameWorld(world, prompt('Rename World', world.name))}
-                toggleWorld={() =>
-                    this.props.toggleWorld(this.props.world.name)}
+                addPermission={this.props.addPermission}
+                negatePermission={this.props.negatePermission}
+                removePermission={this.props.removePermission}
+                swapPermission={this.props.swapPermission}
+                renameWorld={this.props.renameWorld}
+                toggleWorld={this.props.toggleWorld}
             />
         )
     }
@@ -115,9 +101,4 @@ GroupsWorld.contextTypes = {
     store: PropTypes.object
 }
 
-export default connect(
-    null, {
-        removeInheritedWorld, swapInheritedWorld,
-        addInheritedWorld, removeWorld, renameWorld, toggleWorld
-    }
-)(GroupsWorld)
+export default GroupsWorld

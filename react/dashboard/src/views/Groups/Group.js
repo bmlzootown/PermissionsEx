@@ -12,7 +12,6 @@ import {
     addInheritedGroup,
     addPermission,
     addWorld,
-    addWorldInheritedWorld,
     addWorldPermission,
     negatePermission,
     negateWorldPermission,
@@ -20,13 +19,12 @@ import {
     removeInheritedGroup,
     removePermission,
     removeWorld,
-    removeWorldInheritedWorld,
+    renameWorld,
     removeWorldPermission,
     renameGroup,
     swapInheritedGroup,
     swapPermission,
     swapWorld,
-    swapWorldInheritedWorld,
     swapWorldPermission
 } from '../../reducers/groupsReducer'
 import { isOpen, toggleGroup, toggleWorld } from '../../reducers/openReducer'
@@ -104,16 +102,10 @@ class Group extends React.Component {
                         this.props.negateWorldPermission(group, world, permission)}
                     removePermission={(permission) =>
                         this.props.removeWorldPermission(group, world, permission)}
-                    swapInheritedWorld={({ oldIndex, newIndex }) =>
-                        this.props.swapWorldInheritedWorld(group, world, oldIndex, newIndex)}
-                    addInheritedWorld={() =>
-                        this.props.addWorldInheritedWorld(group, world, prompt('Inherited World Name'))}
-                    removeInheritedWorld={(inheritedWorld) =>
-                        this.props.removeWorldInheritedWorld(group, world, inheritedWorld)}
                     renameWorld={() =>
                         this.props.renameWorld(group, world, prompt('Rename World', world.name))}
                     toggleWorld={() =>
-                        this.props.toggleWorld(this.props.world.name)}
+                        this.props.toggleWorld(world.name)}
                 />,
                 after: <RemoveButton remove={() => this.props.removeWorld(group, world)} />
             }
@@ -185,9 +177,9 @@ export default connect(
         toggleGroup, toggleWorld,
 
         addWorld, removeWorld, swapWorld,
-        swapWorldPermission, swapWorldInheritedWorld,
-        addWorldPermission, addWorldInheritedWorld,
-        removeWorldPermission, removeWorldInheritedWorld,
-        negateWorldPermission
+        swapWorldPermission,
+        addWorldPermission,
+        removeWorldPermission,
+        negateWorldPermission, renameWorld
     }
 )(Group)
