@@ -24,9 +24,9 @@ const reducer = combineReducers({
 })
 
 const loggerMiddleware = store => next => action => {
-    console.log("Action:", action.type);
-    next(action);
-  }
+    console.log("Action:", action.type)
+    next(action)
+}
 
 const store = createStore(reducer, applyMiddleware(thunk, loggerMiddleware))
 
