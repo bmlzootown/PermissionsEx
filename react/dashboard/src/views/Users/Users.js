@@ -52,7 +52,7 @@ class Users extends Component {
                     <Icon i="fa fa-search" />
                 </InputGroupText>
             </InputGroupAddon>
-            <Input onChange={this.handleSearchChange} placeholder="Search (Case Sensitive)" />
+            <Input onChange={this.handleSearchChange} value={this.context.store.getState().users.filter} placeholder="Search (Case Sensitive)" />
         </InputGroup>
     )
 
