@@ -9,25 +9,24 @@ import SortableComponent from '../../components/Sortable/SortableWithElements'
 import SubHeader from '../../components/Text/SubHeader'
 
 import {
-    addInheritedGroup,
+    addGroup,
     addPermission,
     addWorld,
     addWorldPermission,
     negatePermission,
     negateWorldPermission,
     removeGroup,
-    removeInheritedGroup,
     removePermission,
     removeWorld,
     renameWorld,
     removeWorldPermission,
-    renameGroup,
-    swapInheritedGroup,
+    renameUser,
+    swapGroup,
     swapPermission,
     swapWorld,
     swapWorldPermission
 } from '../../reducers/usersReducer'
-import { isOpen, toggleGroup, toggleWorld } from '../../reducers/openReducer'
+import { isOpen, toggleUser, toggleWorld } from '../../reducers/openReducer'
 
 import NegateButton from '../../components/Buttons/NegateButton'
 import { RemoveButton } from '../../components/Buttons/RemoveButton'
@@ -38,7 +37,7 @@ import GroupsWorld from '../Groups/GroupsWorld'
 class User extends React.Component {
 
     toggle = () => {
-        this.props.toggleGroup(this.props.group.name)
+        this.props.toggleUser(this.props.user.name)
     }
 
     componentWillUnmount() {
@@ -55,6 +54,11 @@ class User extends React.Component {
         this.props.swapWorld(user, oldIndex, newIndex)
     }
 
+    swapGroup = ({ oldIndex, newIndex }) => {
+        const user = this.props.user
+        this.props.swapGroup(user, oldIndex, newIndex)
+    }
+
     componentDidMount() {
         const { store } = this.context
         this.unsubscribe = store.subscribe(() => this.forceUpdate())
@@ -63,7 +67,7 @@ class User extends React.Component {
     render() {
         const user = this.props.user
 
-        const open = isOpen(this.context.store.getState().open.openGroups, user.name)
+        const open = isOpen(this.context.store.getState().open.openUsers, user.name)
 
         const permissions = user.permissions.map(permission => {
             const negated = permission.startsWith('-')
@@ -72,6 +76,15 @@ class User extends React.Component {
                 after: <span>
                     <NegateButton negated={negated} negate={() => this.props.negatePermission(user, permission)} />
                     <RemoveButton remove={() => this.props.removePermission(user, permission)} />
+                </span>
+            }
+        })
+
+        const groups = user.groups.map(group => {
+            return {
+                value: group,
+                after: <span>
+                    <RemoveButton remove={() => this.props.removeGroup(user, group)} />
                 </span>
             }
         })
@@ -106,7 +119,7 @@ class User extends React.Component {
                         <Col>
                             <span>
                                 <h5 style={{ padding: 0 }} className="float-left">{user.name + ' '}</h5>
-                                <EditButton what='Change Group Name' edit={() => this.props.renameGroup(user, prompt('Rename Group', user.name))} />
+                                <EditButton what='Change Group Name' edit={() => this.props.renameUser(user, prompt('Rename User', user.name))} />
                             </span>
                         </Col>
                         <Col>
@@ -121,6 +134,13 @@ class User extends React.Component {
                             <AddButton what='new permission' add={() => this.props.addPermission(user, prompt('Add Permission'))} />
                         </span>} />
                         <SortableComponent items={permissions} onSortEnd={this.swapPermission} />
+
+                        <br></br>
+                        <SubHeader text={<span>
+                            Groups{' '}
+                            <AddButton what='new group' add={() => this.props.addGroup(user, prompt('Group Name'))} />
+                        </span>} />
+                        <SortableComponent items={groups} onSortEnd={this.swapGroup} />
 
                         <br></br>
                         <SubHeader text={<span>
@@ -142,12 +162,12 @@ User.contextTypes = {
 export default connect(
     null, {
         negatePermission,
-        removePermission, removeInheritedGroup,
-        swapPermission, swapInheritedGroup,
-        addPermission, addInheritedGroup,
-        removeGroup, renameGroup,
+        removePermission, removeGroup,
+        swapPermission, swapGroup,
+        addPermission, addGroup,
+        renameUser,
 
-        toggleGroup, toggleWorld,
+        toggleUser, toggleWorld,
 
         addWorld, removeWorld, swapWorld,
         swapWorldPermission,

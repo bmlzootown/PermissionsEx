@@ -93,6 +93,7 @@ class Login extends Component {
         <Col>
             <Card className="p-4">
                 <CardBody>
+                    <img className="mx-auto d-block" alt="logo" src="/img/logo-symbol.png"></img>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     <this.LoginForm />

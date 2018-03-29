@@ -3,7 +3,7 @@ import pluginsSvc from '../services/plugins'
 import { handleError } from './reducers'
 
 const reducer = (store = [], action) => {
-    if (action.type == 'INIT_PLUGINS') {
+    if (action.type === 'INIT_PLUGINS') {
         return [...action.data.plugins].sort((a, b) => a.name > b.name ? 1 : -1)
     }
     return store

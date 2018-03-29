@@ -1,3 +1,5 @@
+import { handleError } from './reducers'
+
 // Keeps track of what components should be open
 
 const initialState = {
@@ -20,19 +22,19 @@ const toggle = (items, item) => {
 }
 
 const reducer = (store = initialState, action) => {
-    if (action.type == 'TOGGLE_USER') {
+    if (action.type === 'TOGGLE_USER') {
         const username = action.data.username
         return { ...store, ...{ openUsers: toggle(store.openUsers, username) } }
     }
-    if (action.type == 'TOGGLE_GROUP') {
+    if (action.type === 'TOGGLE_GROUP') {
         const groupName = action.data.groupName
         return { ...store, ...{ openGroups: toggle(store.openGroups, groupName) } }
     }
-    if (action.type == 'TOGGLE_WORLD') {
+    if (action.type === 'TOGGLE_WORLD') {
         const worldName = action.data.worldName
         return { ...store, ...{ openWorlds: toggle(store.openWorlds, worldName) } }
     }
-    if (action.type == 'TOGGLE_PLUGIN') {
+    if (action.type === 'TOGGLE_PLUGIN') {
         const pluginName = action.data.pluginName
         return { ...store, ...{ openPlugins: toggle(store.openPlugins, pluginName) } }
     }

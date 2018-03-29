@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 
 import Pagination from '../../components/Pagination'
 
-import { changePage, changeFilter } from '../../reducers/usersReducer'
+import {
+    changePage, changeFilter,
+    duplicateUser,
+    removeUser,
+    addUser
+} from '../../reducers/usersReducer'
 
 import {
     InputGroup,
@@ -13,6 +18,8 @@ import {
     InputGroupText,
     Row,
     Col,
+    ListGroup,
+    ListGroupItem,
     Media
 } from 'reactstrap'
 
@@ -22,7 +29,6 @@ import { BiggerRemoveButton } from '../../components/Buttons/RemoveButton'
 import { BiggerDuplicateButton } from '../../components/Buttons/DuplicateButton'
 
 import Icon from '../../components/Icon'
-import SortableComponent from '../../components/Sortable/SortableWithElements'
 
 class Users extends Component {
 
@@ -35,7 +41,7 @@ class Users extends Component {
         this.unsubscribe()
     }
 
-    handleChange = (event) => {
+    handleSearchChange = (event) => {
         this.props.changeFilter(event.target.value)
     }
 
@@ -46,7 +52,7 @@ class Users extends Component {
                     <Icon i="fa fa-search" />
                 </InputGroupText>
             </InputGroupAddon>
-            <Input onChange={this.handleChange} placeholder="Search" />
+            <Input onChange={this.handleSearchChange} placeholder="Search (Case Sensitive)" />
         </InputGroup>
     )
 
@@ -61,17 +67,28 @@ class Users extends Component {
             return {
                 value: <User key={user.name} user={user} />,
                 after: <span>
-                    <BiggerDuplicateButton duplicate={() => this.props.duplicateGroup(user, prompt('Name of the duplicated group'))} />
-                    <BiggerRemoveButton remove={() => this.props.removeGroup(user)} />
+                    <BiggerDuplicateButton duplicate={() => this.props.duplicateUser(user, prompt('Name of the duplicated user'))} />
+                    <BiggerRemoveButton remove={() => this.props.removeUser(user)} />
                 </span>
             }
-        })
+        }).map((user, indx) => (
+            <Media key={indx}>
+                <Media body>
+                    <ListGroupItem >
+                        <Row>
+                            <Col>{user.value}</Col>
+                        </Row>
+                    </ListGroupItem>
+                </Media>
+                <Media>{user.after}</Media>
+            </Media>
+        ))
 
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col md='0'>
-                        <BigAddButton className="float-left" what='Group' add={() => this.props.addGroup(prompt('Name of the Group'))} />
+                        <BigAddButton className="float-left" what='User' add={() => this.props.addUser(prompt('Name of the User'))} />
                     </Col>
                     <Col>
                         <Row>
@@ -89,7 +106,9 @@ class Users extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <SortableComponent items={Users} onSortEnd={undefined} />
+                                <ListGroup>
+                                    {Users}
+                                </ListGroup>
                             </Col>
                         </Row>
                     </Col>
@@ -104,5 +123,10 @@ Users.contextTypes = {
 }
 
 export default connect(
-    null, { changePage, changeFilter }
+    null, {
+        changePage, changeFilter,
+        duplicateUser,
+        removeUser,
+        addUser
+    }
 )(Users)

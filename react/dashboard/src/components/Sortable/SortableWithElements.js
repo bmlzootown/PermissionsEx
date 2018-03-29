@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import {
     SortableContainer,
     SortableElement,
     SortableHandle,
-    arrayMove,
-} from 'react-sortable-hoc';
+} from 'react-sortable-hoc'
 
 import {
     ListGroup,
@@ -16,7 +15,7 @@ import {
 
 import Icon from '../Icon'
 
-const DragHandle = SortableHandle(() => <Icon i='fa fa-bars' />); // This can be any component you want
+const DragHandle = SortableHandle(() => <Icon i='fa fa-bars' />)
 
 const SortableItem = SortableElement(({ value }) => {
     return (
@@ -31,8 +30,8 @@ const SortableItem = SortableElement(({ value }) => {
             </Media>
             <Media>{value.after}</Media>
         </Media>
-    );
-});
+    )
+})
 
 const SortableList = SortableContainer(({ items }) => {
     return (
@@ -41,14 +40,14 @@ const SortableList = SortableContainer(({ items }) => {
                 <SortableItem key={`item-${index}`} index={index} value={item} />
             ))}
         </ListGroup>
-    );
-});
+    )
+})
 
 class SortableComponent extends Component {
     render() {
-        const items = this.props.items;
+        const items = this.props.items
 
-        return <SortableList helperClass='sortableHelper' items={items} onSortEnd={this.props.onSortEnd} useDragHandle={true} />;
+        return <SortableList helperClass='sortableHelper' items={items} onSortEnd={this.props.onSortEnd} useDragHandle={true} />
     }
 }
 
