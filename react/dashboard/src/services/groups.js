@@ -23,4 +23,12 @@ const getAll = async (token) => {
     return response.data.list.map(mapper)
 }
 
-export default { getAll }
+const save = async (token, groups) => {
+    const response = await axios.put(
+        '/api/groups',
+        groups,
+        headers(token)
+    )
+}
+
+export default { getAll, save }

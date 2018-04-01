@@ -11,18 +11,22 @@ const reducer = (store = [], action) => {
     if (action.type === 'ADD_WORLD') {
         if (newState.filter(world => world.name === action.data.world.name).length === 0) {
             newState = newState.concat(action.data.world)
+            changeWorld(newState)
         }
     }
     if (action.type === 'MOVE_WORLD') {
         newState = moveArray(newState, action.data.oldIndex, action.data.newIndex)
+        changeWorld(newState)
     }
     if (action.type === 'REMOVE_WORLD') {
         newState = newState.filter(world => world.name !== action.data.worldName)
+        changeWorld(newState)
     }
     if (action.type === 'RENAME_WORLD') {
         const replacing = action.data.world
         if (newState.filter(world => world.name === replacing.name).length === 0) {
             newState[newState.indexOf(newState.find(world => world.name === action.data.oldName))] = replacing
+            changeWorld(newState)
         }
     }
     if (action.type === 'NEGATE_WORLD_PERMISSION'
@@ -35,8 +39,6 @@ const reducer = (store = [], action) => {
     ) {
         const replacing = action.data.world
         newState[newState.indexOf(newState.find(world => world.name === replacing.name))] = replacing
-    }
-    if (newState.length !== 0) {
         changeWorld(newState)
     }
     return newState

@@ -11,18 +11,22 @@ const reducer = (store = [], action) => {
     if (action.type === 'ADD_GROUP') {
         if (newState.filter(group => group.name === action.data.group.name).length === 0) {
             newState = newState.concat(action.data.group)
+            changeGroup(newState)
         }
     }
     if (action.type === 'MOVE_GROUP') {
         newState = moveArray(newState, action.data.oldIndex, action.data.newIndex)
+        changeGroup(newState)
     }
     if (action.type === 'REMOVE_GROUP') {
         newState = newState.filter(group => group.name !== action.data.groupName)
+        changeGroup(newState)
     }
     if (action.type === 'RENAME_GROUP') {
         const replacing = action.data.group
         if (newState.filter(group => group.name === replacing.name).length === 0) {
             newState[newState.indexOf(newState.find(group => group.name === action.data.oldName))] = replacing
+            changeGroup(newState)
         }
     }
     if (action.type === 'NEGATE_GROUP_PERMISSION'
@@ -43,8 +47,6 @@ const reducer = (store = [], action) => {
     ) {
         const replacing = action.data.group
         newState[newState.indexOf(newState.find(group => group.name === replacing.name))] = replacing
-    }
-    if (newState.length !== 0) {
         changeGroup(newState)
     }
     return newState

@@ -80,6 +80,13 @@ export const logout = () => {
     }
 }
 
+export const logoutExpiredTokenNoDispatch = (errorMsg) => {
+    return async (dispatch) => {
+        logoutExpiredToken(dispatch, errorMsg)
+    }
+}
+
+
 export const logoutExpiredToken = (dispatch, errorMsg) => {
     localStorage.loggedOut()
     dispatch({

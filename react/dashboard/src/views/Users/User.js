@@ -82,7 +82,7 @@ class User extends React.Component {
 
         const existingGroups = this.context.store.getState().groups.map(g => g.name)
         let hasUnexistingGroups = false
-        console.log(existingGroups)
+
         const groups = user.groups.map(group => {
             const exists = !existingGroups.includes(group)
             if (exists) {
@@ -128,10 +128,10 @@ class User extends React.Component {
                         <Col>
                             <span>
                                 <h5 style={{ padding: 0 }} className="float-left">
-                                {(
-                                    hasUnexistingGroups ? <span title='Group does not exist' style={{ color: '#b71c1c' }}>{user.name} <Icon i='fa fa-warning' /> </span>
-                                    : user.name + ' '
-                                )}
+                                    {(
+                                        hasUnexistingGroups ? <span title='Group does not exist' style={{ color: '#b71c1c' }}>{user.name} <Icon i='fa fa-warning' /> </span>
+                                            : user.name + ' '
+                                    )}
                                 </h5>
                                 <EditButton what='Change User Name' edit={() => this.props.renameUser(user, prompt('Rename User', user.name))} />
                             </span>

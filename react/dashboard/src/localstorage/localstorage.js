@@ -46,6 +46,10 @@ const getWorlds = () => {
     return fetch('worlds')
 }
 
+const containsChanges = () => {
+    return getGroups() !== null || getWorlds() !== null || getUsers() !== null
+}
+
 const discardChanges = () => {
     remove('users')
     remove('groups')
@@ -56,5 +60,5 @@ export default {
     getLogin, loggedIn, loggedOut,
     storeUsers, storeGroups, storeWorlds,
     getUsers, getGroups, getWorlds,
-    discardChanges
+    containsChanges, discardChanges
 }
