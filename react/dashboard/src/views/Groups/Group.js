@@ -81,9 +81,19 @@ class Group extends React.Component {
             }
         })
 
+        const existingGroups = this.context.store.getState().groups.map(g => g.name)
+        let hasUnexistingGroups = false
         const inheritance = group.inheritance.map(inheritedGroup => {
+            const exists = !existingGroups.includes(inheritedGroup)
+            if (exists) {
+                hasUnexistingGroups = true
+            }
             return {
-                value: inheritedGroup,
+                value: group.name === inheritedGroup
+                ? <span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>{inheritedGroup} <Icon i='fa fa-warning' /> </span>
+                : (exists
+                    ? <span title='Group does not exist yet' style={{ color: '#ff9800' }}>{inheritedGroup} <Icon i='fa fa-warning' /> </span>
+                    : inheritedGroup),
                 after: <RemoveButton remove={() => this.props.removeInheritedGroup(group, inheritedGroup)} />
             }
         })
@@ -120,11 +130,11 @@ class Group extends React.Component {
                         <Col>
                             <span>
                                 <h5 style={{ padding: 0 }} className="float-left">
-                                    {
-                                        (circularInheritance
-                                            ? <span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>{group.name} <Icon i='fa fa-warning' /> </span>
+                                    {(circularInheritance
+                                        ? <span title='Group can not inherit itself' style={{ color: '#b71c1c' }}>{group.name} <Icon i='fa fa-warning' /> </span>
+                                        : (hasUnexistingGroups ? <span title='Inherited Group does not exist yet' style={{ color: '#ff9800' }}>{group.name} <Icon i='fa fa-warning' /> </span>
                                             : group.name + ' ')
-                                    }
+                                    )}
                                 </h5>
                                 <EditButton what='Change Group Name' edit={() => this.props.renameGroup(group, prompt('Rename Group', group.name))} />
                             </span>

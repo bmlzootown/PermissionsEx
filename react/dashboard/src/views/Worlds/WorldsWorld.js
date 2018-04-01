@@ -69,7 +69,9 @@ class World extends React.Component {
 
         const inheritance = world.inheritance.map(inheritedWorld => {
             return {
-                value: inheritedWorld,
+                value: world.name === inheritedWorld
+                ? <span title='World can not inherit itself' style={{ color: '#b71c1c' }}>{inheritedWorld} <Icon i='fa fa-warning' /> </span>
+                : inheritedWorld,
                 after: <RemoveButton remove={() => this.props.removeInheritedWorld(inheritedWorld)} />
             }
         })
