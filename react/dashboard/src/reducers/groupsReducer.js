@@ -1,11 +1,12 @@
 import groupsSvc from '../services/groups'
+import localStore from '../localstorage/localstorage'
 
 import { handleError, toggleDash, moveArray } from './reducers'
 
 const reducer = (store = [], action) => {
     let newState = [...store]
     if (action.type === 'INIT_GROUPS') {
-        newState = action.data.groups
+        return action.data.groups
     }
     if (action.type === 'ADD_GROUP') {
         if (newState.filter(group => group.name === action.data.group.name).length === 0) {
@@ -43,7 +44,14 @@ const reducer = (store = [], action) => {
         const replacing = action.data.group
         newState[newState.indexOf(newState.find(group => group.name === replacing.name))] = replacing
     }
+    if (newState.length !== 0) {
+        changeGroup(newState)
+    }
     return newState
+}
+
+const changeGroup = async (groups) => {
+    localStore.storeGroups(groups)
 }
 
 export const initializeGroups = (token, groups) => {

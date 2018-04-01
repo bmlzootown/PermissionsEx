@@ -19,7 +19,42 @@ export const loggedIn = (user) => {
 }
 
 export const loggedOut = () => {
-   remove('user')
+    remove('user')
 }
 
-export default { getLogin, loggedIn, loggedOut }
+const storeUsers = (users) => {
+    store('users', users)
+}
+
+const getUsers = () => {
+    return fetch('users')
+}
+
+const storeGroups = (groups) => {
+    store('groups', groups)
+}
+
+const getGroups = () => {
+    return fetch('groups')
+}
+
+const storeWorlds = (worlds) => {
+    store('worlds', worlds)
+}
+
+const getWorlds = () => {
+    return fetch('worlds')
+}
+
+const discardChanges = () => {
+    remove('users')
+    remove('groups')
+    remove('worlds')
+}
+
+export default {
+    getLogin, loggedIn, loggedOut,
+    storeUsers, storeGroups, storeWorlds,
+    getUsers, getGroups, getWorlds,
+    discardChanges
+}
