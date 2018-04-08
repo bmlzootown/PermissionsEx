@@ -56,11 +56,12 @@ public class ResponseHandler extends TreePageHandler {
 		boolean isJson = targetString.endsWith(".json");
 		boolean isSourceMap = targetString.endsWith(".map");
 		boolean isImage = targetString.endsWith(".png");
-		boolean isFont = targetString.endsWith(".eot")
-				|| targetString.endsWith(".woff2")
-				|| targetString.endsWith(".woff")
-				|| targetString.endsWith(".tff")
-				|| targetString.endsWith(".svg");
+
+		boolean isEot = targetString.endsWith(".eot");
+		boolean isWoff = targetString.endsWith(".woff");
+		boolean isWoff2 = targetString.endsWith(".woff2");
+		boolean isTtf = targetString.endsWith(".ttf");
+		boolean isSvg = targetString.endsWith(".svg");
 
 		if (isCss) {
 			return new FileResponse("text/css", "web" + targetString);
@@ -70,8 +71,16 @@ public class ResponseHandler extends TreePageHandler {
 			return new FileResponse("application/json", "web" + targetString);
 		} else if (isImage) {
 			return new ByteResponse("image/gif", "web" + targetString);
-		} else if (isFont) {
-			return new ByteResponse("font/opentype", "web" + targetString);
+		} else if (isEot) {
+			return new ByteResponse("application/vnd.ms-fontobject", "web" + targetString, false);
+		} else if (isTtf) {
+			return new ByteResponse("application/font-sfnt", "web" + targetString, false);
+		} else if (isSvg) {
+			return new ByteResponse("image/svg+xml", "web" + targetString, false);
+		} else if (isWoff) {
+			return new ByteResponse("application/font-woff", "web" + targetString, false);
+		} else if (isWoff2) {
+			return new ByteResponse("font/woff2", "web" + targetString, false);
 		}
 
 		// In this case the target is not a relative file that needs to be loaded from a static location.

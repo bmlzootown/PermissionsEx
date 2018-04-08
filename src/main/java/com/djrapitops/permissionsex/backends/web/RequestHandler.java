@@ -35,6 +35,7 @@ public class RequestHandler implements HttpHandler {
 
 		try {
 			Response response = responseHandler.getResponse(request);
+			System.out.println(request.getTarget() + "-> " + response.getClass().getSimpleName());
 			response.send(exchange, responseHeaders);
 		} catch (Exception e) {
 			PermissionsEx.getPlugin().getLogger().log(Level.WARNING, "Dashboard error", e);

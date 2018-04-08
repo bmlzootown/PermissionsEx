@@ -11,10 +11,16 @@ import java.io.OutputStream;
 
 public class ByteResponse extends Response {
 
+	private boolean canBeCompressed;
 	private final String fileName;
 
 	public ByteResponse(String type, String fileName) {
+		this(type, fileName, true);
+	}
+
+	public ByteResponse(String type, String fileName, boolean canBeCompressed) {
 		super(type);
+		this.canBeCompressed = canBeCompressed;
 		this.fileName = fileName;
 
 		setHeader("HTTP/1.1 200 OK");
@@ -27,7 +33,8 @@ public class ByteResponse extends Response {
 
 	@Override
 	public void send(HttpExchange exchange, Headers responseHeaders) throws IOException {
-		responseHeaders.set("Content-Type", type);
+//		responseHeaders.set("Content-Type", type);
+		responseHeaders.set("Accept-Ranges", "bytes");
 		exchange.sendResponseHeaders(getCode(), 0);
 
 		try (OutputStream out = exchange.getResponseBody();
@@ -38,5 +45,9 @@ public class ByteResponse extends Response {
 				out.write(buffer, 0, count);
 			}
 		}
+	}
+
+	public boolean canBeCompressed() {
+		return canBeCompressed;
 	}
 }
