@@ -39,8 +39,8 @@ class Plugin extends React.Component {
                 <Row onClick={this.toggle}>
                     <Col><h5 style={{ padding: 0 }} className="float-left">{plugin.name}</h5></Col>
                     <Col>
-                        <h5 style={{ padding: 0 }} className="float-right"><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></h5>
-                        <p style={{ padding: 0 }} className="float-right"><b>{plugin.permissions.length}</b> listed permissions&nbsp;</p>
+                        <h5 style={{ padding: 0, margin: 0  }} className="float-right"><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></h5>
+                        <p style={{ padding: 0, margin: 0  }} className="float-right"><b>{plugin.permissions.length}</b> listed permissions&nbsp;</p>
                     </Col>
                 </Row>
                 <Collapse isOpen={open} >

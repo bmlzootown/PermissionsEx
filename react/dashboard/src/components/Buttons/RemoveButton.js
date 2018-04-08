@@ -18,6 +18,18 @@ const biggerRemoveButton = {
     borderColor: '#d32f2f'
 }
 
+const biggestRemoveButton = {
+    backgroundColor: '#e53935',
+    color: '#fff',
+    padding: '26px 30px',
+    borderColor: '#d32f2f'
+}
+export const BiggestRemoveButton = ({ className, remove }) => (
+    <Button className={className} title="Remove" style={biggestRemoveButton} onClick={remove}>
+        <Icon i='fa fa-times' />
+    </Button>
+)
+
 export const BiggerRemoveButton = ({ className, remove }) => (
     <Button className={className} title="Remove" style={biggerRemoveButton} onClick={remove}>
         <Icon i='fa fa-times' />

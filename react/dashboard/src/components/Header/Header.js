@@ -10,8 +10,6 @@ import { success, error } from '../../reducers/notificationReducer'
 import { logoutExpiredTokenNoDispatch } from '../../reducers/loginReducer'
 
 import {
-    Nav,
-    NavItem,
     NavbarToggler,
     NavbarBrand,
     Button
@@ -31,23 +29,23 @@ class Header extends Component {
     }
 
     sidebarToggle(e) {
-        e.preventDefault();
-        document.body.classList.toggle('sidebar-hidden');
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-hidden')
     }
 
     sidebarMinimize(e) {
-        e.preventDefault();
-        document.body.classList.toggle('sidebar-minimized');
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-minimized')
     }
 
     mobileSidebarToggle(e) {
-        e.preventDefault();
-        document.body.classList.toggle('sidebar-mobile-show');
+        e.preventDefault()
+        document.body.classList.toggle('sidebar-mobile-show')
     }
 
     asideToggle(e) {
-        e.preventDefault();
-        document.body.classList.toggle('aside-menu-hidden');
+        e.preventDefault()
+        document.body.classList.toggle('aside-menu-hidden')
     }
 
     discardChanges = () => {
@@ -115,7 +113,7 @@ class Header extends Component {
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
             </header>
-        );
+        )
     }
 }
 
@@ -125,4 +123,4 @@ Header.contextTypes = {
 
 export default connect(
     null, { success, error, logoutExpiredTokenNoDispatch }
-)(Header);
+)(Header)

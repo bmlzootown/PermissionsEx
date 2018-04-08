@@ -18,6 +18,19 @@ const biggerDuplicateButton = {
     borderColor: '#3f51b5'
 }
 
+const biggestDuplicateButton = {
+    backgroundColor: '#5c6bc0',
+    color: '#fff',
+    padding: '26px 30px',
+    borderColor: '#3f51b5'
+}
+
+export const BiggestDuplicateButton = ({ className, duplicate }) => (
+    <Button className={className} title="Duplicate" style={biggestDuplicateButton} onClick={duplicate}>
+        <Icon i='fa fa-clone' />
+    </Button>
+)
+
 export const BiggerDuplicateButton = ({ className, duplicate }) => (
     <Button className={className} title="Duplicate" style={biggerDuplicateButton} onClick={duplicate}>
         <Icon i='fa fa-clone' />

@@ -1,22 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
-
-import Header from '../../components/Header/';
-import Sidebar from '../../components/Sidebar/';
-import Breadcrumb from '../../components/Breadcrumb/';
-import Aside from '../../components/Aside/';
-import Footer from '../../components/Footer/';
-import Notification from '../../components/Notification/Notification'
-
-import Users from '../../views/Users/Users';
-import Groups from '../../views/Groups/Groups';
-import Worlds from '../../views/Worlds/Worlds';
-import Plugins from '../../views/Plugins/Plugins';
-import Backups from '../../views/Backups/Backups';
 
 import localStore from '../../localstorage/localstorage'
 
@@ -29,7 +13,7 @@ import { initializeWorlds } from '../../reducers/worldsReducer'
 class App extends Component {
 
     componentDidMount() {
-        const login = this.context.store.getState().login.login;
+        const login = this.context.store.getState().login.login
         if (login) {
             try {
                 this.initialize(login)
@@ -54,14 +38,14 @@ class App extends Component {
     render() {
         return (
             <div></div>
-        );
+        )
     }
 }
 
 App.contextTypes = {
     store: PropTypes.object
-};
+}
 
 export default connect(
     null, { initializeBackups, initializeGroups, initializePlugins, initializeUsers, initializeWorlds }
-)(App);
+)(App)
