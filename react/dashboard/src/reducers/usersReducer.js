@@ -1,4 +1,5 @@
 import usersSvc from '../services/users'
+import localStore from '../localstorage/localstorage'
 
 import { handleError, toggleDash, moveArray } from './reducers'
 
@@ -12,9 +13,15 @@ const initialState = {
 
 const perPage = 25
 
+const sortUsers = (users) => {
+    return users.sort((a, b) => a.name >= b.name ? 1 : -1)
+}
+
 const getPage = (users, user) => {
     const indx = users.indexOf(user)
-    return Math.ceil(indx / perPage)
+    const page = indx === 0 ? 1 : Math.ceil(indx / perPage)
+    console.log(indx, page)
+    return page
 }
 
 const filter = (filter, users) => {
@@ -49,33 +56,34 @@ const reducer = (store = initialState, action) => {
     if (action.type === 'ADD_USER') {
         const user = action.data.user
         let users = store.users
-        if (users.filter(u => u.name === user.name).length === 0) {
-            users = users.concat(user).sort((a, b) => a.name > b.name)
+        if (users.find(u => u.name === user.name) === undefined) {
+            users = sortUsers(users.concat(user))
+            changeUser(users)
+
+            const page = getPage(users, user)
+
+            const displayed = getDisplayedUsers(page, users)
+            return { ...store, ...{ users: users, currentPage: page, filter: '', displayedUsers: displayed, maxPage: maxPage(users) } }
         }
-
-        const page = getPage(users, user)
-
-        const displayed = getDisplayedUsers(page, users)
-        return { ...store, ...{ users: users, currentPage: page, filter: '', displayedUsers: displayed, maxPage: maxPage(users) } }
     }
     if (action.type === 'REMOVE_USER') {
         let users = store.users.filter(user => user.name !== action.data.userName)
+        changeUser(users)
         const displayed = getDisplayedUsers(store.currentPage, users)
         return { ...store, ...{ users: users, filter: '', displayedUsers: displayed, maxPage: maxPage(users) } }
     }
     if (action.type === 'RENAME_USER') {
         const user = action.data.user
         let users = store.users
-        if (users.filter(u => u.name === user.name).length === 0) {
+        if (users.find(u => u.name === user.name) === undefined) {
             users[users.indexOf(users.find(user => user.name === action.data.oldName))] = user
-            users = users.sort((a, b) => a.name > b.name)
+            users = sortUsers(users)
+            changeUser(users)
+            const page = getPage(users, user)
+
+            const displayed = getDisplayedUsers(page, users)
+            return { ...store, ...{ users: users, currentPage: page, filter: '', displayedUsers: displayed, maxPage: maxPage(users) } }
         }
-
-        const page = getPage(users, user)
-
-        const displayed = getDisplayedUsers(page, users)
-        return { ...store, ...{ users: users, currentPage: page, filter: '', displayedUsers: displayed, maxPage: maxPage(users) } }
-
     }
     if (action.type === 'NEGATE_USER_PERMISSION'
         || action.type === 'MOVE_USER_PERMISSION'
@@ -96,11 +104,15 @@ const reducer = (store = initialState, action) => {
         const user = action.data.user
         let users = store.users
         users[users.indexOf(users.find(u => u.name === user.name))] = user
-
+        changeUser(users)
         const displayed = getDisplayedUsers(store.currentPage, users)
         return { ...store, ...{ users: users, displayedUsers: displayed } }
     }
     return store
+}
+
+const changeUser = async (users) => {
+    localStore.storeUsers(users)
 }
 
 export const initializeUsers = (token, users) => {
@@ -108,7 +120,7 @@ export const initializeUsers = (token, users) => {
         try {
             if (!users) {
                 users = await usersSvc.getAll(token)
-                users = users.sort((a, b) => a.name >= b.name ? 1 : -1)
+                users = sortUsers(users)
             }
             dispatch({
                 type: 'INIT_USERS',

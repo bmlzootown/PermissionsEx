@@ -18,6 +18,8 @@ import Worlds from '../../views/Worlds/Worlds';
 import Plugins from '../../views/Plugins/Plugins';
 import Backups from '../../views/Backups/Backups';
 
+import localStore from '../../localstorage/localstorage'
+
 import { initializeBackups } from '../../reducers/backupsReducer'
 import { initializeGroups } from '../../reducers/groupsReducer'
 import { initializePlugins } from '../../reducers/pluginsReducer'
@@ -38,11 +40,11 @@ class App extends Component {
     }
 
     initialize = async (login) => {
-        console.log('Initializing from backend')
+        console.log('Initializing')
         const token = login ? login.token : undefined
-        await this.props.initializeWorlds(token)
-        await this.props.initializeGroups(token)
-        await this.props.initializeUsers(token)
+        await this.props.initializeWorlds(token, localStore.getWorlds())
+        await this.props.initializeGroups(token, localStore.getGroups())
+        await this.props.initializeUsers(token, localStore.getUsers())
 
         await this.props.initializePlugins(token)
         await this.props.initializeBackups(token)

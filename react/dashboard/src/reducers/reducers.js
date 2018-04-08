@@ -3,7 +3,6 @@ import { logoutExpiredToken } from './loginReducer'
 import { arrayMove } from 'react-sortable-hoc';
 
 export const handleError = (error, dispatch) => {
-    console.log('catch:', error)
     if (error.response) {
         if (error.response.status === 401) {
             logoutExpiredToken(dispatch, error.response.data.error)

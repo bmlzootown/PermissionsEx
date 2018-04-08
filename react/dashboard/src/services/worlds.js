@@ -19,4 +19,12 @@ const getAll = async (token) => {
     return response.data.list.map(mapper)
 }
 
-export default { getAll }
+const save = async (token, worlds) => {
+    const response = await axios.put(
+        '/api/worlds',
+        worlds,
+        headers(token)
+    )
+}
+
+export default { getAll, save }
