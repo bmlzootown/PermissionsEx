@@ -13,10 +13,7 @@ import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class UserJSONServiceImpl implements UserJSONService {
@@ -52,7 +49,7 @@ public class UserJSONServiceImpl implements UserJSONService {
 			worlds.add(new WorldContainer(entry.getKey(), entry.getValue()));
 		}
 
-		List<String> groups = Arrays.asList(permissionUser.getGroupsNames());
+		List<String> groups = permissionUser.getParentIdentifiers();
 
 		return new UserContainer(name, groups, worlds);
 	}
@@ -76,7 +73,49 @@ public class UserJSONServiceImpl implements UserJSONService {
 
 	@Override
 	public void updateUsers(JsonArray users) {
-		pex.getLogger().log(Level.INFO, UserJSONService.class.getSimpleName() +
-				" got request to save config but no implementation was present.");
+		Type type = new TypeToken<List<UserContainer>>() {
+		}.getType();
+		List<UserContainer> userList = new Gson().fromJson(users, type);
+
+		PermissionManager backend = pex.getPermissionsManager();
+
+		Set<String> existingUsers = new HashSet<>();
+		for (UserContainer userContainer : userList) {
+			String userName = userContainer.getName();
+			existingUsers.add(userName);
+			boolean save = false;
+
+			PermissionUser user = backend.getUser(userName);
+
+			List<String> oldGroups = user.getParentIdentifiers();
+			List<String> newGroups = userContainer.getGroups();
+			if (!oldGroups.equals(newGroups)) {
+				user.setParentsIdentifier(newGroups);
+				save = true;
+			}
+
+			List<WorldContainer> worlds = userContainer.getWorlds();
+			for (WorldContainer world : worlds) {
+				// World with null name contains general permissions
+
+				String worldName = world.getName();
+				List<String> oldPerms = user.getPermissions(worldName);
+				List<String> newPermissions = world.getInformation();
+				if (!oldPerms.equals(newPermissions)) {
+					user.setPermissions(newPermissions, worldName);
+					save = true;
+				}
+			}
+			if (save) {
+				user.save();
+			}
+		}
+
+		for (PermissionUser user : backend.getUsers()) {
+			if (!existingUsers.contains(user.getName())) {
+				user.remove();
+				backend.resetGroup(user.getIdentifier());
+			}
+		}
 	}
 }

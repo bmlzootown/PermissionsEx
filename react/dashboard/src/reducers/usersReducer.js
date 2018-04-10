@@ -105,7 +105,8 @@ const reducer = (store = initialState, action) => {
         let users = store.users
         users[users.indexOf(users.find(u => u.name === user.name))] = user
         changeUser(users)
-        const displayed = getDisplayedUsers(store.currentPage, users)
+        const filtered = filter(store.filter, users)
+        const displayed = getDisplayedUsers(store.currentPage, filtered)
         return { ...store, ...{ users: users, displayedUsers: displayed } }
     }
     return store

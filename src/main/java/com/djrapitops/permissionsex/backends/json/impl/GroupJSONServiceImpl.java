@@ -81,11 +81,12 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 
 		Set<String> existingGroups = new HashSet<>();
 		for (GroupContainer groupContainer : groupList) {
-			existingGroups.add(groupContainer.getName());
+			String groupName = groupContainer.getName();
+			existingGroups.add(groupName);
 
 			boolean save = false;
 
-			PermissionGroup group = backend.getGroup(groupContainer.getName());
+			PermissionGroup group = backend.getGroup(groupName);
 			Set<String> oldParentNames = getNames(group.getParents());
 			List<PermissionGroup> parents = getParents(backend, groupContainer.getInheritance());
 			if (!oldParentNames.equals(new HashSet<>(groupContainer.getInheritance()))) {
