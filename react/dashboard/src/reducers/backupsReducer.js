@@ -1,4 +1,5 @@
 import backupSvc from '../services/backups'
+import localStore from '../localstorage/localstorage'
 
 import { handleError } from './reducers'
 
@@ -81,6 +82,7 @@ export const restoreBackup = (token, name) => {
         }
         try {
             await backupSvc.restore(token, name)
+            await localStore.discardChanges()
             window.location.reload()
         } catch (error) {
             handleError(error, dispatch)

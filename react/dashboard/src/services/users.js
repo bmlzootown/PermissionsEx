@@ -15,6 +15,20 @@ const mapper = (user) => {
     }
 }
 
+const reverseMapper = (user) => {
+    return {
+        name: user.name,
+        groups: user.groups,
+        worlds: [
+            { name: null, information: user.permissions },
+            ...user.worlds
+                .map(world => {
+                    return { name: world.name, information: world.permissions }
+                })
+        ]
+    }
+}
+
 const getAll = async (token) => {
     const response = await axios.get(
         '/api/users',
@@ -24,9 +38,9 @@ const getAll = async (token) => {
 }
 
 const save = async (token, users) => {
-    const response = await axios.put(
+    await axios.put(
         '/api/users',
-        users,
+        users.map(reverseMapper),
         headers(token)
     )
 }

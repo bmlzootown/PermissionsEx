@@ -11,6 +11,13 @@ const mapper = (world) => {
     }
 }
 
+const reverseMapper = (world) => {
+    return {
+        name: world.name,
+        information: world.inheritance
+    }
+}
+
 const getAll = async (token) => {
     const response = await axios.get(
         '/api/worlds',
@@ -20,9 +27,9 @@ const getAll = async (token) => {
 }
 
 const save = async (token, worlds) => {
-    const response = await axios.put(
+    await axios.put(
         '/api/worlds',
-        worlds,
+        worlds.map(reverseMapper),
         headers(token)
     )
 }
