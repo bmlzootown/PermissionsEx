@@ -41,7 +41,7 @@ const clone = async (token, name) => {
 
 const remove = async (token, name) => {
     const response = await axios.delete(
-        '/api/backups/' + name,
+        '/api/backups/delete/' + name,
         headers(token)
     )
     return response.data

@@ -65,9 +65,9 @@ class Header extends Component {
         const worlds = state.worlds
 
         try {
-            await usersSvc.save(token, users)
-            await groupsSvc.save(token, groups)
             await worldsSvc.save(token, worlds)
+            await groupsSvc.save(token, groups)
+            await usersSvc.save(token, users)
 
             localStore.discardChanges()
             this.props.success('Changes saved successfully!')
