@@ -9,13 +9,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import ru.tehkode.permissions.PermissionGroup;
+import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
+import java.util.*;
 
 public class GroupJSONServiceImpl implements GroupJSONService {
 
@@ -74,8 +72,66 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 	}
 
 	@Override
-	public void updateGroups(JsonArray worlds) {
-		pex.getLogger().log(Level.INFO, GroupJSONService.class.getSimpleName() +
-				" got request to save config but no implementation was present.");
+	public void updateGroups(JsonArray groups) {
+		Type type = new TypeToken<List<GroupContainer>>() {
+		}.getType();
+		List<GroupContainer> groupList = new Gson().fromJson(groups, type);
+
+		PermissionManager backend = pex.getPermissionsManager();
+
+		Set<String> existingGroups = new HashSet<>();
+		for (GroupContainer groupContainer : groupList) {
+			existingGroups.add(groupContainer.getName());
+
+			boolean save = false;
+
+			PermissionGroup group = backend.getGroup(groupContainer.getName());
+			Set<String> oldParentNames = getNames(group.getParents());
+			List<PermissionGroup> parents = getParents(backend, groupContainer.getInheritance());
+			if (!oldParentNames.equals(new HashSet<>(groupContainer.getInheritance()))) {
+				group.setParents(parents);
+				save = true;
+			}
+
+			List<WorldContainer> worlds = groupContainer.getWorlds();
+			for (WorldContainer world : worlds) {
+				// World with null name contains general permissions
+
+				String worldName = world.getName();
+				List<String> oldPerms = group.getPermissions(worldName);
+				List<String> newPermissions = world.getInformation();
+				if (!oldPerms.equals(newPermissions)) {
+					group.setPermissions(newPermissions, worldName);
+					save = true;
+				}
+			}
+			if (save) {
+				group.save();
+			}
+		}
+
+		for (PermissionGroup group : backend.getGroupList()) {
+			if (!existingGroups.contains(group.getName())) {
+				group.remove();
+				backend.resetGroup(group.getIdentifier());
+			}
+		}
+
+	}
+
+	private Set<String> getNames(List<PermissionGroup> parents) {
+		Set<String> names = new HashSet<>();
+		for (PermissionGroup parent : parents) {
+			names.add(parent.getName());
+		}
+		return names;
+	}
+
+	private List<PermissionGroup> getParents(PermissionManager backend, List<String> inheritance) {
+		List<PermissionGroup> parents = new ArrayList<>();
+		for (String parent : inheritance) {
+			parents.add(backend.getGroup(parent));
+		}
+		return parents;
 	}
 }

@@ -65,6 +65,7 @@ class Header extends Component {
         const worlds = state.worlds
 
         try {
+            this.props.success('Saving..')
             await worldsSvc.save(token, worlds)
             await groupsSvc.save(token, groups)
             await usersSvc.save(token, users)
