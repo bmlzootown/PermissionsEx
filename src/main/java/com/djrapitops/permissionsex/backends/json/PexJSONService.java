@@ -1,9 +1,6 @@
 package com.djrapitops.permissionsex.backends.json;
 
-import com.djrapitops.permissionsex.backends.json.impl.GroupJSONServiceImpl;
-import com.djrapitops.permissionsex.backends.json.impl.PluginJSONServiceImpl;
-import com.djrapitops.permissionsex.backends.json.impl.UserJSONServiceImpl;
-import com.djrapitops.permissionsex.backends.json.impl.WorldJSONServiceImpl;
+import com.djrapitops.permissionsex.backends.json.impl.*;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 /**
@@ -24,9 +21,7 @@ public class PexJSONService {
 		groupJSONService = new GroupJSONServiceImpl(plugin);
 		worldJSONService = new WorldJSONServiceImpl(plugin);
 		pluginJSONService = new PluginJSONServiceImpl(plugin);
-
-		// TODO Write proper implementation for Backup JSON service
-		backupJSONService = new DummyJSONService();
+		backupJSONService = new BackupJSONServiceImpl(plugin);
 	}
 
 	public UserJSONService getUserJSONService() {
