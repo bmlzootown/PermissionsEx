@@ -192,13 +192,6 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			this.commandsManager.register(new PromotionCommands());
 			this.commandsManager.register(new WorldCommands());
 			this.commandsManager.register(new UtilityCommands());
-			if (dashboard.isEnabled()) {
-				try {
-					this.commandsManager.register(new DashboardCommand());
-				} catch (NoClassDefFoundError e) {
-					/* Ignored */
-				}
-			}
 			// Register Tab complete
 
 			this.getCommand("pex").setTabCompleter(new TabComplete());
@@ -222,6 +215,13 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 
 			dashboard = new PexDashboard(this);
 			dashboard.enable();
+			if (dashboard.isEnabled()) {
+				try {
+					this.commandsManager.register(new DashboardCommand());
+				} catch (NoClassDefFoundError e) {
+					/* Ignored */
+				}
+			}
 		} catch (PermissionBackendException e) {
 			logBackendExc(e);
 			this.getPluginLoader().disablePlugin(this);
