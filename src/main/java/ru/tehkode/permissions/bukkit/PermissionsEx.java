@@ -18,6 +18,7 @@
  */
 package ru.tehkode.permissions.bukkit;
 
+import com.djrapitops.permissionsex.backends.DashboardCommand;
 import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.google.common.cache.CacheBuilder;
 import com.volmit.permissionsex.PEXTweaks;
@@ -191,6 +192,13 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			this.commandsManager.register(new PromotionCommands());
 			this.commandsManager.register(new WorldCommands());
 			this.commandsManager.register(new UtilityCommands());
+			if (dashboard.isEnabled()) {
+				try {
+					this.commandsManager.register(new DashboardCommand());
+				} catch (NoClassDefFoundError e) {
+					/* Ignored */
+				}
+			}
 			// Register Tab complete
 
 			this.getCommand("pex").setTabCompleter(new TabComplete());
@@ -423,5 +431,9 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 				ErrorReport.handleError("While logout cleanup event", t);
 			}
 		}
+	}
+
+	public PexDashboard getDashboard() {
+		return dashboard;
 	}
 }

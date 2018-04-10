@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class PexDashboard {
 
+	private final PermissionsEx plugin;
 	private Logger logger;
 
 	private final WebServer webServer;
@@ -31,6 +32,7 @@ public class PexDashboard {
 
 	public PexDashboard(PermissionsEx plugin) {
 		logger = plugin.getLogger();
+		this.plugin = plugin;
 		try {
 			tokenVerifier = new TokenVerifier();
 		} catch (UnsupportedEncodingException e) {
@@ -40,6 +42,10 @@ public class PexDashboard {
 		pexJSONService = new PexJSONService(plugin);
 
 		webServer = new WebServer(plugin, this);
+	}
+
+	public boolean isEnabled() {
+		return webServer.isEnabled();
 	}
 
 	public void enable() throws WebServerException, IOException, InvalidConfigurationException {
