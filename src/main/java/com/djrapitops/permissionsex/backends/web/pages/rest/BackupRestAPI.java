@@ -10,6 +10,7 @@ import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class BackupRestAPI extends RestAPIHandler {
 					return new JsonResponse(backupJSONService.createBackup(name), 200);
 				} catch (ClassCastException e) {
 					return new JsonErrorResponse("Sent JSON was not an Object", 400);
-				} catch (ParseException e) {
+				} catch (JsonSyntaxException | ParseException e) {
 					return e.getCause() == null ?
 							new JsonErrorResponse(e.getMessage(), 500) :
 							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);

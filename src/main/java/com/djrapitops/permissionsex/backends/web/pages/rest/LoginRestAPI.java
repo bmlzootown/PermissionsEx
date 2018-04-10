@@ -11,8 +11,8 @@ import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -65,7 +65,7 @@ public class LoginRestAPI extends RestAPIHandler {
 						return new JsonResponse("{\"token\": \"" + token + "\"}", 200);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-				} catch (ParseException e) {
+				} catch (JsonSyntaxException | ParseException e) {
 					return new JsonErrorResponse(e.getMessage(), 500);
 				}
 			}
