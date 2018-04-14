@@ -27,13 +27,13 @@ public interface GroupJSONService {
             "worlds:": [
                 {
                     "name": "WorldName",
-                    "permissions": [
+                    "information": [ # contains permissions
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
                     ]
                 },{
                     "name": "WorldName2",
-                    "permissions": [
+                    "information": [ # contains permissions
                         "plugin.example.permission",
                         "-plugin.example.negated.permission"
                     ]

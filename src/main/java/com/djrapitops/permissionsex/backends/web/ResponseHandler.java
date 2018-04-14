@@ -3,6 +3,7 @@ package com.djrapitops.permissionsex.backends.web;
 import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
+import com.djrapitops.permissionsex.backends.web.http.responses.ByteResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIPageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.TreePageHandler;
@@ -53,13 +54,33 @@ public class ResponseHandler extends TreePageHandler {
 		boolean isCss = targetString.endsWith(".css");
 		boolean isJs = targetString.endsWith(".js");
 		boolean isJson = targetString.endsWith(".json");
+		boolean isSourceMap = targetString.endsWith(".map");
+		boolean isImage = targetString.endsWith(".png");
+
+		boolean isEot = targetString.endsWith(".eot");
+		boolean isWoff = targetString.endsWith(".woff");
+		boolean isWoff2 = targetString.endsWith(".woff2");
+		boolean isTtf = targetString.endsWith(".ttf");
+		boolean isSvg = targetString.endsWith(".svg");
 
 		if (isCss) {
 			return new FileResponse("text/css", "web" + targetString);
 		} else if (isJs) {
 			return new FileResponse("text/javascript", "web" + targetString);
-		} else if (isJson) {
+		} else if (isJson || isSourceMap) {
 			return new FileResponse("application/json", "web" + targetString);
+		} else if (isImage) {
+			return new ByteResponse("image/gif", "web" + targetString);
+		} else if (isEot) {
+			return new ByteResponse("application/vnd.ms-fontobject", "web" + targetString, false);
+		} else if (isTtf) {
+			return new ByteResponse("application/font-sfnt", "web" + targetString, false);
+		} else if (isSvg) {
+			return new ByteResponse("image/svg+xml", "web" + targetString, false);
+		} else if (isWoff) {
+			return new ByteResponse("application/font-woff", "web" + targetString, false);
+		} else if (isWoff2) {
+			return new ByteResponse("font/woff2", "web" + targetString, false);
 		}
 
 		// In this case the target is not a relative file that needs to be loaded from a static location.

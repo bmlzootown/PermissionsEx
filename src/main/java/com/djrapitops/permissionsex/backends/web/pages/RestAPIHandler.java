@@ -23,7 +23,7 @@ public abstract class RestAPIHandler extends TreePageHandler {
 		}
 		Authentication auth = request.getAuth();
 		if (!auth.isValid()) {
-			return new JsonErrorResponse("Expired user token, please log-in again.", 400);
+			return new JsonErrorResponse("Expired user token, please log-in again.", 401);
 		}
 		return null;
 	}

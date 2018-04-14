@@ -1,13 +1,18 @@
 package com.djrapitops.permissionsex.backends;
 
-import com.djrapitops.permissionsex.backends.json.DummyJSONService;
 import com.djrapitops.permissionsex.backends.json.PexJSONService;
 import com.djrapitops.permissionsex.backends.web.WebServer;
-import com.djrapitops.permissionsex.backends.web.login.PassHashStorage;
-import com.djrapitops.permissionsex.backends.web.login.RegisterStore;
-import com.djrapitops.permissionsex.backends.web.login.YamlPassHashStorage;
+import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
+import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
+import com.djrapitops.permissionsex.backends.web.login.YamlPasswordStorage;
 import com.djrapitops.permissionsex.exceptions.web.WebServerException;
+import org.bukkit.configuration.InvalidConfigurationException;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Central class for initializing the Pex Dashboard.
@@ -16,21 +21,44 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
  */
 public class PexDashboard {
 
+	private final PermissionsEx plugin;
+	private Logger logger;
+
 	private final WebServer webServer;
 
 	private final PexJSONService pexJSONService;
-	private final RegisterStore registerStore;
-	private PassHashStorage passHashStorage;
+	private PasswordStorage passwordStorage;
+	private TokenVerifier tokenVerifier;
 
 	public PexDashboard(PermissionsEx plugin) {
+		logger = plugin.getLogger();
+		this.plugin = plugin;
+		try {
+			tokenVerifier = new TokenVerifier();
+		} catch (UnsupportedEncodingException e) {
+			logger.log(Level.SEVERE, "Failed to load token verifier, WebServer can not function: " + e.getMessage());
+		}
+		passwordStorage = new YamlPasswordStorage(plugin.getDataFolder());
+		pexJSONService = new PexJSONService(plugin);
+
 		webServer = new WebServer(plugin, this);
-		passHashStorage = new YamlPassHashStorage(plugin.getDataFolder());
-		pexJSONService = new DummyJSONService(); // TODO Write proper implementation
-		registerStore = new RegisterStore(passHashStorage);
 	}
 
-	public void enable() throws WebServerException {
+	public boolean isEnabled() {
+		return webServer.isEnabled();
+	}
+
+	public void enable() throws WebServerException, IOException, InvalidConfigurationException {
+		if (tokenVerifier == null) {
+			return;
+		}
 		webServer.enable();
+
+		// Create dashboard_users.yml file.
+		if (webServer.isEnabled()) {
+			logger.log(Level.INFO, "Loading dashboard users..");
+			logger.log(Level.INFO, "Loaded " + passwordStorage.loadAndHash() + " users.");
+		}
 	}
 
 	public void disable() {
@@ -41,15 +69,19 @@ public class PexDashboard {
 		return webServer;
 	}
 
-	public PassHashStorage getPassHashStorage() {
-		return passHashStorage;
-	}
-
-	public RegisterStore getRegisterStore() {
-		return registerStore;
+	public PasswordStorage getPasswordStorage() {
+		return passwordStorage;
 	}
 
 	public PexJSONService getPexJSONService() {
 		return pexJSONService;
+	}
+
+	public TokenVerifier getTokenVerifier() {
+		return tokenVerifier;
+	}
+
+	public Logger getLogger() {
+		return logger;
 	}
 }

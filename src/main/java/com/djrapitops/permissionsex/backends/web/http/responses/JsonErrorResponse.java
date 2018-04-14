@@ -8,7 +8,7 @@ package com.djrapitops.permissionsex.backends.web.http.responses;
 public class JsonErrorResponse extends JsonResponse {
 
 	public JsonErrorResponse(String errorMsg, int httpStatusCode) {
-		super("{\"error\", \"" + errorMsg + "\"}", httpStatusCode);
+		super("{\"error\": \"" + errorMsg + "\"}", httpStatusCode);
 	}
 
 }

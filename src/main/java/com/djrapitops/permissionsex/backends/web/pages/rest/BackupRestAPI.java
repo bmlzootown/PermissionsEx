@@ -10,6 +10,7 @@ import com.djrapitops.permissionsex.backends.web.pages.RestAPIHandler;
 import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.List;
 
@@ -31,10 +32,11 @@ public class BackupRestAPI extends RestAPIHandler {
 	private void registerAPIEndPoints() {
 		registerPage("clone", new CloneHandler(backupJSONService));
 		registerPage("restore", new RestoreHandler(backupJSONService));
+		registerPage("delete", new DeleteHandler(backupJSONService));
 		registerPage("", (request, target) -> {
 			String requestMethod = request.getRequestMethod();
 			if ("GET".equals(requestMethod)) {
-				// GET /api/groups/ - provides all groups as an array
+				// GET /api/backups/ - provides all backups as an array
 				return new JsonResponse(backupJSONService.getBackupInformation(), 200);
 			}
 			if ("POST".equals(requestMethod)) {
@@ -44,7 +46,7 @@ public class BackupRestAPI extends RestAPIHandler {
 					return new JsonResponse(backupJSONService.createBackup(name), 200);
 				} catch (ClassCastException e) {
 					return new JsonErrorResponse("Sent JSON was not an Object", 400);
-				} catch (ParseException e) {
+				} catch (JsonSyntaxException | ParseException e) {
 					return e.getCause() == null ?
 							new JsonErrorResponse(e.getMessage(), 500) :
 							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
@@ -78,28 +80,6 @@ public class BackupRestAPI extends RestAPIHandler {
 			}
 		}
 
-		if ("POST".equals(request.getRequestMethod())) {
-			// POST /api/backups/:name - restores a backup
-			try {
-				String backupName = target.get(0).replace("%20", " ");
-				backupJSONService.restoreBackup(backupName);
-				return new JsonResponse("{\"success\":true}", 200);
-			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);
-			}
-		}
-
-		if ("DELETE".equals(request.getRequestMethod())) {
-			// DELETE /api/backups/:name - deletes a backup
-			try {
-				String backupName = target.get(0).replace("%20", " ");
-				backupJSONService.deleteBackup(backupName);
-				return new JsonResponse("{\"success\":true}", 200);
-			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);
-			}
-		}
-
 		return new JsonErrorResponse("API endpoint not found", 404);
 	}
 }
@@ -115,12 +95,12 @@ class CloneHandler implements PageHandler {
 	@Override
 	public Response getResponse(Request request, List<String> target) {
 		if ("POST".equals(request.getRequestMethod())) {
-			// POST /api/backup/clone/:name - requests a cloning of a group
+			// POST /api/backups/clone/:name - requests a cloning of a backup
 			try {
 				String backupName = target.get(0).replace("%20", " ");
 				return new JsonResponse(backupJSONService.duplicateBackup(backupName));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid Backup Name: " + e.getMessage(), 400);
 			}
 		}
 
@@ -139,10 +119,35 @@ class RestoreHandler implements PageHandler {
 	@Override
 	public Response getResponse(Request request, List<String> target) {
 		if ("POST".equals(request.getRequestMethod())) {
-			// POST /api/backup/restore/:name - requests a cloning of a group
+			// POST /api/backups/restore/:name - requests restoration of a backup
 			try {
 				String backupName = target.get(0).replace("%20", " ");
 				backupJSONService.restoreBackup(backupName);
+				return new JsonResponse("{\"success\":true}", 200);
+			} catch (IllegalArgumentException e) {
+				return new JsonErrorResponse("Invalid Backup Name: " + e.getMessage(), 400);
+			}
+		}
+
+		return new JsonErrorResponse("API endpoint not found", 404);
+	}
+}
+
+class DeleteHandler implements PageHandler {
+
+	private final BackupJSONService backupJSONService;
+
+	public DeleteHandler(BackupJSONService backupJSONService) {
+		this.backupJSONService = backupJSONService;
+	}
+
+	@Override
+	public Response getResponse(Request request, List<String> target) {
+		if ("DELETE".equals(request.getRequestMethod())) {
+			// DELETE /api/backups/delete/:name - requests a deleting backup
+			try {
+				String backupName = target.get(0).replace("%20", " ");
+				backupJSONService.deleteBackup(backupName);
 				return new JsonResponse("{\"success\":true}", 200);
 			} catch (IllegalArgumentException e) {
 				return new JsonResponse("Invalid Backup Name: " + e.getMessage(), 400);

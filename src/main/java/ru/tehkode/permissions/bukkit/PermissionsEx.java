@@ -18,6 +18,7 @@
  */
 package ru.tehkode.permissions.bukkit;
 
+import com.djrapitops.permissionsex.backends.DashboardCommand;
 import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.google.common.cache.CacheBuilder;
 import com.volmit.permissionsex.PEXTweaks;
@@ -64,8 +65,7 @@ import java.util.logging.LogRecord;
 /**
  * @author code
  */
-public class PermissionsEx extends JavaPlugin implements NativeInterface
-{
+public class PermissionsEx extends JavaPlugin implements NativeInterface {
 	protected PermissionManager permissionsManager;
 	protected CommandsManager commandsManager;
 	private PermissionsExConfig config;
@@ -80,21 +80,18 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	private PexDashboard dashboard;
 
 	private static PermissionsEx instance;
+
 	{
 		instance = this;
 	}
 
-	public PermissionsEx()
-	{
+	public PermissionsEx() {
 		super();
-		try
-		{
+		try {
 			Field field = JavaPlugin.class.getDeclaredField("logger");
 			field.setAccessible(true);
 			field.set(this, new PermissionsExLogger(this));
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			// Ignore, just hide the joke
 		}
 
@@ -105,93 +102,66 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 
 	}
 
-	private static class PermissionsExLogger extends PluginLogger
-	{
-		/**
-		 * Protected method to construct a logger for a named subsystem.
-		 * <p/>
-		 * The logger will be initially configured with a null Level and with
-		 * useParentHandlers set to true.
-		 *
-		 * @param plugin
-		 *            Plugin to get class info from
-		 */
-		protected PermissionsExLogger(Plugin plugin)
-		{
-			super(plugin);
-			try
-			{
-				Field replace = PluginLogger.class.getDeclaredField("pluginName");
-				replace.setAccessible(true);
-				replace.set(this, "");
-			}
-			catch(Exception e)
-			{
-				// Dispose, if stuff happens the poor server admin just won't get their joke
-			}
-
-		}
-
-		public boolean isDay()
-		{
-			final Calendar cal = Calendar.getInstance();
-			return cal.get(Calendar.MONTH) == Calendar.APRIL && cal.get(Calendar.DAY_OF_MONTH) == 1;
-		}
-
-		@Override
-		public void log(LogRecord record)
-		{
-			record.setMessage("[" + (isDay() ? "PermissionSex" : "PermissionsEx") + "] " + record.getMessage());
-			super.log(record);
-		}
+	public static Plugin getPlugin() {
+		return instance;
 	}
 
-	private void logBackendExc(PermissionBackendException e)
-	{
+	public static boolean isAvailable() {
+		Plugin plugin = getPlugin();
+
+		return plugin.isEnabled() && ((PermissionsEx) plugin).permissionsManager != null;
+	}
+
+	public static PermissionManager getPermissionManager() {
+		if (!isAvailable()) {
+			throw new PermissionsNotAvailable();
+		}
+
+		return ((PermissionsEx) getPlugin()).permissionsManager;
+	}
+
+	public static PermissionUser getUser(Player player) {
+		return getPermissionManager().getUser(player);
+	}
+
+	public static PermissionUser getUser(String name) {
+		return getPermissionManager().getUser(name);
+	}
+
+	private void logBackendExc(PermissionBackendException e) {
 		getLogger().log(Level.SEVERE, "\n========== UNABLE TO LOAD PERMISSIONS BACKEND =========\n" + "Your configuration must be fixed before PEX will enable\n" + "Details: " + e.getMessage() + "\n" + "=======================================================", e);
 	}
 
 	@Override
-	public void onLoad()
-	{
-		try
-		{
+	public void onLoad() {
+		try {
 			this.config = new PermissionsExConfig(this.getConfig(), this);
 			this.commandsManager = new CommandsManager(this);
 
-			if(!getServer().getOnlineMode())
-			{
+			if (!getServer().getOnlineMode()) {
 				getLogger().log(Level.WARNING, "This server is in offline mode. Unless this server is configured to integrate with a supported proxy (see http://dft.ba/-8ous), UUIDs *may not be stable*!");
 			}
 			// this.permissionsManager = new PermissionManager(this.config);
 			/*
 			 * } catch (PermissionBackendException e) { logBackendExc(e); errored = true;
 			 */
-		}
-		catch(Throwable t)
-		{
+		} catch (Throwable t) {
 			ErrorReport.handleError("In onLoad", t);
 			errored = true;
 		}
 	}
 
 	@Override
-	public void onEnable()
-	{
-		if(errored)
-		{
+	public void onEnable() {
+		if (errored) {
 			getLogger().severe("==== PermissionsEx could not be enabled due to an earlier error. Look at the previous server log for more info ====");
 			this.getPluginLoader().disablePlugin(this);
 			return;
 		}
-		try
-		{
-			try
-			{
+		try {
+			try {
 				CacheBuilder.class.getMethod("maximumSize", long.class);
-			}
-			catch(NoSuchMethodException e)
-			{
+			} catch (NoSuchMethodException e) {
 				getLogger().severe("=================================================================================");
 				getLogger().severe("As of version 1.23, PEX is only compatible with versions of Minecraft 1.8 or greater. " + "Please downgrade to the most recent 1.22.x series version of PEX to continue.");
 				getLogger().severe("=================================================================================");
@@ -199,17 +169,13 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 				return;
 			}
 
-			if(this.permissionsManager == null)
-			{
+			if (this.permissionsManager == null) {
 				this.permissionsManager = new PermissionManager(config, getLogger(), this);
 			}
 
-			try
-			{
+			try {
 				OfflinePlayer.class.getMethod("getUniqueId");
-			}
-			catch(NoSuchMethodException e)
-			{
+			} catch (NoSuchMethodException e) {
 				getLogger().severe("=================================================================================");
 				getLogger().severe("As of version 1.21, PEX requires a version of Bukkit with UUID support to function (>1.7.5). Please download a non-UUID version of PermissionsEx to continue.");
 				getLogger().severe("Beginning reversion of potential invalid UUID conversion");
@@ -249,141 +215,110 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 
 			dashboard = new PexDashboard(this);
 			dashboard.enable();
-		}
-		catch(PermissionBackendException e)
-		{
+			if (dashboard.isEnabled()) {
+				try {
+					this.commandsManager.register(new DashboardCommand());
+				} catch (NoClassDefFoundError e) {
+					/* Ignored */
+				}
+			}
+		} catch (PermissionBackendException e) {
 			logBackendExc(e);
 			this.getPluginLoader().disablePlugin(this);
-		}
-		catch(Throwable t)
-		{
+		} catch (Throwable t) {
 			ErrorReport.handleError("Error while enabling: ", t);
 			this.getPluginLoader().disablePlugin(this);
 		}
 	}
 
 	@Override
-	public void onDisable()
-	{
-		try
-		{
+	public void onDisable() {
+		try {
 			dashboard.disable();
 			tweaks.close();
 
-			if(this.permissionsManager != null)
-			{
+			if (this.permissionsManager != null) {
 				this.permissionsManager.end();
 				this.getServer().getServicesManager().unregister(PermissionManager.class, this.permissionsManager);
 				this.permissionsManager = null;
 			}
 
-			if(this.regexPerms != null)
-			{
+			if (this.regexPerms != null) {
 				this.regexPerms.onDisable();
 				this.regexPerms = null;
 			}
-			if(this.superms != null)
-			{
+			if (this.superms != null) {
 				this.superms.onDisable();
 				this.superms = null;
 			}
 
-		}
-		catch(Throwable t)
-		{
+		} catch (Throwable t) {
 			ErrorReport.handleError("While disabling", t);
 		}
 		ErrorReport.shutdown();
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args)
-	{
-		try
-		{
+	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+		try {
 			PluginDescriptionFile pdf = this.getDescription();
-			if(args.length > 0)
-			{
+			if (args.length > 0) {
 				return this.commandsManager.execute(sender, command, args);
-			}
-			else
-			{
-				if(sender instanceof Player)
-				{
+			} else {
+				if (sender instanceof Player) {
 					sender.sendMessage("[" + ChatColor.RED + "PermissionsEx" + ChatColor.WHITE + "] version [" + ChatColor.BLUE + pdf.getVersion() + ChatColor.WHITE + "]");
 
 					return this.permissionsManager == null || !this.permissionsManager.has((Player) sender, "permissions.manage");
-				}
-				else
-				{
+				} else {
 					sender.sendMessage("[PermissionsEx] version [" + pdf.getVersion() + "]");
 
 					return false;
 				}
 			}
-		}
-		catch(Throwable t)
-		{
+		} catch (Throwable t) {
 			ErrorReport.handleError("While " + sender.getName() + " was executing /" + command.getName() + " " + StringUtils.implode(args, " "), t, sender);
 			return true;
 		}
 	}
 
-	public boolean requiresLateUserSetup()
-	{
+	public boolean requiresLateUserSetup() {
 		return getServer().getPluginManager().isPluginEnabled("LilyPad-Connect");
 	}
 
-	public PermissionsExConfig getConfiguration()
-	{
+	public PermissionsExConfig getConfiguration() {
 		return config;
 	}
 
-	public boolean isDebug()
-	{
+	public boolean isDebug() {
 		return permissionsManager != null && permissionsManager.isDebug();
 	}
 
-	public static Plugin getPlugin()
-	{
-		return instance;
-	}
-
-	public RegexPermissions getRegexPerms()
-	{
+	public RegexPermissions getRegexPerms() {
 		return regexPerms;
 	}
 
 	@Override
-	public String UUIDToName(UUID uid)
-	{
+	public String UUIDToName(UUID uid) {
 		OfflinePlayer ply = null;
-		try
-		{
+		try {
 			ply = getServer().getPlayer(uid); // to make things cheaper, we're just checking online players (can be
 			// improved later on)
 			// Also, only online players are really necessary to convert to proper names
-		}
-		catch(NoSuchMethodError e)
-		{
+		} catch (NoSuchMethodError e) {
 			// Old craftbukkit, guess we won't have a fallback name. Much shame.
 		}
 		return ply != null ? ply.getName() : null;
 	}
 
 	@Override
-	public UUID nameToUUID(String name)
-	{
+	public UUID nameToUUID(String name) {
 		// TODO Mojang Lib and actually get correct id
 		@SuppressWarnings("deprecation")
 		OfflinePlayer player = getServer().getOfflinePlayer(name);
 		UUID userUUID = null;
-		try
-		{
+		try {
 			userUUID = player.getUniqueId();
-		}
-		catch(Throwable t)
-		{
+		} catch (Throwable t) {
 			// Handle cases where the plugin is not running on a uuid-aware Bukkit by just
 			// not converting here
 		}
@@ -391,91 +326,83 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 	}
 
 	@Override
-	public boolean isOnline(UUID uuid)
-	{
+	public boolean isOnline(UUID uuid) {
 		Player player = getServer().getPlayer(uuid);
 		return (player != null && player.isOnline());
 	}
 
 	@Override
-	public UUID getServerUUID()
-	{
+	public UUID getServerUUID() {
 		return UUID.nameUUIDFromBytes(Bukkit.getServer().getServerId().getBytes());
 	}
 
 	@Override
-	public void callEvent(PermissionEvent event)
-	{
+	public void callEvent(PermissionEvent event) {
 		getServer().getPluginManager().callEvent(event);
 	}
 
-	public static boolean isAvailable()
-	{
-		Plugin plugin = getPlugin();
-
-		return plugin.isEnabled() && ((PermissionsEx) plugin).permissionsManager != null;
-	}
-
-	public static PermissionManager getPermissionManager()
-	{
-		if(!isAvailable())
-		{
-			throw new PermissionsNotAvailable();
-		}
-
-		return ((PermissionsEx) getPlugin()).permissionsManager;
-	}
-
-	public PermissionManager getPermissionsManager()
-	{
+	public PermissionManager getPermissionsManager() {
 		return permissionsManager;
 	}
 
-	public static PermissionUser getUser(Player player)
-	{
-		return getPermissionManager().getUser(player);
-	}
-
-	public static PermissionUser getUser(String name)
-	{
-		return getPermissionManager().getUser(name);
-	}
-
-	public boolean has(Player player, String permission)
-	{
+	public boolean has(Player player, String permission) {
 		return this.permissionsManager.has(player, permission);
 	}
 
-	public boolean has(Player player, String permission, String world)
-	{
+	public boolean has(Player player, String permission, String world) {
 		return this.permissionsManager.has(player, permission, world);
 	}
 
-	public class PlayerEventsListener implements Listener
-	{
+	private static class PermissionsExLogger extends PluginLogger {
+		/**
+		 * Protected method to construct a logger for a named subsystem.
+		 * <p/>
+		 * The logger will be initially configured with a null Level and with
+		 * useParentHandlers set to true.
+		 *
+		 * @param plugin Plugin to get class info from
+		 */
+		protected PermissionsExLogger(Plugin plugin) {
+			super(plugin);
+			try {
+				Field replace = PluginLogger.class.getDeclaredField("pluginName");
+				replace.setAccessible(true);
+				replace.set(this, "");
+			} catch (Exception e) {
+				// Dispose, if stuff happens the poor server admin just won't get their joke
+			}
+
+		}
+
+		public boolean isDay() {
+			final Calendar cal = Calendar.getInstance();
+			return cal.get(Calendar.MONTH) == Calendar.APRIL && cal.get(Calendar.DAY_OF_MONTH) == 1;
+		}
+
+		@Override
+		public void log(LogRecord record) {
+			record.setMessage("[" + (isDay() ? "PermissionSex" : "PermissionsEx") + "] " + record.getMessage());
+			super.log(record);
+		}
+	}
+
+	public class PlayerEventsListener implements Listener {
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event)
-		{
-			if(event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED && !requiresLateUserSetup())
-			{
+		public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+			if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.ALLOWED && !requiresLateUserSetup()) {
 				getPermissionsManager().cacheUser(event.getUniqueId().toString(), event.getName());
 			}
 		}
 
 		@EventHandler
-		public void onPlayerLogin(PlayerJoinEvent event)
-		{
-			try
-			{
+		public void onPlayerLogin(PlayerJoinEvent event) {
+			try {
 				PermissionUser user = getPermissionsManager().getUser(event.getPlayer());
-				if(!user.isVirtual())
-				{
-					if(!event.getPlayer().getName().equals(user.getOption("name")))
-					{ // Update name only if user exists in config
+				if (!user.isVirtual()) {
+					if (!event.getPlayer().getName().equals(user.getOption("name"))) { // Update name only if user exists in config
 						user.setOption("name", event.getPlayer().getName());
 					}
-					if(!config.shouldLogPlayers())
-					{
+					if (!config.shouldLogPlayers()) {
 						return;
 					}
 					user.setOption("last-login-time", Long.toString(System.currentTimeMillis() / 1000L));
@@ -483,34 +410,30 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface
 					// event.getPlayer().getAddress().getAddress().getHostAddress()); // somehow
 					// this won't work
 				}
-			}
-			catch(Throwable t)
-			{
+			} catch (Throwable t) {
 				ErrorReport.handleError("While login cleanup event", t);
 			}
 		}
 
 		@EventHandler
-		public void onPlayerQuit(PlayerQuitEvent event)
-		{
-			try
-			{
+		public void onPlayerQuit(PlayerQuitEvent event) {
+			try {
 				PermissionUser user = getPermissionsManager().getUser(event.getPlayer());
-				if(!user.isVirtual())
-				{
-					if(config.shouldLogPlayers())
-					{
+				if (!user.isVirtual()) {
+					if (config.shouldLogPlayers()) {
 						user.setOption("last-logout-time", Long.toString(System.currentTimeMillis() / 1000L));
 					}
 
 					user.getName(); // Set name if user was created during server run
 				}
 				getPermissionsManager().resetUser(event.getPlayer());
-			}
-			catch(Throwable t)
-			{
+			} catch (Throwable t) {
 				ErrorReport.handleError("While logout cleanup event", t);
 			}
 		}
+	}
+
+	public PexDashboard getDashboard() {
+		return dashboard;
 	}
 }

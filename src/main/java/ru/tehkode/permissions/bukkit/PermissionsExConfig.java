@@ -37,6 +37,7 @@ public class PermissionsExConfig {
 	private final String dashboardCertStorePass;
 	private final String dashboardCertAlias;
 	private final String dashboardInternalIP;
+	private final boolean dashboardAccessLogged;
 
 	public PermissionsExConfig(Configuration config, PermissionsEx plugin) {
 		this.config = config;
@@ -64,6 +65,7 @@ public class PermissionsExConfig {
 		dashboardCertStorePass = getString("permissions.dashboard.certificate.storepass", "passwordToStore");
 		dashboardCertAlias = getString("permissions.dashboard.certificate.alias", "storeAlias");
 		dashboardInternalIP = getString("permissions.dashboard.internalip", "0.0.0.0");
+		dashboardAccessLogged = getBoolean("permissions.dashboard.logaccess", true);
 	}
 
 	private boolean getBoolean(String key, boolean def) {
@@ -168,6 +170,10 @@ public class PermissionsExConfig {
 
 	public String getDashboardAddress() {
 		return dashboardAddress;
+	}
+
+	public boolean isDashboardAccessLogged() {
+		return dashboardAccessLogged;
 	}
 
 	public List<String> getServerTags() {

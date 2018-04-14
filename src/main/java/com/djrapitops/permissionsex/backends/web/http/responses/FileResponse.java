@@ -37,7 +37,7 @@ public class FileResponse extends Response {
 	private String combine(List<String> lines) {
 		StringBuilder content = new StringBuilder();
 		for (String line : lines) {
-			content.append(line).append("\r\n");
+			content.append(line);
 		}
 		return content.toString();
 	}

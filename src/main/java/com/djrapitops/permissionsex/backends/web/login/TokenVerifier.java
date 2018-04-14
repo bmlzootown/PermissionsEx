@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 /**
  * JWT Utility for token verification.
@@ -14,30 +15,40 @@ import java.io.UnsupportedEncodingException;
  */
 public class TokenVerifier {
 
-	private String secret;
+	private Algorithm algorithmHS;
 
-	public TokenVerifier() {
-		this.secret = new RandomString(100).nextString();
+	public TokenVerifier() throws UnsupportedEncodingException {
+		String secret = new RandomString(100).nextString();
+		algorithmHS = Algorithm.HMAC256(secret);
 	}
 
-	public String generateToken(String user) throws UnsupportedEncodingException, JWTCreationException {
-		Algorithm algorithmHS = Algorithm.HMAC256(secret);
-
+	public String generateToken(String user) throws JWTCreationException {
 		return JWT.create()
 				.withSubject(user)
 				.sign(algorithmHS);
 	}
 
-	public boolean isTokenValid(String token) throws UnsupportedEncodingException {
+	public boolean isTokenValid(String token) {
 		try {
-			Algorithm algorithmHS = Algorithm.HMAC256(secret);
-
 			JWT.require(algorithmHS)
 					.build()
 					.verify(token);
 			return true;
 		} catch (JWTVerificationException e) {
 			return false;
+		}
+	}
+
+	public Optional<String> getSubject(String token) {
+		try {
+			return Optional.of(
+					JWT.require(algorithmHS)
+							.build()
+							.verify(token)
+							.getSubject()
+			);
+		} catch (JWTVerificationException e) {
+			return Optional.empty();
 		}
 	}
 }

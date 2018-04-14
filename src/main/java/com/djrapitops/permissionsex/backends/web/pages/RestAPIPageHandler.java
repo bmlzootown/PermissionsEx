@@ -24,8 +24,7 @@ public class RestAPIPageHandler extends TreePageHandler {
 		registerPage("worlds", new WorldRestAPI(pexJSONService.getWorldJSONService()));
 		registerPage("plugins", new PluginRestAPI(pexJSONService.getPluginJSONService()));
 		registerPage("backups", new BackupRestAPI(pexJSONService.getBackupJSONService()));
-		registerPage("login", new LoginRestAPI(new TokenVerifier(), pexDashboard.getPassHashStorage()));
-		registerPage("register", new RegisterRestAPI(pexDashboard.getRegisterStore(), pexDashboard.getPassHashStorage()));
+		registerPage("login", new LoginRestAPI(pexDashboard.getTokenVerifier(), pexDashboard.getPasswordStorage()));
 	}
 
 	@Override

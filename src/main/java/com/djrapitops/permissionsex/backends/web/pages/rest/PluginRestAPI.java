@@ -57,7 +57,7 @@ public class PluginRestAPI extends RestAPIHandler {
 				String pluginName = target.get(0).replace("%20", " ");
 				return new JsonResponse(pluginJSONService.getPlugin(pluginName));
 			} catch (IllegalArgumentException e) {
-				return new JsonResponse("Invalid Plugin Name: " + e.getMessage(), 400);
+				return new JsonErrorResponse("Invalid Plugin Name: " + e.getMessage(), 400);
 			}
 		}
 

@@ -1,10 +1,12 @@
 package com.djrapitops.permissionsex.backends.web.http;
 
+import com.djrapitops.permissionsex.backends.web.http.responses.ByteResponse;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -14,7 +16,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public abstract class Response {
 
-	private final String type;
+	protected final String type;
 	private String header;
 	protected String content;
 
@@ -47,6 +49,25 @@ public abstract class Response {
 		responseHeaders.set("Content-Encoding", "gzip");
 		exchange.sendResponseHeaders(getCode(), 0);
 
+		if (this instanceof ByteResponse && !((ByteResponse) this).canBeCompressed()) {
+			sendUncompressed(exchange);
+		} else {
+			sendCompressed(exchange);
+		}
+	}
+
+	protected void sendUncompressed(HttpExchange exchange) throws IOException {
+		try (OutputStream out = exchange.getResponseBody();
+		     ByteArrayInputStream bis = new ByteArrayInputStream(content.getBytes())) {
+			byte[] buffer = new byte[2048];
+			int count;
+			while ((count = bis.read(buffer)) != -1) {
+				out.write(buffer, 0, count);
+			}
+		}
+	}
+
+	protected void sendCompressed(HttpExchange exchange) throws IOException {
 		try (GZIPOutputStream out = new GZIPOutputStream(exchange.getResponseBody());
 		     ByteArrayInputStream bis = new ByteArrayInputStream(content.getBytes())) {
 			byte[] buffer = new byte[2048];
