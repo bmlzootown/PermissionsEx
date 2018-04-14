@@ -14,6 +14,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.logging.Level;
 
 public class GroupJSONServiceImpl implements GroupJSONService {
 
@@ -78,6 +79,13 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 		List<GroupContainer> groupList = new Gson().fromJson(groups, type);
 
 		PermissionManager backend = pex.getPermissionsManager();
+		pex.getLogger().log(Level.INFO, "Begun saving groups received from Dashboard (" + groupList.size() + ")..");
+
+		List<PermissionGroup> backendGroups = backend.getGroupList();
+		Map<String, PermissionGroup> backendGroupMap = new HashMap<>();
+		for (PermissionGroup backendGroup : backendGroups) {
+			backendGroupMap.put(backendGroup.getName(), backendGroup);
+		}
 
 		Set<String> existingGroups = new HashSet<>();
 		for (GroupContainer groupContainer : groupList) {
@@ -86,20 +94,26 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 
 			boolean save = false;
 
-			PermissionGroup group = backend.getGroup(groupName);
+			PermissionGroup group = backendGroupMap.get(groupName);
+			if (group == null) {
+				group = backend.getGroup(groupName);
+			}
+
 			Set<String> oldParentNames = getNames(group.getParents());
 			List<PermissionGroup> parents = getParents(backend, groupContainer.getInheritance());
-			if (!oldParentNames.equals(new HashSet<>(groupContainer.getInheritance()))) {
+			Set<String> newParentNames = new HashSet<>(groupContainer.getInheritance());
+			if (!oldParentNames.equals(newParentNames)) {
 				group.setParents(parents);
 				save = true;
 			}
 
+			Map<String, List<String>> allPermissions = group.getAllPermissions();
 			List<WorldContainer> worlds = groupContainer.getWorlds();
 			for (WorldContainer world : worlds) {
 				// World with null name contains general permissions
 
 				String worldName = world.getName();
-				List<String> oldPerms = group.getPermissions(worldName);
+				List<String> oldPerms = allPermissions.getOrDefault(worldName, new ArrayList<>());
 				List<String> newPermissions = world.getInformation();
 				if (!oldPerms.equals(newPermissions)) {
 					group.setPermissions(newPermissions, worldName);
@@ -111,12 +125,14 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 			}
 		}
 
-		for (PermissionGroup group : backend.getGroupList()) {
+		for (PermissionGroup group : backendGroups) {
 			if (!existingGroups.contains(group.getName())) {
 				group.remove();
 				backend.resetGroup(group.getIdentifier());
 			}
 		}
+
+		pex.getLogger().log(Level.INFO, "Groups received from Dashboard saved.");
 
 	}
 

@@ -78,6 +78,13 @@ public class UserJSONServiceImpl implements UserJSONService {
 		List<UserContainer> userList = new Gson().fromJson(users, type);
 
 		PermissionManager backend = pex.getPermissionsManager();
+		pex.getLogger().log(Level.INFO, "Begun saving users received from Dashboard (" + userList.size() + ")..");
+
+		Set<PermissionUser> backendUsers = backend.getUsers();
+		Map<String, PermissionUser> backendUserMap = new HashMap<>();
+		for (PermissionUser backendUser : backendUsers) {
+			backendUserMap.put(backendUser.getName(), backendUser);
+		}
 
 		Set<String> existingUsers = new HashSet<>();
 		for (UserContainer userContainer : userList) {
@@ -85,7 +92,10 @@ public class UserJSONServiceImpl implements UserJSONService {
 			existingUsers.add(userName);
 			boolean save = false;
 
-			PermissionUser user = backend.getUser(userName);
+			PermissionUser user = backendUserMap.get(userName);
+			if (user == null) {
+				user = backend.getUser(userName);
+			}
 
 			List<String> oldGroups = user.getParentIdentifiers();
 			List<String> newGroups = userContainer.getGroups();
@@ -95,11 +105,13 @@ public class UserJSONServiceImpl implements UserJSONService {
 			}
 
 			List<WorldContainer> worlds = userContainer.getWorlds();
+
+			Map<String, List<String>> allPermissions = user.getAllPermissions();
 			for (WorldContainer world : worlds) {
 				// World with null name contains general permissions
 
 				String worldName = world.getName();
-				List<String> oldPerms = user.getPermissions(worldName);
+				List<String> oldPerms = allPermissions.getOrDefault(worldName, new ArrayList<>());
 				List<String> newPermissions = world.getInformation();
 				if (!oldPerms.equals(newPermissions)) {
 					user.setPermissions(newPermissions, worldName);
@@ -111,11 +123,12 @@ public class UserJSONServiceImpl implements UserJSONService {
 			}
 		}
 
-		for (PermissionUser user : backend.getUsers()) {
+		for (PermissionUser user : backendUsers) {
 			if (!existingUsers.contains(user.getName())) {
 				user.remove();
 				backend.resetGroup(user.getIdentifier());
 			}
 		}
+		pex.getLogger().log(Level.INFO, "Users received from Dashboard saved.");
 	}
 }
