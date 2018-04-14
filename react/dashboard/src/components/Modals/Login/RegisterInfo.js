@@ -11,15 +11,15 @@ const RegisterInfo = ({ isOpen, toggle }) => (
                 <p>You can create new users by using the following format:</p>
                 <pre>
                     users:<br></br>
-                    &nbsp;&nbsp;YourUsername:<br></br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;password: YourPassword
+                    {'  '}YourUsername:<br></br>
+                    {'    '}password: YourPassword
           </pre>
                 <p>After loading the file, the passwords will be hashed with a salt to keep them secure in case of a
                         breach:</p>
                 <pre>
                     users:<br></br>
-                    &nbsp;&nbsp;YourUsername:<br></br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;pass_hash: $2a$10$giJkTU6RAdKpCn8wvn4i1u
+                    {'  '}YourUsername:<br></br>
+                    {'    '}pass_hash: $2a$10$giJkTU6RAdKpCn8wvn4i1u
           </pre>
             </ModalBody>
             <ModalFooter>

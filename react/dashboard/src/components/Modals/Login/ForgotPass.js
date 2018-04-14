@@ -12,15 +12,15 @@ const Login_ForgotPass = ({ isOpen, toggle }) =>
                     <p>Add a new password for the user:</p>
                     <pre>
                         users:<br></br>
-                        &nbsp;&nbsp;YourUsername:<br></br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;pass_hash: $2a$10$giJkTU6RAdKpCn8wvn4i1u<br></br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;password: NewPassword
+                        {'  '}YourUsername:<br></br>
+                        {'    '}pass_hash: $2a$10$giJkTU6RAdKpCn8wvn4i1u<br></br>
+                        {'    '}password: NewPassword
               </pre>
                     <p>After loading the file, the new password will be hashed.</p>
                     <pre>
                         users:<br></br>
-                        &nbsp;&nbsp;YourUsername:<br></br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;pass_hash: $2a$10$hjYdQfkLoSiYeZKXZ9Gqgu
+                        {'  '}YourUsername:<br></br>
+                        {'    '}pass_hash: $2a$10$hjYdQfkLoSiYeZKXZ9Gqgu
               </pre>
                 </ModalBody>
                 <ModalFooter>

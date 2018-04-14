@@ -13,14 +13,14 @@ const Page = ({ value, isActive, onClick }) => (
 
 const Ellipsis = ({ isActive, onClick }) => {
     return <PaginationItem active={isActive}>
-        <PaginationLink previous onClick={onClick}>...</PaginationLink>
+        <PaginationLink onClick={onClick}>...</PaginationLink>
     </PaginationItem>
 }
 
 const FirstPageLink = ({ onClick }) => {
     return (
         <PaginationItem>
-            <b><PaginationLink previous onClick={onClick}></PaginationLink></b>
+            <PaginationLink onClick={onClick}>{'<<'}</PaginationLink>
         </PaginationItem>
     )
 }
@@ -28,7 +28,7 @@ const FirstPageLink = ({ onClick }) => {
 const PreviousPageLink = ({ onClick }) => {
     return (
         <PaginationItem>
-            <PaginationLink previous onClick={onClick} ></PaginationLink>
+            <PaginationLink onClick={onClick} >{'<'}</PaginationLink>
         </PaginationItem>
     )
 }
@@ -36,7 +36,7 @@ const PreviousPageLink = ({ onClick }) => {
 const NextPageLink = ({ onClick }) => {
     return (
         <PaginationItem>
-            <PaginationLink next onClick={onClick}></PaginationLink>
+            <PaginationLink onClick={onClick}>{'>'}</PaginationLink>
         </PaginationItem>
     )
 }
@@ -44,7 +44,7 @@ const NextPageLink = ({ onClick }) => {
 const LastPageLink = ({ onClick }) => {
     return (
         <PaginationItem>
-            <b><PaginationLink next onClick={onClick} ></PaginationLink></b>
+            <PaginationLink onClick={onClick} >{'>>'}</PaginationLink>
         </PaginationItem>
     )
 }
