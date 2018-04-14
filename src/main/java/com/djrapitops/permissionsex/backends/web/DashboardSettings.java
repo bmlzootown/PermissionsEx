@@ -17,6 +17,7 @@ public class DashboardSettings {
 	private final String certAlias;
 	private final String webserverAddress;
 	private final String internalIP;
+	private final boolean accessLogged;
 
 	DashboardSettings(PermissionsExConfig config) {
 		enabled = config.isDashboardEnabled();
@@ -27,6 +28,7 @@ public class DashboardSettings {
 		certAlias = config.getDashboardCertAlias();
 		webserverAddress = config.getDashboardAddress();
 		internalIP = config.getDashboardInternalIP();
+		accessLogged = config.isDashboardAccessLogged();
 	}
 
 	public boolean isWebServerEnabled() {
@@ -59,5 +61,9 @@ public class DashboardSettings {
 
 	public String getWebserverAddress() {
 		return webserverAddress;
+	}
+
+	public boolean isAccessLogged() {
+		return accessLogged;
 	}
 }

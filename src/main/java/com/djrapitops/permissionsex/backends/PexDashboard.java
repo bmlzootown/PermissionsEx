@@ -80,4 +80,8 @@ public class PexDashboard {
 	public TokenVerifier getTokenVerifier() {
 		return tokenVerifier;
 	}
+
+	public Logger getLogger() {
+		return logger;
+	}
 }

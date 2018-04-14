@@ -79,7 +79,8 @@ public class WebServer {
 		server = initServer();
 
 		ResponseHandler responseHandler = new ResponseHandler(pexDashboard);
-		RequestHandler requestHandler = new RequestHandler(responseHandler, pexDashboard.getTokenVerifier());
+		RequestHandler requestHandler =
+				new RequestHandler(settings, responseHandler, pexDashboard.getTokenVerifier(), pexDashboard.getLogger());
 
 		server.createContext("/", requestHandler);
 

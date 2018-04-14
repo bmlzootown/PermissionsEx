@@ -3,7 +3,7 @@ package com.djrapitops.permissionsex.backends.web.pages.rest;
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
-import com.djrapitops.permissionsex.backends.web.http.responses.JsonResponse;
+import com.djrapitops.permissionsex.backends.web.http.responses.TokenResponse;
 import com.djrapitops.permissionsex.backends.web.login.PasswordStorage;
 import com.djrapitops.permissionsex.backends.web.login.TokenVerifier;
 import com.djrapitops.permissionsex.backends.web.pages.PageHandler;
@@ -62,7 +62,7 @@ public class LoginRestAPI extends RestAPIHandler {
 						}
 
 						String token = verifier.generateToken(username);
-						return new JsonResponse("{\"token\": \"" + token + "\"}", 200);
+						return new TokenResponse(token);
 					}
 					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
 				} catch (JsonSyntaxException | ParseException e) {
