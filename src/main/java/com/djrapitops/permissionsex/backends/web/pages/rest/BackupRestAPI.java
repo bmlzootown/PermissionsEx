@@ -50,6 +50,8 @@ public class BackupRestAPI extends RestAPIHandler {
 					return e.getCause() == null ?
 							new JsonErrorResponse(e.getMessage(), 500) :
 							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+				} catch (IllegalArgumentException e) {
+					return new JsonResponse(e.getMessage(), 400);
 				}
 			}
 			return null;

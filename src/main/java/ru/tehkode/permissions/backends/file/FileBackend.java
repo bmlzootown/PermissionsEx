@@ -18,23 +18,7 @@
  */
 package ru.tehkode.permissions.backends.file;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.bukkit.configuration.ConfigurationSection;
-
 import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.PermissionsGroupData;
 import ru.tehkode.permissions.PermissionsUserData;
@@ -43,6 +27,13 @@ import ru.tehkode.permissions.backends.SchemaUpdate;
 import ru.tehkode.permissions.backends.caching.CachingGroupData;
 import ru.tehkode.permissions.backends.caching.CachingUserData;
 import ru.tehkode.permissions.exceptions.PermissionBackendException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author code
@@ -57,8 +48,12 @@ public class FileBackend extends PermissionBackend
 
 	public FileBackend(PermissionManager manager, ConfigurationSection config) throws PermissionBackendException
 	{
+		this(manager, config, config.getString("file"));
+	}
+	
+	public FileBackend(PermissionManager manager, ConfigurationSection config, String permissionFilename) throws PermissionBackendException
+	{
 		super(manager, config);
-		String permissionFilename = getConfig().getString("file");
 
 		// Default settings
 		if(permissionFilename == null)
