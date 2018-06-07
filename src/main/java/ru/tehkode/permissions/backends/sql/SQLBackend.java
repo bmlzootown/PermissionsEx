@@ -75,11 +75,13 @@ public class SQLBackend extends PermissionBackend {
 		final String dbUri = getConfig().getString("uri", "");
 		final String dbUser = getConfig().getString("user", "");
 		final String dbPassword = getConfig().getString("password", "");
+		final String dbConnectionProperties = getConfig().getString("connectionProperties");
 
 		if (dbUri == null || dbUri.isEmpty()) {
 			getConfig().set("uri", "mysql://localhost/exampledb");
 			getConfig().set("user", "databaseuser");
 			getConfig().set("password", "databasepassword");
+			getConfig().set("connectionProperties","useSSL=false");
 			manager.getConfiguration().save();
 			throw new PermissionBackendException("SQL connection is not configured, see config.yml");
 		}
@@ -93,6 +95,7 @@ public class SQLBackend extends PermissionBackend {
 		this.ds.setUrl("jdbc:" + dbUri);
 		this.ds.setUsername(dbUser);
 		this.ds.setPassword(dbPassword);
+		this.ds.setConnectionProperties(dbConnectionProperties);
 		// https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
 		this.ds.setMaxActive((Runtime.getRuntime().availableProcessors() * 2) + 1);
 		this.ds.setMaxWait(200); // 4 ticks
