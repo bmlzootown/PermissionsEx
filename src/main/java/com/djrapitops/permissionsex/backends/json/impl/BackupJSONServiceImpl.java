@@ -38,8 +38,8 @@ public class BackupJSONServiceImpl implements BackupJSONService {
 
 	@Override
 	public JsonArray getBackupInformation() {
-		
-		List<BackupContainer> backups = new ArrayList<>(); 
+
+		List<BackupContainer> backups = new ArrayList<>();
 		for (File file : Objects.requireNonNull(plugin.getDataFolder().listFiles())) {
 			String fileName = file.getName();
 			if (fileName.startsWith("Backup-")) {
@@ -120,7 +120,7 @@ public class BackupJSONServiceImpl implements BackupJSONService {
 			File backupFile = getBackupFile(name);
 			String copyName = backupFile.getName().replace(".bak", "_copy.bak");
 			BackupContainer backupContainer = new BackupContainer(copyName, getTime(backupFile));
-			
+
 			Files.copy(
 					backupFile.toPath(),
 					new File(backupFile.getParentFile(), copyName).toPath()
@@ -136,13 +136,13 @@ public class BackupJSONServiceImpl implements BackupJSONService {
 		String name = backupFile.getName();
 		String[] split = name.split("-", 3);
 		if (split.length < 3) {
-			throw new IllegalArgumentException("Invalid name format");
+			throw new IllegalArgumentException("Invalid name format: " + backupFile);
 		}
 		String timeStamp = split[2].replace(".bak", "");
 		try {
 			return new SimpleDateFormat("yyyy_MM_dd-HH_mm").parse(timeStamp).getTime();
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("Invalid name format");
+			throw new IllegalArgumentException("Invalid name format: " + backupFile);
 		}
 	}
 
@@ -155,7 +155,7 @@ public class BackupJSONServiceImpl implements BackupJSONService {
 			if (!backupFile.exists()) {
 				throw new IllegalArgumentException("Backup didn't exist!");
 			}
-			
+
 			FileBackend backup = new FileBackend(plugin.getPermissionsManager(), plugin.getConfig(), name);
 			currentBackend.loadFrom(backup);
 			currentBackend.reload();

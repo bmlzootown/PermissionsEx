@@ -26,13 +26,16 @@ public class PluginRestAPI extends RestAPIHandler {
 	}
 
 	private void registerAPIEndPoints() {
-		registerPage("", (request, target) -> {
-			String requestMethod = request.getRequestMethod();
-			if ("GET".equals(requestMethod)) {
-				// GET /api/plugins/ - provides all plugins as an array
-				return new JsonResponse(pluginJSONService.getAllPlugins(), 200);
+		registerPage("", new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				String requestMethod = request.getRequestMethod();
+				if ("GET".equals(requestMethod)) {
+					// GET /api/plugins/ - provides all plugins as an array
+					return new JsonResponse(pluginJSONService.getAllPlugins(), 200);
+				}
+				return null;
 			}
-			return null;
 		});
 	}
 

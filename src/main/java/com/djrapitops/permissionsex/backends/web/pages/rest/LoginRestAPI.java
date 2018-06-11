@@ -32,44 +32,47 @@ public class LoginRestAPI extends RestAPIHandler {
 	}
 
 	private void registerAPIEndPoints() {
-		registerPage("", (request, target) -> {
-			String requestMethod = request.getRequestMethod();
-			// POST /api/login/ - used to get a Token from username and password.
-			if ("POST".equals(requestMethod)) {
-				try {
-					JsonElement json = parseJSONFromString(request.getRequestBodyString());
-					if (json.isJsonObject()) {
-						JsonObject loginJSON = json.getAsJsonObject();
-						JsonElement usernameJSON = loginJSON.get("username");
-						if (!usernameJSON.isJsonPrimitive()) {
-							return new JsonErrorResponse("'username' not provided or wrong format.", 400);
+		registerPage("", new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				String requestMethod = request.getRequestMethod();
+				// POST /api/login/ - used to get a Token from username and password.
+				if ("POST".equals(requestMethod)) {
+					try {
+						JsonElement json = LoginRestAPI.this.parseJSONFromString(request.getRequestBodyString());
+						if (json.isJsonObject()) {
+							JsonObject loginJSON = json.getAsJsonObject();
+							JsonElement usernameJSON = loginJSON.get("username");
+							if (!usernameJSON.isJsonPrimitive()) {
+								return new JsonErrorResponse("'username' not provided or wrong format.", 400);
+							}
+							JsonElement passwordJSON = loginJSON.get("password");
+							if (!passwordJSON.isJsonPrimitive()) {
+								return new JsonErrorResponse("'password' not provided or wrong format.", 400);
+							}
+
+							String username = usernameJSON.getAsString();
+
+							if (!passwordStorage.userExists(username)) {
+								return new JsonErrorResponse("Could not find user '" + username + "'.", 401);
+							}
+
+							String password = passwordJSON.getAsString();
+
+							if (!passwordStorage.passwordMatches(username, password)) {
+								return new JsonErrorResponse("User and Password did not match.", 401);
+							}
+
+							String token = verifier.generateToken(username);
+							return new TokenResponse(token);
 						}
-						JsonElement passwordJSON = loginJSON.get("password");
-						if (!passwordJSON.isJsonPrimitive()) {
-							return new JsonErrorResponse("'password' not provided or wrong format.", 400);
-						}
-
-						String username = usernameJSON.getAsString();
-
-						if (!passwordStorage.userExists(username)) {
-							return new JsonErrorResponse("Could not find user '" + username + "'.", 401);
-						}
-
-						String password = passwordJSON.getAsString();
-
-						if (!passwordStorage.passwordMatches(username, password)) {
-							return new JsonErrorResponse("User and Password did not match.", 401);
-						}
-
-						String token = verifier.generateToken(username);
-						return new TokenResponse(token);
+						return new JsonErrorResponse("'username' and 'password' not provided.", 400);
+					} catch (JsonSyntaxException | ParseException e) {
+						return new JsonErrorResponse(e.getMessage(), 500);
 					}
-					return new JsonErrorResponse("'username' and 'password' not provided.", 400);
-				} catch (JsonSyntaxException | ParseException e) {
-					return new JsonErrorResponse(e.getMessage(), 500);
 				}
+				return null;
 			}
-			return null;
 		});
 	}
 

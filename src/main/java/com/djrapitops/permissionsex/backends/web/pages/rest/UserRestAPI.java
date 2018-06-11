@@ -29,26 +29,29 @@ public class UserRestAPI extends RestAPIHandler {
 	}
 
 	private void registerAPIEndPoints() {
-		registerPage("", (request, target) -> {
-			String requestMethod = request.getRequestMethod();
-			if ("GET".equals(requestMethod)) {
-				// GET /api/users/ - provides all users as an array
-				return new JsonResponse(userJSONService.getAllUsers(), 200);
-			}
-			if ("PUT".equals(requestMethod)) {
-				// PUT /api/users/ - updates users when "Save Changes" is pressed
-				try {
-					userJSONService.updateUsers((JsonArray) parseJSONFromString(request.getRequestBodyString()));
-				} catch (ClassCastException e) {
-					return new JsonErrorResponse("Sent JSON was not an Array", 400);
-				} catch (JsonSyntaxException | ParseException e) {
-					return e.getCause() == null ?
-							new JsonErrorResponse(e.getMessage(), 500) :
-							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+		registerPage("", new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				String requestMethod = request.getRequestMethod();
+				if ("GET".equals(requestMethod)) {
+					// GET /api/users/ - provides all users as an array
+					return new JsonResponse(userJSONService.getAllUsers(), 200);
 				}
-				return new JsonResponse("", 200);
+				if ("PUT".equals(requestMethod)) {
+					// PUT /api/users/ - updates users when "Save Changes" is pressed
+					try {
+						userJSONService.updateUsers((JsonArray) UserRestAPI.this.parseJSONFromString(request.getRequestBodyString()));
+					} catch (ClassCastException e) {
+						return new JsonErrorResponse("Sent JSON was not an Array", 400);
+					} catch (JsonSyntaxException | ParseException e) {
+						return e.getCause() == null ?
+								new JsonErrorResponse(e.getMessage(), 500) :
+								new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+					}
+					return new JsonResponse("", 200);
+				}
+				return null;
 			}
-			return null;
 		});
 	}
 

@@ -8,7 +8,7 @@ const getAll = async (token) => {
     const response = await axios.get(
         '/api/plugins',
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data.list
 }
 

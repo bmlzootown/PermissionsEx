@@ -41,7 +41,7 @@ class Backup extends React.Component {
                         <Row>
                             <Col>
                                 <div className="float-left" style={{ display: 'block' }}>
-                                    <h5 style={{ padding: 0 }}>{backup.name}</h5>
+                                    <h5 style={{ padding: 0 }}>{backup.name.split("-")[1]}</h5>
                                     <p style={{ padding: 0, margin: 0 }}>{created}</p>
                                 </div>
                             </Col>

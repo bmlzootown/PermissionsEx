@@ -5,8 +5,10 @@ import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
 import com.djrapitops.permissionsex.backends.web.http.responses.ByteResponse;
 import com.djrapitops.permissionsex.backends.web.http.responses.FileResponse;
+import com.djrapitops.permissionsex.backends.web.http.responses.JsonErrorResponse;
 import com.djrapitops.permissionsex.backends.web.pages.RestAPIPageHandler;
 import com.djrapitops.permissionsex.backends.web.pages.TreePageHandler;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,14 +37,20 @@ public class ResponseHandler extends TreePageHandler {
 	}
 
 	public Response getResponse(Request request, List<String> target, String targetString) {
-		Response response = super.getResponse(request, target);
+		try {
+			Response response = super.getResponse(request, target);
 
-		if (response == null) {
-			response = attemptToFind(targetString);
+			if (response == null) {
+				response = attemptToFind(targetString);
+			}
+
+			// index.html (FrontEnd) handles pages that do not exist.
+			return response != null ? response : new FileResponse("text/html", "web/index.html");
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			return new JsonErrorResponse(e.getMessage(), 500);
+		} catch (JsonSyntaxException e) {
+			return new JsonErrorResponse(e.getMessage(), 400);
 		}
-
-		// index.html (FrontEnd) handles pages that do not exist.
-		return response != null ? response : new FileResponse("text/html", "web/index.html");
 	}
 
 	private Response attemptToFind(String targetString) {

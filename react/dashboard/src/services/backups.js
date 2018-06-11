@@ -8,7 +8,7 @@ const getAll = async (token) => {
     const response = await axios.get(
         '/api/backups',
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data.list
 }
 
@@ -17,7 +17,7 @@ const create = async (token, name) => {
         '/api/backups',
         { name },
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data
 }
 
@@ -26,7 +26,7 @@ const restore = async (token, name) => {
         '/api/backups/restore/' + name,
         undefined,
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data
 }
 
@@ -35,7 +35,7 @@ const clone = async (token, name) => {
         '/api/backups/clone/' + name,
         undefined,
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data
 }
 
@@ -43,7 +43,7 @@ const remove = async (token, name) => {
     const response = await axios.delete(
         '/api/backups/delete/' + name,
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data
 }
 
