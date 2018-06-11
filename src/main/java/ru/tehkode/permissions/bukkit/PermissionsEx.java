@@ -21,7 +21,9 @@ package ru.tehkode.permissions.bukkit;
 import com.djrapitops.permissionsex.backends.DashboardCommand;
 import com.djrapitops.permissionsex.backends.PexDashboard;
 import com.google.common.cache.CacheBuilder;
-import com.volmit.permissionsex.PEXTweaks;
+
+import network.aeternum.permissionsex.PEXTweaks;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

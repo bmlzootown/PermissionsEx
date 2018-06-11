@@ -2,7 +2,8 @@ package com.djrapitops.permissionsex.backends.web.pages;
 
 import com.djrapitops.permissionsex.backends.web.http.Request;
 import com.djrapitops.permissionsex.backends.web.http.Response;
-import com.volmit.permissionsex.glang.AccessCallback;
+
+import network.aeternum.permissionsex.glang.AccessCallback;
 
 import java.util.HashMap;
 import java.util.List;

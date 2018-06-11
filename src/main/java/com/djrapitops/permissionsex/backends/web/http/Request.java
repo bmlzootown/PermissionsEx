@@ -5,7 +5,8 @@ import com.djrapitops.permissionsex.exceptions.ParseException;
 import com.djrapitops.permissionsex.utilities.Closer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import com.volmit.permissionsex.glang.AccessCallback;
+
+import network.aeternum.permissionsex.glang.AccessCallback;
 
 import java.io.BufferedReader;
 import java.io.IOException;

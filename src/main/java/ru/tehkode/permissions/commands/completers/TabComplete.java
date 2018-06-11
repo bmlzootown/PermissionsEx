@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
-import com.volmit.permissionsex.glang.GList;
+import network.aeternum.permissionsex.glang.GList;
 
 public class TabComplete implements TabCompleter
 {
