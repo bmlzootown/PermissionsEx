@@ -3,6 +3,8 @@ import localStore from '../localstorage/localstorage'
 
 import { handleError } from './reducers'
 
+import { sendMessage } from './notificationReducer'
+
 const sorter = (a, b) => {
     return a.created > b.created ? 1 : -1
 }
@@ -43,6 +45,7 @@ export const createBackup = (token) => {
         if (!name) {
             return
         }
+        sendMessage("SUCCESS", "Creating backup..", dispatch)
         try {
             const backup = await backupSvc.create(token, name)
             dispatch({
@@ -51,6 +54,7 @@ export const createBackup = (token) => {
                     backup
                 }
             })
+            sendMessage("SUCCESS", "Backup created!", dispatch)
         } catch (error) {
             handleError(error, dispatch)
             throw error
@@ -80,6 +84,7 @@ export const restoreBackup = (token, name) => {
         if (!confirm("Are you sure you want to restore '" + name + "'?\nAll unsaved changes will be discarded.")) {
             return
         }
+        sendMessage("SUCCESS", "Restoring backup.. Page will refresh after complete.", dispatch)
         try {
             await backupSvc.restore(token, name)
             await localStore.discardChanges()
@@ -96,6 +101,7 @@ export const removeBackup = (token, name) => {
         if (!confirm("Are you sure you want to remove '" + name + "'?")) {
             return
         }
+        sendMessage("SUCCESS", "Removing backup..", dispatch)
         try {
             await backupSvc.remove(token, name)
             dispatch({
@@ -104,6 +110,7 @@ export const removeBackup = (token, name) => {
                     name
                 }
             })
+            sendMessage("SUCCESS", "Backup removed!", dispatch)
         } catch (error) {
             handleError(error, dispatch)
             throw error
