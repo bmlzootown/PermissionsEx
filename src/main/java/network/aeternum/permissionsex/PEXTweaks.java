@@ -20,7 +20,7 @@ public class PEXTweaks implements Listener
 	{
 		PEXTweaks.instance = instance;
 		Bukkit.getPluginManager().registerEvents(this, instance);
-		instance.getLogger().log(Level.INFO, "Configuring Volmit PEXTweaks");
+		instance.getLogger().log(Level.INFO, "Optimizing Pex for this server.");
 		new BStats(instance);
 
 		if(instance.getPermissionsManager().getBackend() instanceof FileBackend)
