@@ -19,6 +19,12 @@ import localStore from '../../localstorage/localstorage'
 
 class Header extends Component {
 
+    constructor(props) {
+        super(props)
+
+        this.state = { saving: false }
+    }
+
     componentWillUnmount() {
         this.unsubscribe()
     }
@@ -65,6 +71,7 @@ class Header extends Component {
         const worlds = state.worlds
 
         try {
+            this.setState({ saving: true })
             this.props.success('Saving..')
             await worldsSvc.save(token, worlds)
             await groupsSvc.save(token, groups)
@@ -72,20 +79,24 @@ class Header extends Component {
 
             localStore.discardChanges()
             this.props.success('Changes saved successfully!')
-        } catch (error) {
-            if (error.response) {
-                if (error.response.status === 401) {
-                    this.props.logoutExpiredTokenNoDispatch(error.response.data.error)
+        } catch (e) {
+            if (e.response) {
+                if (e.response.status === 401) {
+                    this.props.logoutExpiredTokenNoDispatch(e.response.data.error)
+                } else if (e.response.status === 504 || e.response.status === 0 || e.response.message.includes("Network Error")) {
+                    error("Server is offline, changes saved just locally. Check that server is online.")
                 } else {
-                    console.log(error.response)
+                    console.log(e.response)
                 }
             } else {
-                console.log(error)
+                console.log(e)
             }
+        } finally {
+            this.setState({ saving: false })
         }
     }
 
-    ChangesButtons = () => {
+    ChangesButtons = ({ saving }) => {
         if (!localStore.containsChanges()) {
             return <div></div>
         }
@@ -93,7 +104,7 @@ class Header extends Component {
         return (
             <div>
                 <Button disabled color="link">Unsaved Changes</Button>
-                <Button onClick={this.saveChanges} color="success">Save Changes</Button>
+                <Button disabled={saving} onClick={this.saveChanges} color="success">Save Changes</Button>
                 <Button onClick={this.discardChanges} color="danger">Discard</Button>
             </div>
         )
@@ -109,7 +120,7 @@ class Header extends Component {
                 <NavbarToggler className="d-md-down-none mr-auto" onClick={this.sidebarToggle}>
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
-                <this.ChangesButtons />
+                <this.ChangesButtons saving={this.state.saving} />
                 <NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
