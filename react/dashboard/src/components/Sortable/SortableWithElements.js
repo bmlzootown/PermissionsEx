@@ -15,7 +15,7 @@ import {
 
 import Icon from '../Icon'
 
-const DragHandle = SortableHandle(() => <Icon i='fa fa-bars' />)
+const DragHandle = SortableHandle(() => <Icon style={{ padding: '5px 5px' }} i='fa fa-bars' />)
 
 const SortableItem = SortableElement(({ value }) => {
     return (

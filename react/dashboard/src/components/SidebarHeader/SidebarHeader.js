@@ -14,7 +14,7 @@ class SidebarHeader extends Component {
 
   render() {
     const login = this.context.store.getState().login.login
-    const url = login ? `https://minotar.net/avatar/${login.username}/100` : ''
+    const url = login ? `https://visage.surgeplay.com/head/150/${login.username}.png` : ''
     return (
       <div className="sidebar-header">
         <img src={url}></img>
