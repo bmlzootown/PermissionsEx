@@ -28,15 +28,23 @@ public abstract class TreePageHandler implements PageHandler {
 	}
 
 	public void registerPage(String targetPage, final Response response) {
-		registerPage(targetPage, () -> response);
+		registerPage(targetPage, new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				return response;
+			}
+		});
 	}
 
 	public void registerPage(String targetPage, AccessCallback<Response> responseWrapper) {
-		pages.put(targetPage, (request, target) -> {
-			if (request.getRequestMethod().equals("GET")) {
-				return responseWrapper.get();
+		pages.put(targetPage, new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				if (request.getRequestMethod().equals("GET")) {
+					return responseWrapper.get();
+				}
+				return null;
 			}
-			return null;
 		});
 	}
 

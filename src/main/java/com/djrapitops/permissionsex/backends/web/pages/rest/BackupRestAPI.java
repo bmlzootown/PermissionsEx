@@ -33,28 +33,31 @@ public class BackupRestAPI extends RestAPIHandler {
 		registerPage("clone", new CloneHandler(backupJSONService));
 		registerPage("restore", new RestoreHandler(backupJSONService));
 		registerPage("delete", new DeleteHandler(backupJSONService));
-		registerPage("", (request, target) -> {
-			String requestMethod = request.getRequestMethod();
-			if ("GET".equals(requestMethod)) {
-				// GET /api/backups/ - provides all backups as an array
-				return new JsonResponse(backupJSONService.getBackupInformation(), 200);
-			}
-			if ("POST".equals(requestMethod)) {
-				// POST /api/backups/ - Creates a new backup
-				try {
-					String name = getBackupName(request);
-					return new JsonResponse(backupJSONService.createBackup(name), 200);
-				} catch (ClassCastException e) {
-					return new JsonErrorResponse("Sent JSON was not an Object", 400);
-				} catch (JsonSyntaxException | ParseException e) {
-					return e.getCause() == null ?
-							new JsonErrorResponse(e.getMessage(), 500) :
-							new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
-				} catch (IllegalArgumentException e) {
-					return new JsonResponse(e.getMessage(), 400);
+		registerPage("", new PageHandler() {
+			@Override
+			public Response getResponse(Request request, List<String> target) {
+				String requestMethod = request.getRequestMethod();
+				if ("GET".equals(requestMethod)) {
+					// GET /api/backups/ - provides all backups as an array
+					return new JsonResponse(backupJSONService.getBackupInformation(), 200);
 				}
+				if ("POST".equals(requestMethod)) {
+					// POST /api/backups/ - Creates a new backup
+					try {
+						String name = BackupRestAPI.this.getBackupName(request);
+						return new JsonResponse(backupJSONService.createBackup(name), 200);
+					} catch (ClassCastException e) {
+						return new JsonErrorResponse("Sent JSON was not an Object", 400);
+					} catch (JsonSyntaxException | ParseException e) {
+						return e.getCause() == null ?
+								new JsonErrorResponse(e.getMessage(), 500) :
+								new JsonErrorResponse(e.getMessage() + " " + e.getCause().toString(), 500);
+					} catch (IllegalArgumentException e) {
+						return new JsonResponse(e.getMessage(), 400);
+					}
+				}
+				return null;
 			}
-			return null;
 		});
 	}
 
