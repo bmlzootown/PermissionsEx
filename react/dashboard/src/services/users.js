@@ -33,7 +33,7 @@ const getAll = async (token) => {
     const response = await axios.get(
         '/api/users',
         headers(token)
-    )
+    ).catch(e => { throw e })
     return response.data.list.map(mapper)
 }
 
@@ -42,7 +42,7 @@ const save = async (token, users) => {
         '/api/users',
         users.map(reverseMapper),
         headers(token)
-    )
+    ).catch(e => { throw e })
 }
 
 export default { getAll, save }
