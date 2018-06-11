@@ -88,6 +88,8 @@ class Header extends Component {
                 } else {
                     console.log(e.response)
                 }
+            } else if (e.message.includes("Network Error")) {
+                error("Server is offline, changes saved just locally. Check that server is online.")
             } else {
                 console.log(e)
             }

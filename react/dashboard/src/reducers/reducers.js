@@ -12,6 +12,8 @@ export const handleError = (error, dispatch) => {
         } else {
             console.log(error.response)
         }
+    } else if (error.message.includes("Network Error")) {
+        sendMessage("ERROR", "Server is offline, changes saved just locally. Check that server is online.", dispatch)
     } else {
         console.log(error)
     }
