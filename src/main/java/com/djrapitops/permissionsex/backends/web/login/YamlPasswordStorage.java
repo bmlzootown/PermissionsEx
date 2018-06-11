@@ -64,7 +64,7 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 	private ConfigurationSection getUsersConfigSection() {
 		ConfigurationSection users = getConfigurationSection("users");
 		if (users == null) {
-			throw new IllegalStateException("'users' not present in dashboard_users.yml. No users can be read.");
+			throw new IllegalStateException("'users' not present in dashboard_users.yml. Check 'How to create an account?'.");
 		}
 		return users;
 	}
@@ -78,10 +78,10 @@ public class YamlPasswordStorage extends FileConfig implements PasswordStorage {
 	private String getHash(String username) {
 		ConfigurationSection user = getUsersConfigSection().getConfigurationSection(username);
 		if (user == null) {
-			throw new IllegalArgumentException("User config section could not be found for '" + username + "'");
+			throw new IllegalArgumentException("User config section could not be found for '" + username + "'. (Did you restart after adding users?)");
 		}
 		if (!user.contains("pass_hash")) {
-			throw new IllegalArgumentException("" + username + "'s password has not been hashed yet and can not be used until Pex restart.");
+			throw new IllegalArgumentException("" + username + "'s password has not been hashed yet and can not be used until Pex restarts.");
 		}
 		return user.getString("pass_hash");
 	}
