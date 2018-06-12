@@ -198,7 +198,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			this.commandsManager.register(new UtilityCommands());
 			// Register Tab complete
 
-			this.getCommand("pex").setTabCompleter(new TabComplete());
+//			this.getCommand("pex").setTabCompleter(new TabComplete());
 
 			// Register Player permissions cleaner
 			PlayerEventsListener cleaner = new PlayerEventsListener();
@@ -214,7 +214,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			// Start timed permissions cleaner timer
 			this.permissionsManager.initTimer();
 
-			// Volmit Tweaks
+			// Pex Tweaks
 			tweaks = new PEXTweaks(this);
 
 			dashboard = new PexDashboard(this);
