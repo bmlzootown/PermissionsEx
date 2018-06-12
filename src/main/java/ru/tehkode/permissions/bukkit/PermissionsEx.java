@@ -52,7 +52,9 @@ import ru.tehkode.permissions.backends.sql.SQLBackend;
 import ru.tehkode.permissions.bukkit.commands.*;
 import ru.tehkode.permissions.bukkit.regexperms.RegexPermissions;
 import ru.tehkode.permissions.commands.CommandsManager;
-import ru.tehkode.permissions.commands.completers.TabComplete;
+//Imports the Tab Complete Class, Will figure out how to implement tab complete later. Sorry >,.,<
+//import ru.tehkode.permissions.commands.completers.TabComplete;
+
 import ru.tehkode.permissions.events.PermissionEvent;
 import ru.tehkode.permissions.exceptions.PermissionBackendException;
 import ru.tehkode.permissions.exceptions.PermissionsNotAvailable;
