@@ -174,14 +174,12 @@ export const negatePermission = (user, permission) => {
 
             const negatedPerm = toggleDash(permission)
 
-            const newPermisisons = [...user.permissions]
-            newPermisisons[newPermisisons.indexOf(permission)] = negatedPerm
+            const newPermissions = [...user.permissions]
+            newPermissions[newPermissions.indexOf(permission)] = negatedPerm
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: newPermisisons,
-                worlds: user.worlds
+                ...user,
+                permissions: newPermissions
             }
 
             dispatch({
@@ -203,21 +201,19 @@ export const negateWorldPermission = (user, world, permission) => {
 
             const negatedPerm = toggleDash(permission)
 
-            const newPermisisons = world.permissions
-            newPermisisons[newPermisisons.indexOf(permission)] = negatedPerm
+            const newPermissions = world.permissions
+            newPermissions[newPermissions.indexOf(permission)] = negatedPerm
 
             const newWorld = {
-                name: world.name,
-                permissions: newPermisisons
+                ...world,
+                permissions: newPermissions
             }
 
             const worlds = user.worlds
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: worlds
             }
 
@@ -238,10 +234,8 @@ export const removePermission = (user, permission) => {
     return async (dispatch) => {
         try {
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions.filter(perm => perm !== permission),
-                worlds: user.worlds
+                ...user,
+                permissions: user.permissions.filter(perm => perm !== permission)
             }
 
             dispatch({
@@ -261,7 +255,7 @@ export const removeWorldPermission = (user, world, permission) => {
     return async (dispatch) => {
         try {
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: world.permissions.filter(perm => perm !== permission),
             }
 
@@ -269,9 +263,7 @@ export const removeWorldPermission = (user, world, permission) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: worlds
             }
 
@@ -292,10 +284,8 @@ export const removeGroup = (user, group) => {
     return async (dispatch) => {
         try {
             const newUser = {
-                name: user.name,
-                groups: user.groups.filter(g => g !== group),
-                permissions: user.permissions,
-                worlds: user.worlds
+                ...user,
+                groups: user.groups.filter(g => g !== group)
             }
 
             dispatch({
@@ -334,9 +324,7 @@ export const removeWorld = (user, world) => {
         try {
             if (confirm(`Are you sure you want to remove '${world.name}' from '${user.name}'?`)) {
                 const newUser = {
-                    name: user.name,
-                    groups: user.groups,
-                    permissions: user.permissions,
+                    ...user,
                     worlds: user.worlds.filter(w => w.name !== world.name)
                 }
 
@@ -363,10 +351,8 @@ export const addPermission = (user, permission) => {
             const permissions = user.permissions.concat(permission.replace(' ', ''))
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: permissions,
-                worlds: user.worlds
+                ...user,
+                permissions: permissions
             }
 
             dispatch({
@@ -391,10 +377,8 @@ export const addGroup = (user, groupName) => {
             const groups = user.groups.concat(groupName)
 
             const newUser = {
-                name: user.name,
-                groups: groups,
-                permissions: user.permissions,
-                worlds: user.worlds
+                ...user,
+                groups: groups
             }
 
             dispatch({
@@ -422,9 +406,7 @@ export const addWorld = (user, worldName) => {
             }
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: user.worlds.concat(newWorld)
             }
 
@@ -448,7 +430,7 @@ export const addWorldPermission = (user, world, permission) => {
         }
         try {
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: world.permissions.concat(permission)
             }
 
@@ -456,9 +438,7 @@ export const addWorldPermission = (user, world, permission) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: worlds
             }
 
@@ -508,10 +488,8 @@ export const duplicateUser = (user, userName) => {
         }
         try {
             const newUser = {
-                name: userName,
-                groups: user.groups,
-                permissions: user.permissions,
-                worlds: user.worlds
+                ...user,
+                name: userName
             }
 
             dispatch({
@@ -533,10 +511,8 @@ export const swapPermission = (user, oldIndex, newIndex) => {
             const newPermisisons = moveArray(user.permissions, oldIndex, newIndex)
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: newPermisisons,
-                worlds: user.worlds
+                ...user,
+                permissions: newPermisisons
             }
             dispatch({
                 type: 'MOVE_USER_PERMISSION',
@@ -557,10 +533,8 @@ export const swapGroup = (user, oldIndex, newIndex) => {
             const newGroups = moveArray(user.groups, oldIndex, newIndex)
 
             const newUser = {
-                name: user.name,
-                groups: newGroups,
-                permissions: user.permissions,
-                worlds: user.worlds
+                ...user,
+                groups: newGroups
             }
             dispatch({
                 type: 'MOVE_USER_GROUP',
@@ -581,9 +555,7 @@ export const swapWorld = (user, oldIndex, newIndex) => {
             const newWorlds = moveArray(user.worlds, oldIndex, newIndex)
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: newWorlds
             }
             dispatch({
@@ -602,20 +574,18 @@ export const swapWorld = (user, oldIndex, newIndex) => {
 export const swapWorldPermission = (user, world, oldIndex, newIndex) => {
     return async (dispatch) => {
         try {
-            const newPermisisons = moveArray(world.permissions, oldIndex, newIndex)
+            const newPermissions = moveArray(world.permissions, oldIndex, newIndex)
 
             const newWorld = {
-                name: world.name,
-                permissions: newPermisisons
+                ...world,
+                permissions: newPermissions
             }
 
             const worlds = user.worlds
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: worlds
             }
 
@@ -657,10 +627,8 @@ export const renameUser = (user, newName) => {
         try {
             const oldName = user.name
             const newUser = {
-                name: newName,
-                groups: user.groups,
-                permissions: user.permissions,
-                worlds: user.worlds
+                ...user,
+                name: newName
             }
             dispatch({
                 type: 'RENAME_USER',
@@ -683,15 +651,13 @@ export const renameWorld = (user, world, newName) => {
         }
         try {
             const newWorld = {
-                name: newName,
-                permissions: world.permissions
+                ...world,
+                name: newName
             }
             const worlds = user.worlds
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
             const newUser = {
-                name: user.name,
-                groups: user.groups,
-                permissions: user.permissions,
+                ...user,
                 worlds: worlds
             }
             dispatch({

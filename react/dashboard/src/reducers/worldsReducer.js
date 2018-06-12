@@ -78,8 +78,7 @@ export const negatePermission = (world, permission) => {
             newPermisisons[permissions.indexOf(permission)] = negatedPerm
 
             const newWorld = {
-                name: world.name,
-                inheritance: world.inheritance,
+                ...world,
                 permissions: newPermisisons
             }
 
@@ -102,8 +101,7 @@ export const removePermission = (world, permission) => {
             const permissions = world.permissions.filter(perm => perm !== permission)
 
             const newWorld = {
-                name: world.name,
-                inheritance: world.inheritance,
+                ...world,
                 permissions: permissions
             }
 
@@ -126,9 +124,8 @@ export const removeInheritedWorld = (world, inheritedWorld) => {
             const inheritance = world.inheritance.filter(inherit => inherit !== inheritedWorld)
 
             const newWorld = {
-                name: world.name,
-                inheritance: inheritance,
-                permissions: world.permissions
+                ...world,
+                inheritance: inheritance
             }
 
             dispatch({
@@ -170,8 +167,7 @@ export const addPermission = (world, permission) => {
             const permissions = world.permissions.concat(permission.replace(' ', ''))
 
             const newWorld = {
-                name: world.name,
-                inheritance: world.inheritance,
+                ...world,
                 permissions: permissions
             }
 
@@ -197,9 +193,8 @@ export const addInheritedWorld = (world, inheritedWorld) => {
             const inheritance = world.inheritance.concat(inheritedWorld)
 
             const newWorld = {
-                name: world.name,
-                inheritance: inheritance,
-                permissions: world.permissions
+                ...world,
+                inheritance: inheritance
             }
 
             dispatch({
@@ -247,9 +242,8 @@ export const duplicateWorld = (world, worldName) => {
         }
         try {
             const newWorld = {
-                name: worldName,
-                inheritance: world.inheritance,
-                permissions: world.permissions
+                ...world,
+                name: worldName
             }
 
             dispatch({
@@ -271,8 +265,7 @@ export const swapPermission = (world, oldIndex, newIndex) => {
             const newPermisisons = moveArray(world.permissions, oldIndex, newIndex)
 
             const newWorld = {
-                name: world.name,
-                inheritance: world.inheritance,
+                ...world,
                 permissions: newPermisisons
             }
             dispatch({
@@ -294,9 +287,8 @@ export const swapInheritedWorld = (world, oldIndex, newIndex) => {
             const newInheritance = moveArray(world.inheritance, oldIndex, newIndex)
 
             const newWorld = {
-                name: world.name,
-                inheritance: newInheritance,
-                permissions: world.permissions
+                ...world,
+                inheritance: newInheritance
             }
             dispatch({
                 type: 'MOVE_WORLD_INHERITED',
@@ -336,9 +328,8 @@ export const renameWorld = (world, newName) => {
         try {
             const oldName = world.name
             const newWorld = {
-                name: newName,
-                inheritance: world.inheritance,
-                permissions: world.permissions
+                ...world,
+                name: newName
             }
             dispatch({
                 type: 'RENAME_WORLD',

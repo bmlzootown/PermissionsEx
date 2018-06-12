@@ -115,7 +115,7 @@ export const negateWorldPermission = (group, world, permission) => {
             newPermisisons[newPermisisons.indexOf(permission)] = negatedPerm
 
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: newPermisisons
             }
 
@@ -165,7 +165,7 @@ export const removeWorldPermission = (group, world, permission) => {
     return async (dispatch) => {
         try {
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: world.permissions.filter(perm => perm !== permission),
             }
 
@@ -340,7 +340,7 @@ export const addWorldPermission = (group, world, permission) => {
         }
         try {
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: world.permissions.concat(permission)
             }
 
@@ -490,7 +490,7 @@ export const swapWorldPermission = (group, world, oldIndex, newIndex) => {
             const newPermisisons = moveArray(world.permissions, oldIndex, newIndex)
 
             const newWorld = {
-                name: world.name,
+                ...world,
                 permissions: newPermisisons
             }
 
@@ -564,8 +564,8 @@ export const renameWorld = (group, world, newName) => {
         }
         try {
             const newWorld = {
-                name: newName,
-                permissions: world.permissions
+                ...world,
+                name: newName
             }
             const worlds = group.worlds
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
