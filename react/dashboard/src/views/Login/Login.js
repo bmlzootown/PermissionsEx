@@ -81,10 +81,10 @@ class Login extends Component {
             </InputGroup>
             <Row>
                 <Col xs="6">
-                    <Button type="submit" color="primary" className="px-4">Login</Button>
+                    <Button onClick={this.toggleForgotPassModal} color="link" className="px-0">Forgot password?</Button>
                 </Col>
                 <Col xs="6" className="text-right">
-                    <Button onClick={this.toggleForgotPassModal} color="link" className="px-0">Forgot password?</Button>
+                    <Button type="submit" color="primary" className="px-4">Login</Button>
                 </Col>
             </Row>
         </Form>
@@ -101,7 +101,7 @@ class Login extends Component {
                 </CardBody>
             </Card>
             {location.protocol.includes("https") ? undefined :
-                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. Set up HTTPS Certificate, tutorial <a href="https://github.com/Aeternum-Studios/PermissionsEx/wiki">on the wiki.</a>
+                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. Set up HTTPS Certificate, tutorial <a rel="noopener noreferrer" target="_blank" href="https://github.com/Aeternum-Studios/PermissionsEx/wiki/Dashboard#https-set-up">on the wiki.</a>
                 </Alert>}
             <Card className="p-4">
                 <Button onClick={this.toggleRegisterModal} color="success" className="px-4">How to create an account?</Button>
