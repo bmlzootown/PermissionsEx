@@ -18,6 +18,9 @@ import {
     removeGroup,
     removeInheritedGroup,
     removePermission,
+    changeLadder,
+    changeLadderRank,
+    changePrefix,
     removeWorld,
     renameWorld,
     removeWorldPermission,
@@ -128,7 +131,7 @@ class Group extends React.Component {
             <Media>
                 <Media body>
                     <Row onClick={this.toggle} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
-                        <Col>
+                        <Col md='2'>
                             <span>
                                 <h5 style={{ padding: 0 }} className="float-left">
                                     {(circularInheritance
@@ -141,12 +144,21 @@ class Group extends React.Component {
                             </span>
                         </Col>
                         <Col>
+                            <p style={{ padding: 0, margin: 0 }} className="float-left"><Icon i='fa fa-sitemap' /> {group.ladder} ({group.ladderRank})</p>
                             <h5 style={{ padding: 0 }} className="float-right">
                                 <Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} />
                             </h5>
                         </Col>
                     </Row>
                     <Collapse isOpen={open} >
+                        <span>
+                            <Icon i='fa fa-sitemap' /> <b>Ladder: </b>{group.ladder}<EditButton what='Change Ladder' edit={() => this.props.changeLadder(group, prompt('Ladder Name', group.ladder))} />
+                            {'  '}<b>Rank: </b>{group.ladderRank}<EditButton what='Change Ladder Rank' edit={() => this.props.changeLadderRank(group, prompt('Rank', group.ladderRank))} />
+                        </span><br></br>
+                        <span>
+                            <b>Prefix: </b>{"'"+group.prefix+"'"}<EditButton what='Change Prefix' edit={() => this.props.changePrefix(group, prompt('Prefix', group.prefix))} />
+                        </span>
+
                         <SubHeader text={<span>
                             Permissions{' '}
                             <AddButton what='new permission' add={() => this.props.addPermission(group, prompt('Add Permission'))} />
@@ -184,6 +196,8 @@ export default connect(
         swapPermission, swapInheritedGroup,
         addPermission, addInheritedGroup,
         removeGroup, renameGroup,
+
+        changeLadder, changeLadderRank, changePrefix,
 
         toggleGroup, toggleWorld,
 

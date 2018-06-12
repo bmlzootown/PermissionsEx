@@ -11,7 +11,10 @@ const mapper = (group) => {
         permissions: group.worlds.shift().information,
         worlds: group.worlds.map(world => {
             return { name: world.name, permissions: world.information }
-        })
+        }),
+        ladder: group.ladder,
+        ladderRank: group.ladderRank,
+        prefix: group.prefix
     }
 }
 
@@ -25,7 +28,10 @@ const reverseMapper = (group) => {
                 .map(world => {
                     return { name: world.name, information: world.permissions }
                 })
-        ]
+        ],
+        ladder: group.ladder,
+        ladderRank: group.ladderRank,
+        prefix: group.prefix
     }
 }
 

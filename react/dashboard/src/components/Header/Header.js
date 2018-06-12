@@ -11,7 +11,6 @@ import { logoutExpiredTokenNoDispatch } from '../../reducers/loginReducer'
 
 import {
     NavbarToggler,
-    NavbarBrand,
     Button
 } from 'reactstrap'
 

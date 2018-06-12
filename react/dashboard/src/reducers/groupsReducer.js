@@ -44,6 +44,9 @@ const reducer = (store = [], action) => {
         || action.type === 'MOVE_GROUP_WORLD_PERMISSION'
         || action.type === 'REMOVE_GROUP_WORLD_PERMISSION'
         || action.type === 'NEGATE_GROUP_WORLD_PERMISSION'
+        || action.type === 'CHANGE_LADDER'
+        || action.type === 'CHANGE_LADDER_RANK'
+        || action.type === 'CHANGE_PREFIX'
     ) {
         const replacing = action.data.group
         newState[newState.indexOf(newState.find(group => group.name === replacing.name))] = replacing
@@ -85,10 +88,8 @@ export const negatePermission = (group, permission) => {
             newPermisisons[newPermisisons.indexOf(permission)] = negatedPerm
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: newPermisisons,
-                worlds: group.worlds
+                ...group,
+                permissions: newPermisisons
             }
 
             dispatch({
@@ -122,9 +123,7 @@ export const negateWorldPermission = (group, world, permission) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: worlds
             }
 
@@ -145,10 +144,8 @@ export const removePermission = (group, permission) => {
     return async (dispatch) => {
         try {
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions.filter(perm => perm !== permission),
-                worlds: group.worlds
+                ...group,
+                permissions: group.permissions.filter(perm => perm !== permission)
             }
 
             dispatch({
@@ -176,9 +173,7 @@ export const removeWorldPermission = (group, world, permission) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: worlds
             }
 
@@ -199,10 +194,8 @@ export const removeInheritedGroup = (group, inheritedGroup) => {
     return async (dispatch) => {
         try {
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance.filter(inherit => inherit !== inheritedGroup),
-                permissions: group.permissions,
-                worlds: group.worlds
+                ...group,
+                inheritance: group.inheritance.filter(inherit => inherit !== inheritedGroup)
             }
 
             dispatch({
@@ -241,9 +234,7 @@ export const removeWorld = (group, world) => {
         try {
             if (confirm(`Are you sure you want to remove '${world.name}' from '${group.name}'?`)) {
                 const newGroup = {
-                    name: group.name,
-                    inheritance: group.inheritance,
-                    permissions: group.permissions,
+                    ...group,
                     worlds: group.worlds.filter(w => w.name !== world.name)
                 }
 
@@ -270,10 +261,8 @@ export const addPermission = (group, permission) => {
             const permissions = group.permissions.concat(permission.replace(' ', ''))
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: permissions,
-                worlds: group.worlds
+                ...group,
+                permissions: permissions
             }
 
             dispatch({
@@ -298,10 +287,8 @@ export const addInheritedGroup = (group, inheritedGroup) => {
             const inheritance = group.inheritance.concat(inheritedGroup)
 
             const newGroup = {
-                name: group.name,
-                inheritance: inheritance,
-                permissions: group.permissions,
-                worlds: group.worlds
+                ...group,
+                inheritance: inheritance
             }
 
             dispatch({
@@ -329,9 +316,7 @@ export const addWorld = (group, worldName) => {
             }
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: group.worlds.concat(newWorld)
             }
 
@@ -363,9 +348,7 @@ export const addWorldPermission = (group, world, permission) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: worlds
             }
 
@@ -392,7 +375,10 @@ export const addGroup = (groupName) => {
                 name: groupName,
                 inheritance: [],
                 permissions: [],
-                worlds: []
+                worlds: [],
+                ladder: 'default',
+                ladderRank: 0,
+                prefix: ''
             }
 
             dispatch({
@@ -415,10 +401,8 @@ export const duplicateGroup = (group, groupName) => {
         }
         try {
             const newGroup = {
-                name: groupName,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
-                worlds: group.worlds
+                ...group,
+                name: groupName
             }
 
             dispatch({
@@ -440,10 +424,8 @@ export const swapPermission = (group, oldIndex, newIndex) => {
             const newPermisisons = moveArray(group.permissions, oldIndex, newIndex)
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: newPermisisons,
-                worlds: group.worlds
+                ...group,
+                permissions: newPermisisons
             }
             dispatch({
                 type: 'MOVE_GROUP_PERMISSION',
@@ -464,10 +446,8 @@ export const swapInheritedGroup = (group, oldIndex, newIndex) => {
             const newInheritance = moveArray(group.inheritance, oldIndex, newIndex)
 
             const newGroup = {
-                name: group.name,
-                inheritance: newInheritance,
-                permissions: group.permissions,
-                worlds: group.worlds
+                ...group,
+                inheritance: newInheritance
             }
             dispatch({
                 type: 'MOVE_GROUP_INHERITED',
@@ -488,9 +468,7 @@ export const swapWorld = (group, oldIndex, newIndex) => {
             const newWorlds = moveArray(group.worlds, oldIndex, newIndex)
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: newWorlds
             }
             dispatch({
@@ -520,9 +498,7 @@ export const swapWorldPermission = (group, world, oldIndex, newIndex) => {
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
 
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: worlds
             }
 
@@ -564,10 +540,8 @@ export const renameGroup = (group, newName) => {
         try {
             const oldName = group.name
             const newGroup = {
-                name: newName,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
-                worlds: group.worlds
+                ...group,
+                name: newName
             }
             dispatch({
                 type: 'RENAME_GROUP',
@@ -596,9 +570,7 @@ export const renameWorld = (group, world, newName) => {
             const worlds = group.worlds
             worlds[worlds.indexOf(worlds.find(w => w.name === world.name))] = newWorld
             const newGroup = {
-                name: group.name,
-                inheritance: group.inheritance,
-                permissions: group.permissions,
+                ...group,
                 worlds: worlds
             }
             dispatch({
@@ -608,6 +580,76 @@ export const renameWorld = (group, world, newName) => {
                 }
             })
         } catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const changeLadder = (group, newLadder) => {
+    return async (dispatch) => {
+        if (!newLadder) {
+            return
+        }
+        try {
+            const newGroup = {
+                ...group,
+                ladder: newLadder.trim()
+            }
+            dispatch({
+                type: 'CHANGE_LADDER',
+                data: {
+                    group: newGroup
+                }
+            })
+        }catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const changeLadderRank = (group, newLadderRank) => {
+    return async (dispatch) => {
+        const rankNum = parseInt(newLadderRank)
+        if (!rankNum || isNaN(rankNum)) {
+            return
+        }
+        try {
+            const newGroup = {
+                ...group,
+                ladderRank: rankNum
+            }
+            dispatch({
+                type: 'CHANGE_LADDER_RANK',
+                data: {
+                    group: newGroup
+                }
+            })
+        }catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const changePrefix = (group, newPrefix) => {
+    return async (dispatch) => {
+        if (!newPrefix) {
+            return
+        }
+        try {
+            const newGroup = {
+                ...group,
+                prefix: newPrefix
+            }
+            dispatch({
+                type: 'CHANGE_PREFIX',
+                data: {
+                    group: newGroup
+                }
+            })
+        }catch (error) {
             handleError(error, dispatch)
             throw error
         }
