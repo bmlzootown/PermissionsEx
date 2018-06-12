@@ -20,6 +20,9 @@ public interface GroupJSONService {
                 "InheritedGroupName",
                 "SecondInheritedGroupName"
             ],
+            "ladder": "laddername",
+            "ladderRank": 0,
+            "prefix": "prefix",
             "permissions": [
                 "plugin.example.permission",
                 "-plugin.example.negated.permission"
