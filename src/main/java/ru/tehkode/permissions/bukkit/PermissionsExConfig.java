@@ -15,15 +15,15 @@ public class PermissionsExConfig {
 	private final Configuration config;
 	private final PermissionsEx plugin;
 
-	private final boolean useNetEvents;
+//	private final boolean useNetEvents;
 	private final boolean debug;
 	private final boolean allowOps;
 	private final boolean userAddGroupsLast;
 	private final boolean logPlayers;
 	private final boolean createUserRecords;
 	private final String defaultBackend;
-	private final boolean updaterEnabled;
-	private final boolean alwaysUpdate;
+//	private final boolean updaterEnabled;
+//	private final boolean alwaysUpdate;
 	private final boolean informPlayers;
 	private final List<String> serverTags;
 	private final String basedir;
@@ -43,7 +43,7 @@ public class PermissionsExConfig {
 		this.config = config;
 		this.plugin = plugin;
 
-		useNetEvents = getBoolean("multiserver.use-netevents", true);
+//		useNetEvents = getBoolean("multiserver.use-netevents", true);
 		serverTags = getStringList("multiserver.server-tags");
 		debug = getBoolean("permissions.debug", false);
 		allowOps = getBoolean("permissions.allowOps", false);
@@ -51,8 +51,8 @@ public class PermissionsExConfig {
 		logPlayers = getBoolean("permissions.log-players", false);
 		createUserRecords = getBoolean("permissions.createUserRecords", false);
 		defaultBackend = getString("permissions.backend", PermissionBackend.DEFAULT_BACKEND);
-		updaterEnabled = getBoolean("updater", true);
-		alwaysUpdate = getBoolean("alwaysUpdate", false);
+//		updaterEnabled = getBoolean("updater", false);
+//		alwaysUpdate = getBoolean("alwaysUpdate", false);
 		informPlayers = getBoolean("permissions.informplayers.changes", false);
 		basedir = getString("permissions.basedir", "plugins/PermissionsEx");
 
@@ -100,9 +100,9 @@ public class PermissionsExConfig {
 		return Collections.unmodifiableList(ret);
 	}
 
-	public boolean useNetEvents() {
-		return useNetEvents;
-	}
+//	public boolean useNetEvents() {
+//		return useNetEvents;
+//	}
 
 	public boolean isDebug() {
 		return debug;
@@ -128,13 +128,13 @@ public class PermissionsExConfig {
 		return createUserRecords;
 	}
 
-	public boolean updaterEnabled() {
-		return updaterEnabled;
-	}
-
-	public boolean alwaysUpdate() {
-		return alwaysUpdate;
-	}
+//	public boolean updaterEnabled() {
+//		return updaterEnabled;
+//	}
+//
+//	public boolean alwaysUpdate() {
+//		return alwaysUpdate;
+//	}
 
 	public boolean informPlayers() {
 		return informPlayers;
