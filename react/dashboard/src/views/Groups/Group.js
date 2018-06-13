@@ -131,7 +131,7 @@ class Group extends React.Component {
             <Media>
                 <Media body>
                     <Row onClick={this.toggle} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
-                        <Col md='2'>
+                        <Col md='3'>
                             <span>
                                 <h5 style={{ padding: 0 }} className="float-left">
                                     {(circularInheritance
@@ -154,9 +154,7 @@ class Group extends React.Component {
                         <span>
                             <Icon i='fa fa-sitemap' /> <b>Ladder: </b>{group.ladder}<EditButton what='Change Ladder' edit={() => this.props.changeLadder(group, prompt('Ladder Name', group.ladder))} />
                             {'  '}<b>Rank: </b>{group.ladderRank}<EditButton what='Change Ladder Rank' edit={() => this.props.changeLadderRank(group, prompt('Rank', group.ladderRank))} />
-                        </span><br></br>
-                        <span>
-                            <b>Prefix: </b>{"'"+group.prefix+"'"}<EditButton what='Change Prefix' edit={() => this.props.changePrefix(group, prompt('Prefix', group.prefix))} />
+                            {'  '}<b>Prefix: </b>{"'"+group.prefix+"'"}<EditButton what='Change Prefix' edit={() => this.props.changePrefix(group, prompt('Prefix', group.prefix))} />
                         </span>
 
                         <SubHeader text={<span>

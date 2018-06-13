@@ -19,17 +19,17 @@ class Permission extends React.Component {
         const permission = this.props.permission
 
         const clipboardButton = {
-            backgroundColor: '#AF6E4D',
+            backgroundColor: '#66bb6a',
             color: '#fff',
             padding: '12px 15px',
-            borderColor: '#a06648'
+            borderColor: '#66bb6a'
         }
 
         const negated = {
-            backgroundColor: '#7e57c2',
+            backgroundColor: '#ba68c8',
             color: '#fff',
             padding: '12px 15px',
-            borderColor: '#673ab7'
+            borderColor: '#ba68c8'
         }
 
         const id = (this.props.pluginName + '_' + permission + '_').replace(' ', '')

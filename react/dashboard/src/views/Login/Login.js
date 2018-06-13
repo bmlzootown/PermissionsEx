@@ -92,6 +92,9 @@ class Login extends Component {
 
     LoginPart = () => (
         <Col>
+            {location.protocol.includes("https") ? undefined :
+                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. HTTPS Certificate tutorial can be found <a rel="noopener noreferrer" target="_blank" href="https://pex.aeternum.network/">here.</a>
+                </Alert>}
             <Card className="p-4">
                 <CardBody>
                     <img className="mx-auto d-block" alt="logo" src="/img/logo-symbol.png"></img>
@@ -100,11 +103,22 @@ class Login extends Component {
                     <this.LoginForm />
                 </CardBody>
             </Card>
-            {location.protocol.includes("https") ? undefined :
-                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. Set up HTTPS Certificate, tutorial <a rel="noopener noreferrer" target="_blank" href="https://github.com/Aeternum-Studios/PermissionsEx/wiki/Dashboard#https-set-up">on the wiki.</a>
-                </Alert>}
-            <Card className="p-4">
-                <Button onClick={this.toggleRegisterModal} color="success" className="px-4">How to create an account?</Button>
+            <Card>
+                <CardBody>
+                    <Button style={{ width: '100%' }} onClick={this.toggleRegisterModal} color="success" className="px-4">How to create an account?</Button>
+                </CardBody>
+                <CardBody style={{ paddingTop: 0 }}>
+                    <Row>
+                        <Col>
+                            <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-primary"
+                                rel="noopener noreferrer" target="_blank" href="https://pex.aeternum.network/">Documentation</a>
+                        </Col>
+                        <Col>
+                            <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-primary"
+                            rel="noopener noreferrer" target="_blank" href="https://bstats.org/plugin/bukkit/PermissionsEx">Statistics</a>
+                        </Col>
+                    </Row>
+                </CardBody>
             </Card>
         </Col>
     )

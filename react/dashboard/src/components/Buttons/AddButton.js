@@ -6,18 +6,18 @@ import Icon from '../Icon'
 
 const addButton = {
     backgroundColor: '#fff',
-    color: '#43a047',
+    color: '#66bb6a',
     padding: '2px 5px',
     borderColor: '#fff'
 }
 
 const bigAddButton = {
     color: '#fff',
-    backgroundColor: '#689f38',
+    backgroundColor: '#66bb6a',
     padding: '10px 20px',
     fontSize: '26px',
-    borderColor: '#686868'
-  }
+    borderColor: '#66bb6a'
+}
 
 
 export const AddButton = ({ add, what }) => (

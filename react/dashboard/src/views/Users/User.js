@@ -125,16 +125,17 @@ class User extends React.Component {
             <Media>
                 <Media body>
                     <Row onClick={this.toggle} title={'Click to ' + (open ? 'Collapse' : 'Open')}>
-                        <Col>
-                            <span>
-                                <h5 style={{ padding: 0 }} className="float-left">
+                        <Col md='8'>
+                            <img className='float-left' style={{ padding: 0, alignContent: 'center', width: '25px' }} src={`https://visage.surgeplay.com/face/30/${user.name}`}></img>
+                            <span className='float-left'>
+                                <h5 style={{ padding: 0, paddingLeft: 5 }}>
                                     {(
                                         hasUnexistingGroups ? <span title='Group does not exist' style={{ color: '#b71c1c' }}>{user.name} <Icon i='fa fa-warning' /> </span>
                                             : user.name + ' '
                                     )}
                                 </h5>
-                                <EditButton what='Change User Name' edit={() => this.props.renameUser(user, prompt('Rename User', user.name))} />
                             </span>
+                            <EditButton className='float-left' what='Change User Name' edit={() => this.props.renameUser(user, prompt('Rename User', user.name))} />
                         </Col>
                         <Col>
                             <h5 style={{ padding: 0 }} className="float-right">

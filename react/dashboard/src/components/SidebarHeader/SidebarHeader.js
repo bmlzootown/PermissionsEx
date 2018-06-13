@@ -19,7 +19,7 @@ class SidebarHeader extends Component {
         return (
             <div className="sidebar-header">
                 <img src={url}></img>
-                <p style={{ padding: 0, margin: 0 }}>Logged in as<br></br>{name}</p>
+                <p style={{ padding: 0, margin: 0 }}>Logged in as<br></br><b>{name}</b></p>
             </div>
         )
     }
