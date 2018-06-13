@@ -111,7 +111,7 @@ class Header extends Component {
         )
     }
 
-    render() { 
+    render() {
         return (
             <header className="app-header navbar">
                 <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>
