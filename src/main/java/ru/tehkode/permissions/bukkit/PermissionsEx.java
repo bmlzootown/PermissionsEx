@@ -77,7 +77,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 	private RegexPermissions regexPerms;
 	private boolean errored = false;
 
-	// Volmit PEXTweaks
+	// PEXTweaks
 	private PEXTweaks tweaks;
 
 	// Pex Dashboard by Rsl1122
