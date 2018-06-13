@@ -5,17 +5,17 @@ import { Button } from 'reactstrap'
 import Icon from '../Icon'
 
 const active = {
-    backgroundColor: '#7e57c2',
+    backgroundColor: '#ba68c8',
     color: '#fff',
-    padding: '12px 15px',
-    borderColor: '#673ab7'
+    padding: '12px 18px',
+    borderColor: '#ba68c8'
 }
 
 const inactive = {
-    backgroundColor: '#ba68c8',
+    backgroundColor: '#ce93d8',
     color: '#fff',
-    padding: '12px 15px',
-    borderColor: '#ab47bc'
+    padding: '12px 18px',
+    borderColor: '#ce93d8'
 }
 
 const NegateButton = ({ negated, negate }) => (

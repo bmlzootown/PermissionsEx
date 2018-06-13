@@ -40,7 +40,7 @@ class Plugin extends React.Component {
                     <Col><h5 style={{ padding: 0 }} className="float-left">{plugin.name}</h5></Col>
                     <Col>
                         <h5 style={{ padding: 0, margin: 0  }} className="float-right"><Icon i={open ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></h5>
-                        <p style={{ padding: 0, margin: 0  }} className="float-right"><b>{plugin.permissions.length}</b> listed permissions{' '}</p>
+                        <p style={{ padding: 0, margin: 0, paddingRight: 3  }} className="float-right"><b>{plugin.permissions.length}</b> listed permissions</p>
                     </Col>
                 </Row>
                 <Collapse isOpen={open} >

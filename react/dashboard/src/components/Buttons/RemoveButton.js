@@ -5,24 +5,24 @@ import { Button } from 'reactstrap'
 import Icon from '../Icon'
 
 const removeButton = {
-    backgroundColor: '#e53935',
+    backgroundColor: '#ef5350',
     color: '#fff',
-    padding: '12px 15px',
-    borderColor: '#d32f2f'
+    padding: '12px 18px',
+    borderColor: '#ef5350'
 }
 
 const biggerRemoveButton = {
-    backgroundColor: '#e53935',
+    backgroundColor: '#ef5350',
     color: '#fff',
     padding: '15px 22px',
-    borderColor: '#d32f2f'
+    borderColor: '#ef5350'
 }
 
 const biggestRemoveButton = {
-    backgroundColor: '#e53935',
+    backgroundColor: '#ef5350',
     color: '#fff',
     padding: '26px 30px',
-    borderColor: '#d32f2f'
+    borderColor: '#ef5350'
 }
 export const BiggestRemoveButton = ({ className, remove }) => (
     <Button className={className} title="Remove" style={biggestRemoveButton} onClick={remove}>

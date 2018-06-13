@@ -5,24 +5,24 @@ import { Button } from 'reactstrap'
 import Icon from '../Icon'
 
 const duplicateButton = {
-    backgroundColor: '#5c6bc0',
+    backgroundColor: '#7986cb',
     color: '#fff',
     padding: '12px 15px',
-    borderColor: '#3f51b5'
+    borderColor: '#7986cb'
 }
 
 const biggerDuplicateButton = {
-    backgroundColor: '#5c6bc0',
+    backgroundColor: '#7986cb',
     color: '#fff',
     padding: '15px 22px',
-    borderColor: '#3f51b5'
+    borderColor: '#7986cb'
 }
 
 const biggestDuplicateButton = {
-    backgroundColor: '#5c6bc0',
+    backgroundColor: '#7986cb',
     color: '#fff',
     padding: '26px 30px',
-    borderColor: '#3f51b5'
+    borderColor: '#7986cb'
 }
 
 export const BiggestDuplicateButton = ({ className, duplicate }) => (
