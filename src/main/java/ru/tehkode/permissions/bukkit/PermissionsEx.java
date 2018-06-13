@@ -52,7 +52,9 @@ import ru.tehkode.permissions.backends.sql.SQLBackend;
 import ru.tehkode.permissions.bukkit.commands.*;
 import ru.tehkode.permissions.bukkit.regexperms.RegexPermissions;
 import ru.tehkode.permissions.commands.CommandsManager;
-import ru.tehkode.permissions.commands.completers.TabComplete;
+//Imports the Tab Complete Class, Will figure out how to implement tab complete later. Sorry >,.,<
+//import ru.tehkode.permissions.commands.completers.TabComplete;
+
 import ru.tehkode.permissions.events.PermissionEvent;
 import ru.tehkode.permissions.exceptions.PermissionBackendException;
 import ru.tehkode.permissions.exceptions.PermissionsNotAvailable;
@@ -75,7 +77,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 	private RegexPermissions regexPerms;
 	private boolean errored = false;
 
-	// Volmit PEXTweaks
+	// PEXTweaks
 	private PEXTweaks tweaks;
 
 	// Pex Dashboard by Rsl1122
@@ -196,7 +198,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			this.commandsManager.register(new UtilityCommands());
 			// Register Tab complete
 
-			this.getCommand("pex").setTabCompleter(new TabComplete());
+//			this.getCommand("pex").setTabCompleter(new TabComplete());
 
 			// Register Player permissions cleaner
 			PlayerEventsListener cleaner = new PlayerEventsListener();
@@ -212,7 +214,7 @@ public class PermissionsEx extends JavaPlugin implements NativeInterface {
 			// Start timed permissions cleaner timer
 			this.permissionsManager.initTimer();
 
-			// Volmit Tweaks
+			// Pex Tweaks
 			tweaks = new PEXTweaks(this);
 
 			dashboard = new PexDashboard(this);
