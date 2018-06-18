@@ -69,10 +69,14 @@ class Users extends Component {
                 after: <span>
                     <BiggerDuplicateButton duplicate={() => this.props.duplicateUser(user, prompt('Name of the duplicated user'))} />
                     <BiggerRemoveButton remove={() => this.props.removeUser(user)} />
-                </span>
+                </span>,
+                name: user.name
             }
         }).map((user, indx) => (
             <Media key={indx}>
+                <Media>
+                    <img style={{ padding: 0, alignContent: 'center', width: '55px' }} src={`https://visage.surgeplay.com/face/50/${user.name}`}></img>
+                </Media>
                 <Media body>
                     <ListGroupItem >
                         <Row>
