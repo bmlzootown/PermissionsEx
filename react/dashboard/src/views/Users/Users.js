@@ -24,6 +24,7 @@ import {
 } from 'reactstrap'
 
 import User from './User'
+import UserImg from './UserImg'
 import { BigAddButton } from '../../components/Buttons/AddButton'
 import { BiggerRemoveButton } from '../../components/Buttons/RemoveButton'
 import { BiggerDuplicateButton } from '../../components/Buttons/DuplicateButton'
@@ -75,7 +76,7 @@ class Users extends Component {
         }).map((user, indx) => (
             <Media key={indx}>
                 <Media>
-                    <img style={{ padding: 0, alignContent: 'center', width: '55px' }} src={`https://visage.surgeplay.com/face/50/${user.name}`}></img>
+                    <UserImg name={user.name} />
                 </Media>
                 <Media body>
                     <ListGroupItem >
