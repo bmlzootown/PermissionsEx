@@ -93,7 +93,7 @@ class Login extends Component {
     LoginPart = () => (
         <Col>
             {location.protocol.includes("https") ? undefined :
-                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. HTTPS Certificate tutorial can be found <a rel="noopener noreferrer" target="_blank" href="https://pex.aeternum.network/">here.</a>
+                <Alert color="danger">HTTP transfers are unsafe, anyone can read your password. HTTPS Certificate tutorial can be found <a rel="noopener noreferrer" target="_blank" href="${documentation}">here.</a>
                 </Alert>}
             <Card className="p-4">
                 <CardBody>
@@ -111,11 +111,11 @@ class Login extends Component {
                     <Row>
                         <Col>
                             <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-primary"
-                                rel="noopener noreferrer" target="_blank" href="https://pex.aeternum.network/">Documentation</a>
+                                rel="noopener noreferrer" target="_blank" href="${documentation}">Documentation</a>
                         </Col>
                         <Col>
                             <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-primary"
-                            rel="noopener noreferrer" target="_blank" href="https://bstats.org/plugin/bukkit/PermissionsEx">Statistics</a>
+                            rel="noopener noreferrer" target="_blank" href="${bstats}">Statistics</a>
                         </Col>
                     </Row>
                 </CardBody>

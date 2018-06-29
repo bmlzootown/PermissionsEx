@@ -117,7 +117,7 @@ class Header extends Component {
                 <NavbarToggler className="d-lg-none" onClick={this.mobileSidebarToggle}>
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
-                <h5 style={{ padding: '0px 0px 0px 10px' }} href="#">PermissionsEx</h5>
+                <h5 style={{ padding: '0px 0px 0px 10px' }} href="#">{'${project.name}'}</h5>
                 <p style={{ padding: '10px 0px 0px 5px' }}> v.{'${project.version}'}</p>
                 <NavbarToggler className="d-md-down-none mr-auto" onClick={this.sidebarToggle}>
                     <span className="navbar-toggler-icon"></span>

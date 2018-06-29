@@ -11,11 +11,11 @@ class Aside extends Component {
                 <Card>
                     <CardBody>
                         <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-primary"
-                            rel="noopener noreferrer" target="_blank" href="https://pex.aeternum.network/">Documentation</a>
+                            rel="noopener noreferrer" target="_blank" href="${documentation}">Documentation</a>
                     </CardBody>
                     <CardBody style={{ paddingTop: 0 }}>
                         <a style={{ width: '100%', color: '#fff' }} color="primary" className="px-4 btn btn-secondary"
-                            rel="noopener noreferrer" target="_blank" href="https://bstats.org/plugin/bukkit/PermissionsEx">Statistics</a>
+                            rel="noopener noreferrer" target="_blank" href="${bstats}">Statistics</a>
                     </CardBody>
                 </Card>
                 <LogoutButton />

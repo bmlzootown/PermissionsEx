@@ -13,6 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<pex.scripts>${project.basedir}/scripts</pex.scripts>
 		<pex.fn>${project.basedir}/target/${project.name}-${project.version}.jar</pex.fn>
+		<documentation>https://pex.aeternum.network/</documentation>
+		<bstats>https://bstats.org/plugin/bukkit/PermissionsEx</bstats>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
