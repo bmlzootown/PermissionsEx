@@ -14,7 +14,8 @@ const mapper = (group) => {
         }),
         ladder: group.ladder,
         ladderRank: group.ladderRank,
-        prefix: group.prefix
+        prefix: group.prefix,
+        suffix: group.suffix
     }
 }
 
@@ -31,7 +32,8 @@ const reverseMapper = (group) => {
         ],
         ladder: group.ladder,
         ladderRank: group.ladderRank,
-        prefix: group.prefix
+        prefix: group.prefix,
+        suffix: group.suffix
     }
 }
 
