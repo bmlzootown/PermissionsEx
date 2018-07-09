@@ -2,3 +2,25 @@
 .sortableHelper {
     z-index: 10;
 }
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-button {
+    height: 0px;
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7294a5; 
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b0bec5; 
+}
