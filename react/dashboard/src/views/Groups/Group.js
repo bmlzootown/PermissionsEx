@@ -21,6 +21,7 @@ import {
     changeLadder,
     changeLadderRank,
     changePrefix,
+    changeSuffix,
     removeWorld,
     renameWorld,
     removeWorldPermission,
@@ -155,6 +156,7 @@ class Group extends React.Component {
                             <Icon i='fa fa-sitemap' /> <b>Ladder: </b>{group.ladder}<EditButton what='Change Ladder' edit={() => this.props.changeLadder(group, prompt('Ladder Name', group.ladder))} />
                             {'  '}<b>Rank: </b>{group.ladderRank}<EditButton what='Change Ladder Rank' edit={() => this.props.changeLadderRank(group, prompt('Rank', group.ladderRank))} />
                             {'  '}<b>Prefix: </b>{"'"+group.prefix+"'"}<EditButton what='Change Prefix' edit={() => this.props.changePrefix(group, prompt('Prefix', group.prefix))} />
+                            {'  '}<b>Suffix: </b>{"'"+group.suffix+"'"}<EditButton what='Change Suffix' edit={() => this.props.changeSuffix(group, prompt('Suffix', group.suffix))} />
                         </span>
 
                         <SubHeader text={<span>
@@ -195,7 +197,7 @@ export default connect(
         addPermission, addInheritedGroup,
         removeGroup, renameGroup,
 
-        changeLadder, changeLadderRank, changePrefix,
+        changeLadder, changeLadderRank, changePrefix, changeSuffix,
 
         toggleGroup, toggleWorld,
 

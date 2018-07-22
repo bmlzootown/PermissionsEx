@@ -10,14 +10,17 @@ public class GroupContainer {
 	private final String ladder;
 	private final int ladderRank;
 	private final String prefix;
+	private final String suffix;
 
-	public GroupContainer(String name, List<String> inheritance, List<WorldContainer> worlds, String ladder, int ladderRank, String prefix) {
+	public GroupContainer(String name, List<String> inheritance, List<WorldContainer> worlds, String ladder,
+	                      int ladderRank, String prefix, String suffix) {
 		this.name = name;
 		this.inheritance = inheritance;
 		this.worlds = worlds;
 		this.ladder = ladder;
 		this.ladderRank = ladderRank;
 		this.prefix = prefix;
+		this.suffix = suffix;
 	}
 
 	public String getName() {
@@ -42,5 +45,9 @@ public class GroupContainer {
 
 	public String getPrefix() {
 		return prefix;
+	}
+
+	public String getSuffix() {
+		return suffix;
 	}
 }

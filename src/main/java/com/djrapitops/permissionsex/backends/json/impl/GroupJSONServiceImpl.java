@@ -45,6 +45,7 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 	private GroupContainer getGroup(PermissionGroup permissionGroup) {
 		String groupName = permissionGroup.getName();
 		String prefix = permissionGroup.getPrefix();
+		String suffix = permissionGroup.getSuffix();
 		String ladder = permissionGroup.getRankLadder();
 		int ladderRank = permissionGroup.getRank();
 
@@ -56,7 +57,7 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 
 		List<String> inheritance = permissionGroup.getParentIdentifiers();
 
-		return new GroupContainer(groupName, inheritance, worlds, ladder, ladderRank, prefix);
+		return new GroupContainer(groupName, inheritance, worlds, ladder, ladderRank, prefix, suffix);
 	}
 
 	@Override
@@ -143,6 +144,13 @@ public class GroupJSONServiceImpl implements GroupJSONService {
 			String newPrefix = groupContainer.getPrefix();
 			if (!oldPrefix.equals(newPrefix)) {
 				group.setPrefix(newPrefix, null);
+				save = true;
+			}
+
+			String oldSuffix = group.getSuffix();
+			String newSuffix = groupContainer.getSuffix();
+			if (!oldSuffix.equals(newSuffix)) {
+				group.setSuffix(newSuffix, null);
 				save = true;
 			}
 

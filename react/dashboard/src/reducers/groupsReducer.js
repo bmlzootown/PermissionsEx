@@ -47,6 +47,7 @@ const reducer = (store = [], action) => {
         || action.type === 'CHANGE_LADDER'
         || action.type === 'CHANGE_LADDER_RANK'
         || action.type === 'CHANGE_PREFIX'
+        || action.type === 'CHANGE_SUFFIX'
     ) {
         const replacing = action.data.group
         newState[newState.indexOf(newState.find(group => group.name === replacing.name))] = replacing
@@ -645,6 +646,29 @@ export const changePrefix = (group, newPrefix) => {
             }
             dispatch({
                 type: 'CHANGE_PREFIX',
+                data: {
+                    group: newGroup
+                }
+            })
+        }catch (error) {
+            handleError(error, dispatch)
+            throw error
+        }
+    }
+}
+
+export const changeSuffix = (group, newSuffix) => {
+    return async (dispatch) => {
+        if (!newSuffix) {
+            return
+        }
+        try {
+            const newGroup = {
+                ...group,
+                suffix: newSuffix
+            }
+            dispatch({
+                type: 'CHANGE_SUFFIX',
                 data: {
                     group: newGroup
                 }
