@@ -4,6 +4,7 @@ version: ${project.version}
 authors: [Aeternum, cyberpwn, Rsl1122, t3hk0d3, zml]
 website: http://dev.bukkit.org/server-mods/permissionsex
 description: PermissionsEx - New powerful users and groups permissions management plugin.
+api-version: 1.13
 commands:
   pex:
     description: Provides access to Permissions commands and information.
